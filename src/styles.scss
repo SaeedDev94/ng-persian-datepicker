@@ -1,0 +1,13 @@
+@import "assets/css/iran-sans-web.font.css";
+@import "~materialize-css/dist/css/materialize.min.css";
+
+body {
+  font-family: 'IranSansWebRegular', serif;
+}
+
+input {
+  font-family: inherit;
+  &[type="text"] {
+    margin-bottom: 0!important;
+  }
+}

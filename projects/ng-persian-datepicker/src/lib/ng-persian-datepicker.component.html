@@ -1,0 +1,241 @@
+<div
+  class="datepicker-outer-container"
+  [class.theme-default]="isTheme('default')"
+  [class.theme-blue]="isTheme('blue')"
+  [class.theme-gray]="isTheme('gray')"
+  [class.theme-dark]="isTheme('dark')"
+  [class.theme-black]="isTheme('black')"
+  [class.manual-position]="!config.ui.autoPosition"
+  [class.hide]="!config.ui.isVisible"
+  [ngStyle]="containerStyle()" #container>
+  <div
+    class="datepicker-inner-container">
+    <div
+      class="content-container navigation-container">
+      <div
+        class="go-back dp-btn"
+        (click)="navigate(false)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 240.823 240.823"
+          xml:space="preserve">
+          <path
+            d="M183.189,111.816L74.892,3.555c-4.752-4.74-12.451-4.74-17.215,0c-4.752,4.74-4.752,12.439,0,17.179
+            l99.707,99.671l-99.695,99.671c-4.752,4.74-4.752,12.439,0,17.191c4.752,4.74,12.463,4.74,17.215,0l108.297-108.261
+            C187.881,124.315,187.881,116.495,183.189,111.816z"></path>
+        </svg>
+      </div>
+      <div
+        class="switch-view dp-btn"
+        (click)="nextViewMode()">
+        <span>{{ getViewDateTitle() }}</span>
+      </div>
+      <div
+        class="go-forward dp-btn"
+        (click)="navigate(true)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 240.823 240.823"
+          xml:space="preserve">
+          <path
+            d="M57.633,129.007L165.93,237.268c4.752,4.74,12.451,4.74,17.215,0c4.752-4.74,4.752-12.439,0-17.179
+            l-99.707-99.671l99.695-99.671c4.752-4.74,4.752-12.439,0-17.191c-4.752-4.74-12.463-4.74-17.215,0L57.621,111.816
+            C52.942,116.507,52.942,124.327,57.633,129.007z"></path>
+        </svg>
+      </div>
+    </div>
+    <div
+      *ngIf="isViewMode('day')"
+      class="days-container">
+      <div
+        class="content-container week-days">
+        <div
+          class="day-col"
+          *ngFor="let weekDay of getWeekDays()">
+          <span>{{ weekDay }}</span>
+        </div>
+      </div>
+      <div
+        class="content-container month-days">
+        <ng-container
+          *ngFor="let row of [0, 1, 2, 3, 4, 5]">
+          <div
+            class="day-col dp-btn"
+            [class.other-month]="!isInCurrentMonth(row, col)"
+            [class.today]="isDayOfToday(row, col)"
+            [class.selected]="isDayOfSelectedDate(row, col)"
+            [class.disabled]="isDayDisabled(row, col)"
+            (click)="changeDate(row, col)"
+            *ngFor="let col of [0, 1, 2, 3, 4, 5, 6]">
+            <span>{{ getDayOfMonth(row, col).jDate() }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div
+      *ngIf="isViewMode('month')"
+      class="months-container">
+      <div
+        class="content-container">
+        <div
+          class="month-col three-col-per-row dp-btn"
+          [class.today]="isMonthOfToday(month)"
+          [class.selected]="isMonthOfSelectedDate(month)"
+          [class.disabled]="!isDateInRange(month, false, true)"
+          (click)="monthClick(month)"
+          *ngFor="let month of getMonths()">
+          <span>{{ month.format('jMMMM') }}</span>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="isViewMode('year')"
+      class="years-container">
+      <div
+        class="content-container">
+        <div
+          class="year-col three-col-per-row dp-btn"
+          [class.today]="isYearOfToday(year)"
+          [class.selected]="isYearOfSelectedDate(year)"
+          [class.disabled]="!isDateInRange(year, true, false)"
+          (click)="yearClick(year)"
+          *ngFor="let year of getYears()">
+          <span>{{ year.jYear() }}</span>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="config.time.enable"
+      class="content-container time-container"
+      [class.include-second]="config.time.showSecond"
+      [class.include-12-hour]="config.time.meridian">
+      <div
+        class="time-col hour-col the-divider">
+        <div
+          (click)="increaseHour()"
+          (mousedown)="setIncreaseHourInterval()"
+          (mouseup)="clearIncreaseHourInterval()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 255 255"
+            xml:space="preserve">
+            <polygon
+              points="0,191.25 127.5,63.75 255,191.25"></polygon>
+          </svg>
+        </div>
+        <div>
+          <span>{{ getHourText() }}</span>
+        </div>
+        <div
+          (click)="decreaseHour()"
+          (mousedown)="setDecreaseHourInterval()"
+          (mouseup)="clearDecreaseHourInterval()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 255 255"
+            xml:space="preserve">
+            <polygon
+              points="0,63.75 127.5,191.25 255,63.75"></polygon>
+          </svg>
+        </div>
+      </div>
+      <div
+        class="time-col minute-col"
+        [class.the-divider]="config.time.showSecond">
+        <div
+          (click)="increaseMinute()"
+          (mousedown)="setIncreaseMinuteInterval()"
+          (mouseup)="clearIncreaseMinuteInterval()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 255 255"
+            xml:space="preserve">
+            <polygon
+              points="0,191.25 127.5,63.75 255,191.25"></polygon>
+          </svg>
+        </div>
+        <div>
+          <span>{{ getMinuteText() }}</span>
+        </div>
+        <div
+          (click)="decreaseMinute()"
+          (mousedown)="setDecreaseMinuteInterval()"
+          (mouseup)="clearDecreaseMinuteInterval()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 255 255"
+            xml:space="preserve">
+            <polygon
+              points="0,63.75 127.5,191.25 255,63.75"></polygon>
+          </svg>
+        </div>
+      </div>
+      <div
+        *ngIf="config.time.showSecond"
+        class="time-col second-col">
+        <div
+          (click)="increaseSecond()"
+          (mousedown)="setIncreaseSecondInterval()"
+          (mouseup)="clearIncreaseSecondInterval()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 255 255"
+            xml:space="preserve">
+            <polygon
+              points="0,191.25 127.5,63.75 255,191.25"></polygon>
+          </svg>
+        </div>
+        <div>
+          <span>{{ getSecondText() }}</span>
+        </div>
+        <div
+          (click)="decreaseSecond()"
+          (mousedown)="setDecreaseSecondInterval()"
+          (mouseup)="clearDecreaseSecondInterval()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 255 255"
+            xml:space="preserve">
+            <polygon
+              points="0,63.75 127.5,191.25 255,63.75"></polygon>
+          </svg>
+        </div>
+      </div>
+      <div
+        *ngIf="config.time.meridian"
+        class="time-col time-in-12-hour-format-col">
+        <div
+          (click)="toggleAmPm()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 255 255"
+            xml:space="preserve">
+            <polygon
+              points="0,191.25 127.5,63.75 255,191.25"></polygon>
+          </svg>
+        </div>
+        <div>
+          <span>{{ getAmPmText() }}</span>
+        </div>
+        <div
+          (click)="toggleAmPm()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 255 255"
+            xml:space="preserve">
+            <polygon
+              points="0,63.75 127.5,191.25 255,63.75"></polygon>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div
+      class="the-toolbox">
+      <div
+        class="the-item dp-btn"
+        (click)="selectToday()">
+        <span>امروز</span>
+      </div>
+    </div>
+  </div>
+</div>

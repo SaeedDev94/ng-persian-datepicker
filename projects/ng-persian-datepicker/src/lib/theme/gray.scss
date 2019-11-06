@@ -1,0 +1,22 @@
+@import "mixin";
+
+@include datePickerTheme(
+  'theme-gray',
+  #556270,
+  #FFFFFF,
+  rgba(0, 0, 0, 0.2),
+  null,
+  #393939,
+  #FFFFFF,
+  #FFFFFF,
+  #556270,
+  #C44D58,
+  #FFFFFF,
+  #393939,
+  #CCCCCC,
+  #CCCCCC,
+  #444444,
+  #393939,
+  #CCCCCC,
+  #807F7F
+);

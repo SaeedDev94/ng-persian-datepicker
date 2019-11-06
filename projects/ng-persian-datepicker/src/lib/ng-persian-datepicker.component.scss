@@ -1,0 +1,153 @@
+@import "theme";
+
+.datepicker-outer-container {
+  direction: rtl;
+  display: inline-block;
+  vertical-align: top;
+  min-width: 200px;
+  font-size: 12px;
+  padding: 8px 3px;
+  user-select: none;
+  text-align: center;
+
+  &.hide {
+    display: none;
+  }
+
+  &.manual-position {
+    width: 100%;
+  }
+
+  .datepicker-inner-container {
+
+    .content-container {
+      margin-bottom: 8px;
+    }
+
+    .navigation-container {
+      .go-forward, .switch-view, .go-back {
+        display: inline-block;
+        vertical-align: top;
+        height: 24px;
+        cursor: pointer;
+      }
+
+      .go-forward, .go-back {
+        width: 15%;
+        position: relative;
+        svg {
+          width: 12px;
+          height: 12px;
+          position: absolute;
+          top: calc(50% - 6px);
+          right: calc(50% - 6px);
+        }
+      }
+
+      .switch-view {
+        width: 66%;
+        margin: 0 2%;
+        font-weight: bold;
+        span {
+          vertical-align: sub;
+        }
+      }
+    }
+
+    .days-container {
+      .day-col {
+        display: inline-block;
+        vertical-align: top;
+        width: (100% / 7);
+        padding: 3px 0;
+      }
+
+      .week-days {
+        .day-col {
+          font-weight: bold;
+        }
+      }
+
+      .month-days {
+        .day-col {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .three-col-per-row {
+      display: inline-block;
+      vertical-align: top;
+      width: (100% / 3);
+      padding: 9px 0;
+      margin: 1px 0;
+      cursor: pointer;
+    }
+
+    .time-container {
+      padding: 5px;
+      border-top-width: 1px;
+      border-top-style: solid;
+      direction: ltr;
+
+      .time-col {
+        display: inline-block;
+        vertical-align: top;
+        width: (100% / 2);
+        position: relative;
+        cursor: pointer;
+        div {
+          svg {
+            width: 12px;
+            height: 12px;
+          }
+          transition: all 100ms ease;
+        }
+        &.the-divider {
+          &:after {
+            content: ":";
+            position: absolute;
+            top: 33%;
+            right: 0;
+          }
+        }
+      }
+
+      &.include-second {
+        .time-col {
+          width: (100% / 3);
+        }
+
+        &.include-12-hour {
+          .time-col {
+            width: (100% / 4);
+          }
+        }
+      }
+
+      &.include-12-hour {
+        .time-col {
+          width: (100% / 3);
+        }
+      }
+    }
+
+    .the-toolbox {
+      text-align: right;
+      .the-item {
+        display: inline-block;
+        vertical-align: top;
+        min-width: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        padding: 3px 5px;
+        margin-left: 5px;
+        text-align: center;
+
+        &:last-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}

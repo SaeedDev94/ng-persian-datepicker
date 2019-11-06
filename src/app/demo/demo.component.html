@@ -1,0 +1,170 @@
+<div
+  class="container">
+  <div
+    class="row">
+    <div
+      class="col l6 m12 s12">
+      <div
+        class="check-boxes-container">
+        <p>Theme</p>
+        <label>
+          <input
+            type="radio"
+            name="theme"
+            class="with-gap"
+            [value]="'default'"
+            [(ngModel)]="config.ui.theme" />
+          <span>Default</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="theme"
+            class="with-gap"
+            [value]="'blue'"
+            [(ngModel)]="config.ui.theme" />
+          <span>Blue</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="theme"
+            class="with-gap"
+            [value]="'gray'"
+            [(ngModel)]="config.ui.theme" />
+          <span>Gray</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="theme"
+            class="with-gap"
+            [value]="'dark'"
+            [(ngModel)]="config.ui.theme" />
+          <span>Dark</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="theme"
+            class="with-gap"
+            [value]="'black'"
+            [(ngModel)]="config.ui.theme" />
+          <span>Black</span>
+        </label>
+      </div>
+      <div
+        class="check-boxes-container">
+        <p>View</p>
+        <label>
+          <input
+            type="checkbox"
+            [checked]="true"
+            [disabled]="true" />
+          <span>Day</span>
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            [checked]="config.ui.monthView"
+            [(ngModel)]="config.ui.monthView" />
+          <span>Month</span>
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            [checked]="config.ui.yearView"
+            [(ngModel)]="config.ui.yearView" />
+          <span>Year</span>
+        </label>
+      </div>
+      <div
+        class="switch">
+        <p>Visible</p>
+        <label>
+          <input
+            type="checkbox"
+            [value]="true"
+            [(ngModel)]="config.ui.isVisible" />
+          <span
+            class="lever"></span>
+        </label>
+      </div>
+      <div
+        class="switch">
+        <p>Hide after select date</p>
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="config.ui.hideAfterSelectDate" />
+          <span
+            class="lever"></span>
+        </label>
+      </div>
+      <div
+        class="switch">
+        <p>Hide on out side click</p>
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="config.ui.hideOnOutSideClick" />
+          <span
+            class="lever"></span>
+        </label>
+      </div>
+      <hr />
+      <div
+        class="switch">
+        <p>Time</p>
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="config.time.enable" />
+          <span
+            class="lever"></span>
+        </label>
+      </div>
+      <div
+        class="switch">
+        <p>Show second</p>
+        <label>
+          <input
+            type="checkbox"
+            [disabled]="!config.time.enable"
+            [(ngModel)]="config.time.showSecond" />
+          <span
+            class="lever"></span>
+        </label>
+      </div>
+      <div
+        class="switch">
+        <p>Meridian</p>
+        <label>
+          <input
+            type="checkbox"
+            [disabled]="!config.time.enable"
+            [(ngModel)]="config.time.meridian" />
+          <span
+            class="lever"></span>
+        </label>
+      </div>
+    </div>
+    <div
+      class="col offset-l2 l4 offset-m3 m6 offset-s2 s8">
+      <div
+        class="input-field">
+        <input
+          id="datepicker"
+          type="text" #datepickerInput />
+        <label
+          for="datepicker"></label>
+      </div>
+      <div
+        class="datepicker-container">
+        <ng-persian-datepicker
+          [input]="datepickerInput"
+          [config]="config"></ng-persian-datepicker>
+      </div>
+    </div>
+  </div>
+</div>

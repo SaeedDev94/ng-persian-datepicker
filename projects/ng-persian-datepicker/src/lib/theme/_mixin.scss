@@ -1,0 +1,102 @@
+@mixin datePickerTheme(
+  $themeName,
+  $backgroundColor,
+  $textColor,
+  $boxShadowColor,
+  $borderColor,
+  $theColHoverBackgroundColor,
+  $theColHoverTextColor,
+  $todayColBackgroundColor,
+  $todayColTextColor,
+  $selectedColBackgroundColor,
+  $selectedColTextColor,
+  $disabledColBackgroundColor,
+  $disabledColTextColor,
+  $otherMonthColTextColor,
+  $timePickerBackgroundColor,
+  $timePickerBorderTopColor,
+  $timePickerIconColor,
+  $timePickerHoverIconColor
+)
+{
+  .datepicker-outer-container {
+    &.#{$themeName} {
+      background: $backgroundColor;
+      color: $textColor;
+      @if $boxShadowColor {
+        box-shadow: 0 5px 10px $boxShadowColor;
+      }
+      @if $borderColor {
+        border: 1px solid $borderColor;
+      }
+
+      .datepicker-inner-container {
+
+        .navigation-container {
+          .go-forward, .go-back {
+            svg {
+              path {
+                fill: $textColor;
+              }
+            }
+          }
+        }
+
+        .dp-btn {
+
+          &:hover {
+            background: $theColHoverBackgroundColor!important;
+            color: $theColHoverTextColor!important;
+            svg {
+              path {
+                fill: $theColHoverTextColor!important;
+              }
+            }
+          }
+
+          &.today {
+            background: $todayColBackgroundColor;
+            color: $todayColTextColor;
+          }
+
+          &.selected {
+            background: $selectedColBackgroundColor;
+            color: $selectedColTextColor;
+          }
+
+          &.disabled {
+            background: $disabledColBackgroundColor!important;
+            color: $disabledColTextColor!important;
+            cursor: not-allowed!important;
+          }
+
+          &.other-month {
+            color: $otherMonthColTextColor;
+          }
+        }
+
+        .time-container {
+          background: $timePickerBackgroundColor;
+          border-top-color: $timePickerBorderTopColor;
+
+          .time-col {
+            div {
+              svg {
+                polygon {
+                  fill: $timePickerIconColor;
+                }
+              }
+              &:hover {
+                svg {
+                  polygon {
+                    fill: $timePickerHoverIconColor;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

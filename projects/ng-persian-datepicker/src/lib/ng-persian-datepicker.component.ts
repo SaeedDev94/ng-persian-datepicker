@@ -276,6 +276,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     }
     this.input.setAttribute('data-datepicker-id', this.id);
     this.inputEventClickListener = () => {
+      this.calcInputClientRect();
       this.config.ui.isVisible = true;
     };
     this.input.addEventListener('click', this.inputEventClickListener);

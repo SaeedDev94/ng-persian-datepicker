@@ -23,6 +23,8 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   constructor(
   ) {}
 
+  private id: string;
+  //
   private preventClose: boolean;
   private weekDays: Array<string>;
   //
@@ -63,6 +65,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   @ViewChild('container', {static: false}) container: ElementRef;
 
   ngOnInit(): void {
+    this.setId();
     moment.loadPersian({
       usePersianDigits: false,
       dialect: 'persian-modern'
@@ -100,7 +103,12 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   ngOnDestroy(): void {
     document.removeEventListener('click', this.documentEventClickListener);
     this.input.removeEventListener('click', this.inputEventClickListener);
+    this.input.removeEventListener('focus', this.inputEventClickListener);
     this.input.removeEventListener('input', this.inputEventInputListener);
+  }
+
+  setId(): void {
+    this.id = 'ng-persian-datepicker-' + Math.random().toString(36).substr(2, 9);
   }
 
   setConfig(): void {
@@ -266,17 +274,19 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     if (!this.input) {
       return;
     }
+    this.input.setAttribute('data-datepicker-id', this.id);
     this.inputEventClickListener = () => {
       this.config.ui.isVisible = true;
     };
     this.input.addEventListener('click', this.inputEventClickListener);
+    this.input.addEventListener('focus', this.inputEventClickListener);
   }
 
   setHideOnOutSideClick(): void {
     this.documentEventClickListener = (event) => {
       if (
         !this.config.ui.hideOnOutSideClick ||
-        (this.input && (event.target === this.input)) ||
+        (this.input && (event.target.getAttribute('data-datepicker-id') === this.id)) ||
         this.container.nativeElement.attributes[0].name === event.target.attributes[0].name
       ) {
         return;

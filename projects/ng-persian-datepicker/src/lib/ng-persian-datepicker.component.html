@@ -5,8 +5,9 @@
   [class.theme-gray]="isTheme('gray')"
   [class.theme-dark]="isTheme('dark')"
   [class.theme-black]="isTheme('black')"
-  [class.manual-position]="!config.ui.autoPosition"
-  [class.hide]="!config.ui.isVisible"
+  [class.manual-position]="!uiAutoPosition"
+  [class.hide]="!uiIsVisible"
+  [attr.data-datepicker-id]="getId()"
   [ngStyle]="containerStyle()" #container>
   <div
     class="datepicker-inner-container">
@@ -105,10 +106,10 @@
       </div>
     </div>
     <div
-      *ngIf="config.time.enable"
+      *ngIf="timeEnable"
       class="content-container time-container"
-      [class.include-second]="config.time.showSecond"
-      [class.include-12-hour]="config.time.meridian">
+      [class.include-second]="timeShowSecond"
+      [class.include-12-hour]="timeMeridian">
       <div
         class="time-col hour-col the-divider">
         <div
@@ -141,7 +142,7 @@
       </div>
       <div
         class="time-col minute-col"
-        [class.the-divider]="config.time.showSecond">
+        [class.the-divider]="timeShowSecond">
         <div
           (click)="increaseMinute()"
           (mousedown)="setIncreaseMinuteInterval()"
@@ -171,7 +172,7 @@
         </div>
       </div>
       <div
-        *ngIf="config.time.showSecond"
+        *ngIf="timeShowSecond"
         class="time-col second-col">
         <div
           (click)="increaseSecond()"
@@ -202,7 +203,7 @@
         </div>
       </div>
       <div
-        *ngIf="config.time.meridian"
+        *ngIf="timeMeridian"
         class="time-col time-in-12-hour-format-col">
         <div
           (click)="toggleAmPm()">

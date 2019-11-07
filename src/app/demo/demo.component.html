@@ -80,18 +80,6 @@
       </div>
       <div
         class="switch">
-        <p>Visible</p>
-        <label>
-          <input
-            type="checkbox"
-            [value]="true"
-            [(ngModel)]="config.ui.isVisible" />
-          <span
-            class="lever"></span>
-        </label>
-      </div>
-      <div
-        class="switch">
         <p>Hide after select date</p>
         <label>
           <input
@@ -112,7 +100,6 @@
             class="lever"></span>
         </label>
       </div>
-      <hr />
       <div
         class="switch">
         <p>Time</p>
@@ -163,7 +150,16 @@
         class="datepicker-container">
         <ng-persian-datepicker
           [input]="datepickerInput"
-          [config]="config"></ng-persian-datepicker>
+          [dateOnSelect]="config.date.onSelect"
+          [uiTheme]="config.ui.theme"
+          [uiHideAfterSelectDate]="config.ui.hideAfterSelectDate"
+          [uiHideOnOutSideClick]="config.ui.hideOnOutSideClick"
+          [uiPositionOffset]="config.ui.positionOffset"
+          [uiYearView]="config.ui.yearView"
+          [uiMonthView]="config.ui.monthView"
+          [timeEnable]="config.time.enable"
+          [timeShowSecond]="config.time.showSecond"
+          [timeMeridian]="config.time.meridian"></ng-persian-datepicker>
       </div>
     </div>
   </div>

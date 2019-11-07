@@ -1,13 +1,15 @@
 import moment from 'moment-jalaali';
 import { ConfigModel } from '../../../projects/ng-persian-datepicker/src/lib/model/config.model';
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-demo',
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.scss']
 })
-export class DemoComponent implements OnInit {
+export class DemoComponent implements OnInit, AfterContentInit {
+
+  @ViewChild('datepickerInput', {static: false}) datepickerInput: ElementRef;
 
   constructor(
   ) {}
@@ -35,6 +37,12 @@ export class DemoComponent implements OnInit {
   };
 
   ngOnInit() {
+  }
+
+  ngAfterContentInit() {
+    setTimeout(() => {
+      this.datepickerInput.nativeElement.focus();
+    }, 0);
   }
 
 }

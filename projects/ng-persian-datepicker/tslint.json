@@ -12,6 +12,7 @@
       "element",
       "ng",
       "kebab-case"
-    ]
+    ],
+    "member-ordering": false
   }
 }

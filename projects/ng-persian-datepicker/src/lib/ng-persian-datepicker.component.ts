@@ -1,6 +1,4 @@
 import moment from 'moment-jalaali';
-import { ConfigModel } from './model/config.model';
-import { InitConfig } from './config/init.config';
 import {
   AfterContentInit,
   Component,
@@ -44,23 +42,62 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   private minute = 0;
   private second = 0;
   //
+  private fastTimeChangeTimeOut = 345;
   private fastTimeChangeInterval = 123;
+  //
+  private increaseHourTimeout: any;
   private increaseHourInterval: any;
+  //
+  private decreaseHourTimeout: any;
   private decreaseHourInterval: any;
+  //
+  private increaseMinuteTimeout: any;
   private increaseMinuteInterval: any;
+  //
+  private decreaseMinuteTimeout: any;
   private decreaseMinuteInterval: any;
+  //
+  private increaseSecondTimeout: any;
   private increaseSecondInterval: any;
+  //
+  private decreaseSecondTimeout: any;
   private decreaseSecondInterval: any;
   //
-  private documentEventClickListener: any;
-  private inputEventClickListener: any;
+  private wasInsideClick = false;
+  private inputEventFocusListener: any;
   private inputEventInputListener: any;
   //
-  private inputClientRect: ClientRect;
-  private afterContentInitDone = false;
+  private inputWidth = 0;
+  private inputHeight = 0;
+  private inputTop = 0;
+  private inputLeft = 0;
   //
+  private afterContentInitDone = false;
+  // HTMLInput
   @Input() input: HTMLInputElement;
-  @Input() config: ConfigModel = {};
+  // date
+  @Input() dateValue = '';
+  @Input() dateInitValue = true;
+  @Input() dateIsGregorian = false;
+  @Input() dateFormat = 'jYYYY-jMM-jDD HH:mm:ss';
+  @Input() dateGregorianFormat = 'YYYY-MM-DD HH:mm:ss';
+  @Input() dateMin: moment.Moment = null;
+  @Input() dateMax: moment.Moment = null;
+  @Input() dateOnSelect: (shamsiDate: string, gregorianDate: string, date: moment.Moment) => void = () => {};
+  // time
+  @Input() timeEnable = true;
+  @Input() timeShowSecond = true;
+  @Input() timeMeridian = false;
+  // ui
+  @Input() uiTheme = 'default';
+  @Input() uiIsVisible = false;
+  @Input() uiHideOnOutSideClick = true;
+  @Input() uiHideAfterSelectDate = true;
+  @Input() uiYearView = true;
+  @Input() uiMonthView = true;
+  @Input() uiAutoPosition = true;
+  @Input() uiPositionOffset: Array<number> = [0, 0];
+  @Input() uiContainerWidth = '';
   //
   @ViewChild('container', {static: false}) container: ElementRef;
 
@@ -81,9 +118,8 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   }
 
   ngAfterContentInit(): void {
-    this.setConfig();
     this.setViewModes();
-    this.calcInputClientRect();
+    this.calcInputDetails();
     //
     this.setToday();
     this.setDateInitValue();
@@ -94,16 +130,13 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     //
     this.setInputValue();
     this.lockInputValue();
-    this.setShowOnInputClick();
+    this.setShowOnInputFocus();
     //
-    this.setHideOnOutSideClick();
     this.afterContentInitDone = true;
   }
 
   ngOnDestroy(): void {
-    document.removeEventListener('click', this.documentEventClickListener);
-    this.input.removeEventListener('click', this.inputEventClickListener);
-    this.input.removeEventListener('focus', this.inputEventClickListener);
+    this.input.removeEventListener('focus', this.inputEventFocusListener);
     this.input.removeEventListener('input', this.inputEventInputListener);
   }
 
@@ -111,23 +144,23 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     this.id = 'ng-persian-datepicker-' + Math.random().toString(36).substr(2, 9);
   }
 
-  setConfig(): void {
-    for (const key in InitConfig) {
-      if (InitConfig.hasOwnProperty(key)) {
-        this.config[key] = Object.assign(InitConfig[key], this.config[key]);
-      }
-    }
+  getId(): string {
+    return this.id;
   }
 
   @HostListener('window:resize')
-  calcInputClientRect() {
+  calcInputDetails() {
     if (this.input) {
-      this.inputClientRect = this.input.getBoundingClientRect();
+      this.inputWidth = this.input.offsetWidth;
+      this.inputHeight = this.input.offsetHeight;
+      const rect = this.input.getBoundingClientRect();
+      this.inputTop = rect.top;
+      this.inputLeft = rect.left;
     }
   }
 
   containerStyle(): object {
-    if (!this.config.ui.autoPosition) {
+    if (!this.uiAutoPosition) {
       return {};
     }
     const containerWidth = {
@@ -135,34 +168,34 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     };
     const containerPosition = {
       position: 'absolute',
-      top: String(this.config.ui.positionOffset[0]) + 'px',
-      left: String(this.config.ui.positionOffset[0]) + 'px',
+      top: String(this.uiPositionOffset[0]) + 'px',
+      left: String(this.uiPositionOffset[0]) + 'px',
     };
-    if (this.config.ui.containerWidth) {
-      containerWidth.width = this.config.ui.containerWidth;
+    if (this.uiContainerWidth) {
+      containerWidth.width = this.uiContainerWidth;
     } else if (this.input) {
-      containerWidth.width = String(this.inputClientRect.width) + 'px';
-      containerPosition.top = String(this.inputClientRect.top + this.inputClientRect.height + this.config.ui.positionOffset[0]) + 'px';
-      containerPosition.left = String(this.inputClientRect.left + this.config.ui.positionOffset[1]) + 'px';
+      containerWidth.width = String(this.inputWidth) + 'px';
+      containerPosition.top = String(this.inputTop + this.inputHeight + this.uiPositionOffset[0]) + 'px';
+      containerPosition.left = String(this.inputLeft + this.uiPositionOffset[1]) + 'px';
     }
     return Object.assign(containerWidth, containerPosition);
   }
 
   setDateInitValue(): void {
-    if (this.config.date.value || !this.config.date.initValue) {
+    if (this.dateValue || !this.dateInitValue) {
       return;
     }
-    this.config.date.value = this.today.format(this.config.date.format);
+    this.dateValue = this.today.format(this.dateFormat);
   }
 
   setSelectedDate(): void {
-    if (!this.config.date.value) {
+    if (!this.dateValue) {
       return;
     }
-    if (this.config.date.isGregorian) {
-      this.config.date.value = moment(this.config.date.value, this.config.date.gregorianFormat).format(this.config.date.format);
+    if (this.dateIsGregorian) {
+      this.dateValue = moment(this.dateValue, this.dateGregorianFormat).format(this.dateFormat);
     }
-    this.selectedDate = moment(this.config.date.value, this.config.date.format);
+    this.selectedDate = moment(this.dateValue, this.dateFormat);
   }
 
   setTime(): void {
@@ -178,7 +211,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   }
 
   setViewDate(): void {
-    if (!this.config.date.value) {
+    if (!this.dateValue) {
       this.viewDate = moment(this.today);
     } else {
       this.viewDate = moment(this.selectedDate);
@@ -257,7 +290,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     if (!this.input) {
       return;
     }
-    this.input.value = this.config.date.value;
+    this.input.value = this.dateValue;
   }
 
   lockInputValue(): void {
@@ -265,44 +298,50 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       return;
     }
     this.inputEventInputListener = () => {
-      this.input.value = this.config.date.value;
+      this.input.value = this.dateValue;
     };
     this.input.addEventListener('input', this.inputEventInputListener);
   }
 
-  setShowOnInputClick(): void {
+  setShowOnInputFocus(): void {
     if (!this.input) {
       return;
     }
     this.input.setAttribute('data-datepicker-id', this.id);
-    this.inputEventClickListener = () => {
-      this.calcInputClientRect();
-      this.config.ui.isVisible = true;
+    this.inputEventFocusListener = () => {
+      this.calcInputDetails();
+      this.uiIsVisible = true;
     };
-    this.input.addEventListener('click', this.inputEventClickListener);
-    this.input.addEventListener('focus', this.inputEventClickListener);
+    this.input.addEventListener('focus', this.inputEventFocusListener);
   }
 
-  setHideOnOutSideClick(): void {
-    this.documentEventClickListener = (event) => {
-      if (
-        !this.config.ui.hideOnOutSideClick ||
-        (this.input && (event.target.getAttribute('data-datepicker-id') === this.id)) ||
-        this.container.nativeElement.attributes[0].name === event.target.attributes[0].name
-      ) {
-        return;
-      }
-      this.config.ui.isVisible = false;
-    };
-    document.addEventListener('click', this.documentEventClickListener);
+  @HostListener('click')
+  onInsideClick(): void {
+    this.wasInsideClick = true;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onOutsideClick(event: any): void {
+    const wasInsideClick = this.wasInsideClick;
+    this.wasInsideClick = false;
+    if (wasInsideClick) {
+      return;
+    }
+    if (
+      !this.uiHideOnOutSideClick ||
+      (this.input && (event.target.getAttribute('data-datepicker-id') === this.id))
+    ) {
+      return;
+    }
+    this.uiIsVisible = false;
   }
 
   checkViewModes(): void {
     let viewModesCount = 1;
-    if (this.config.ui.yearView) {
+    if (this.uiYearView) {
       viewModesCount++;
     }
-    if (this.config.ui.monthView) {
+    if (this.uiMonthView) {
       viewModesCount++;
     }
     if (viewModesCount !== this.viewModes.length) {
@@ -312,10 +351,10 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
 
   setViewModes(): void {
     this.viewModes = ['day'];
-    if (this.config.ui.monthView) {
+    if (this.uiMonthView) {
       this.viewModes.push('month');
     }
-    if (this.config.ui.yearView) {
+    if (this.uiYearView) {
       this.viewModes.push('year');
     }
     if (this.viewModes.length <= this.currentViewMode) {
@@ -403,7 +442,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   }
 
   onChangeSelectedDate(): void {
-    if (this.config.time.enable) {
+    if (this.timeEnable) {
       this.selectedDate.hour(this.hour);
       this.selectedDate.minute(this.minute);
       this.selectedDate.second(this.second);
@@ -413,19 +452,19 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       this.selectedDate.minute(this.today.minute());
       this.selectedDate.second(this.today.second());
     }
-    this.config.date.value = this.selectedDate.format(this.config.date.format);
+    this.dateValue = this.selectedDate.format(this.dateFormat);
     if (this.input) {
-      this.input.value = this.config.date.value;
+      this.input.value = this.dateValue;
     }
-    if (this.config.ui.hideAfterSelectDate && !this.preventClose) {
-      this.config.ui.isVisible = false;
+    if (this.uiHideAfterSelectDate && !this.preventClose) {
+      this.uiIsVisible = false;
     } else {
       this.preventClose = false;
     }
     this.setViewDate();
-    this.config.date.onSelect(
-      String(this.selectedDate.format(this.config.date.format)),
-      String(this.selectedDate.format(this.config.date.gregorianFormat)),
+    this.dateOnSelect(
+      String(this.selectedDate.format(this.dateFormat)),
+      String(this.selectedDate.format(this.dateGregorianFormat)),
       moment(this.selectedDate)
     );
   }
@@ -513,7 +552,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   }
 
   isTheme(name: string): boolean {
-    return this.config.ui.theme === name;
+    return this.uiTheme === name;
   }
 
   isYearOfToday(year: moment.Moment): boolean {
@@ -531,7 +570,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
 
   getHourText(): string {
     const hour = this.hour;
-    if (!this.config.time.meridian) {
+    if (!this.timeMeridian) {
       return hour.toString().padStart(2, '0');
     }
     if (hour === 0) {
@@ -627,81 +666,103 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   }
 
   setIncreaseHourInterval(): void {
-    this.increaseHourInterval = setInterval(() => {
-      this.increaseHour();
-    }, this.fastTimeChangeInterval);
+    this.increaseHourTimeout = setTimeout(() => {
+      this.increaseHourInterval = setInterval(() => {
+        this.increaseHour();
+      }, this.fastTimeChangeInterval);
+    }, this.fastTimeChangeTimeOut);
   }
 
   clearIncreaseHourInterval(): void {
+    clearTimeout(this.increaseHourTimeout);
     clearInterval(this.increaseHourInterval);
   }
 
   setDecreaseHourInterval(): void {
-    this.decreaseHourInterval = setInterval(() => {
-      this.decreaseHour();
-    }, this.fastTimeChangeInterval);
+    this.decreaseHourTimeout = setTimeout(() => {
+      this.decreaseHourInterval = setInterval(() => {
+        this.decreaseHour();
+      }, this.fastTimeChangeInterval);
+    }, this.fastTimeChangeTimeOut);
   }
 
   clearDecreaseHourInterval(): void {
+    clearTimeout(this.decreaseHourTimeout);
     clearInterval(this.decreaseHourInterval);
   }
 
   setIncreaseMinuteInterval(): void {
-    this.increaseMinuteInterval = setInterval(() => {
-      this.increaseMinute();
-    }, this.fastTimeChangeInterval);
+    this.increaseMinuteTimeout = setTimeout(() => {
+      this.increaseMinuteInterval = setInterval(() => {
+        this.increaseMinute();
+      }, this.fastTimeChangeInterval);
+    }, this.fastTimeChangeTimeOut);
   }
 
   clearIncreaseMinuteInterval(): void {
+    clearTimeout(this.increaseMinuteTimeout);
     clearInterval(this.increaseMinuteInterval);
   }
 
   setDecreaseMinuteInterval(): void {
-    this.decreaseMinuteInterval = setInterval(() => {
-      this.decreaseMinute();
-    }, this.fastTimeChangeInterval);
+    this.decreaseMinuteTimeout = setTimeout(() => {
+      this.decreaseMinuteInterval = setInterval(() => {
+        this.decreaseMinute();
+      }, this.fastTimeChangeInterval);
+    }, this.fastTimeChangeTimeOut);
   }
 
   clearDecreaseMinuteInterval(): void {
+    clearTimeout(this.decreaseMinuteTimeout);
     clearInterval(this.decreaseMinuteInterval);
   }
 
   setIncreaseSecondInterval(): void {
-    this.increaseSecondInterval = setInterval(() => {
-      this.increaseSecond();
-    }, this.fastTimeChangeInterval);
+    this.increaseSecondTimeout = setTimeout(() => {
+      this.increaseSecondInterval = setInterval(() => {
+        this.increaseSecond();
+      }, this.fastTimeChangeInterval);
+    }, this.fastTimeChangeTimeOut);
   }
 
   clearIncreaseSecondInterval(): void {
+    clearTimeout(this.increaseSecondTimeout);
     clearInterval(this.increaseSecondInterval);
   }
 
   setDecreaseSecondInterval(): void {
-    this.decreaseSecondInterval = setInterval(() => {
-      this.decreaseSecond();
-    }, this.fastTimeChangeInterval);
+    this.decreaseSecondTimeout = setTimeout(() => {
+      this.decreaseSecondInterval = setInterval(() => {
+        this.decreaseSecond();
+      }, this.fastTimeChangeInterval);
+    }, this.fastTimeChangeTimeOut);
   }
 
   clearDecreaseSecondInterval(): void {
+    clearTimeout(this.decreaseSecondTimeout);
     clearInterval(this.decreaseSecondInterval);
   }
 
   isDateInRange(date: moment.Moment, isYear: boolean, isMonth: boolean): boolean {
     const result: Array<boolean> = [];
-    const min = moment(this.config.date.min);
-    const max = moment(this.config.date.max);
-    if (isYear) {
-      min.startOf('jYear');
-      max.startOf('jYear');
-    }
-    if (isMonth) {
-      min.startOf('jMonth');
-      max.startOf('jMonth');
-    }
-    if (this.config.date.min) {
+    if (this.dateMin) {
+      const min = moment(this.dateMin);
+      if (isYear) {
+        min.startOf('jYear');
+      }
+      if (isMonth) {
+        min.startOf('jMonth');
+      }
       result.push(min.valueOf() <= date.valueOf());
     }
-    if (this.config.date.max) {
+    if (this.dateMax) {
+      const max = moment(this.dateMax);
+      if (isYear) {
+        max.startOf('jYear');
+      }
+      if (isMonth) {
+        max.startOf('jMonth');
+      }
       result.push(max.valueOf() >= date.valueOf());
     }
     return !(result.indexOf(false) !== -1);

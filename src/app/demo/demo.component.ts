@@ -1,12 +1,12 @@
 import { ConfigModel } from '../../../projects/ng-persian-datepicker/src/lib/model/config.model';
-import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-demo',
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.scss']
 })
-export class DemoComponent implements OnInit, AfterContentInit {
+export class DemoComponent implements OnInit {
 
   @ViewChild('datepickerInput', {static: false}) datepickerInput: ElementRef;
 
@@ -36,12 +36,6 @@ export class DemoComponent implements OnInit, AfterContentInit {
   };
 
   ngOnInit() {
-  }
-
-  ngAfterContentInit() {
-    setTimeout(() => {
-      this.datepickerInput.nativeElement.focus();
-    }, 0);
   }
 
 }

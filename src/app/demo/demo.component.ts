@@ -24,7 +24,7 @@ export class DemoComponent implements OnInit {
       theme: 'default',
       isVisible: true,
       hideAfterSelectDate: false,
-      hideOnOutSideClick: false,
+      hideOnOutsideClick: false,
       yearView: true,
       monthView: true
     },

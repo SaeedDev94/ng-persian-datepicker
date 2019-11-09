@@ -87,7 +87,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   // ui
   @Input() uiTheme = 'default';
   @Input() uiIsVisible = false;
-  @Input() uiHideOnOutSideClick = true;
+  @Input() uiHideOnOutsideClick = true;
   @Input() uiHideAfterSelectDate = true;
   @Input() uiYearView = true;
   @Input() uiMonthView = true;
@@ -325,7 +325,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       return;
     }
     if (
-      !this.uiHideOnOutSideClick ||
+      !this.uiHideOnOutsideClick ||
       (this.input && (event.target.getAttribute('data-datepicker-id') === this.id))
     ) {
       return;

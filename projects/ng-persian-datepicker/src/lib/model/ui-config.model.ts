@@ -13,7 +13,7 @@ export interface UiConfigModel {
   /**
    * @description if set to true datepicker will hide on out side click
    */
-  hideOnOutSideClick?: boolean;
+  hideOnOutsideClick?: boolean;
 
   /**
    * @description hide datepicker after date select

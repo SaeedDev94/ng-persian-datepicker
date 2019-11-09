@@ -25,7 +25,6 @@ export class DemoComponent implements OnInit, AfterContentInit {
       isVisible: true,
       hideAfterSelectDate: false,
       hideOnOutSideClick: false,
-      positionOffset: [10, 0],
       yearView: true,
       monthView: true
     },

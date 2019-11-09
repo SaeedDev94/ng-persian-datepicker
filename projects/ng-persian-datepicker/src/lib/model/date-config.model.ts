@@ -5,7 +5,7 @@ export interface DateConfigModel {
   /**
    * @description value of date
    */
-  value?: string;
+  value?: string | number;
 
   /**
    * @description if no value provided use today as init value

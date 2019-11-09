@@ -16,6 +16,7 @@ export class DemoComponent implements OnInit, AfterContentInit {
 
   config: ConfigModel = {
     date: {
+      value: new Date().valueOf(),
       onSelect: (shamsiDate: string, gregorianDate: string, date: moment.Moment) => {
         console.log(shamsiDate, gregorianDate, date);
       }

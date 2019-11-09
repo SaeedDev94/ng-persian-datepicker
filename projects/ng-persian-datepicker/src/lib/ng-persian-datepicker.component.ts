@@ -76,7 +76,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   // HTMLInput
   @Input() input: HTMLInputElement;
   // date
-  @Input() dateValue = '';
+  @Input() dateValue: string | number = '';
   @Input() dateInitValue = true;
   @Input() dateIsGregorian = false;
   @Input() dateFormat = 'jYYYY-jMM-jDD HH:mm:ss';
@@ -185,17 +185,21 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     if (this.dateValue || !this.dateInitValue) {
       return;
     }
-    this.dateValue = this.today.format(this.dateFormat);
+    this.dateValue = this.today.valueOf();
   }
 
   setSelectedDate(): void {
     if (!this.dateValue) {
       return;
     }
-    if (this.dateIsGregorian) {
-      this.dateValue = moment(this.dateValue, this.dateGregorianFormat).format(this.dateFormat);
+    if (typeof this.dateValue === 'string') {
+      if (this.dateIsGregorian) {
+        this.dateValue = moment((this.dateValue as string), this.dateGregorianFormat).valueOf();
+      } else {
+        this.dateValue = moment((this.dateValue as string), this.dateFormat).valueOf();
+      }
     }
-    this.selectedDate = moment(this.dateValue, this.dateFormat);
+    this.selectedDate = moment((this.dateValue as number));
   }
 
   setTime(): void {
@@ -290,7 +294,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     if (!this.input) {
       return;
     }
-    this.input.value = this.dateValue;
+    this.input.value = moment((this.dateValue as number)).format(this.dateFormat);
   }
 
   lockInputValue(): void {
@@ -298,7 +302,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       return;
     }
     this.inputEventInputListener = () => {
-      this.input.value = this.dateValue;
+      this.setInputValue();
     };
     this.input.addEventListener('input', this.inputEventInputListener);
   }
@@ -452,10 +456,8 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       this.selectedDate.minute(this.today.minute());
       this.selectedDate.second(this.today.second());
     }
-    this.dateValue = this.selectedDate.format(this.dateFormat);
-    if (this.input) {
-      this.input.value = this.dateValue;
-    }
+    this.dateValue = this.selectedDate.valueOf();
+    this.setInputValue();
     if (this.uiHideAfterSelectDate && !this.preventClose) {
       this.uiIsVisible = false;
     } else {

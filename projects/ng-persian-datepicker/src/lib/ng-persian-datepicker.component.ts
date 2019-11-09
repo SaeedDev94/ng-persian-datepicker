@@ -32,11 +32,11 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   private today: moment.Moment;
   private selectedDate: moment.Moment;
   private viewDate: moment.Moment;
-  private years: Array<moment.Moment> = [];
-  private months: Array<moment.Moment> = [];
-  private prevMonthDays: Array<moment.Moment> = [];
-  private currentMonthDays: Array<moment.Moment> = [];
-  private nextMonthDays: Array<moment.Moment> = [];
+  private years: Array<Array<number>> = [];
+  private months: Array<Array<number>> = [];
+  private prevMonthDays: Array<Array<number>> = [];
+  private currentMonthDays: Array<Array<number>> = [];
+  private nextMonthDays: Array<Array<number>> = [];
   //
   private hour = 0;
   private minute = 0;
@@ -240,23 +240,23 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     const prevMonthDays = moment.jDaysInMonth(prevMonth.jYear(), prevMonth.jMonth());
     const nextMonthDays = moment.jDaysInMonth(nextMonth.jYear(), nextMonth.jMonth());
     for (let i = 0 ; i < 12 ; i++) {
-      this.years.push(moment(years));
+      this.years.push([years.valueOf(), years.jYear()]);
       years.add(1, 'jYear');
     }
     for (let i = 0 ; i < 12 ; i++) {
-      this.months.push(moment(months));
+      this.months.push([months.valueOf(), months.jYear(), months.jMonth()]);
       months.add(1, 'jMonth');
     }
     for (let i = 0 ; i < prevMonthDays ; i++) {
-      this.prevMonthDays.push(moment(prevMonth));
+      this.prevMonthDays.push([prevMonth.valueOf(), prevMonth.jYear(), prevMonth.jMonth(), prevMonth.jDate()]);
       prevMonth.add(1, 'day');
     }
     for (let i = 0 ; i < currentMonthDays ; i++) {
-      this.currentMonthDays.push(moment(currentMonth));
+      this.currentMonthDays.push([currentMonth.valueOf(), currentMonth.jYear(), currentMonth.jMonth(), currentMonth.jDate()]);
       currentMonth.add(1, 'day');
     }
     for (let i = 0 ; i < nextMonthDays ; i++) {
-      this.nextMonthDays.push(moment(nextMonth));
+      this.nextMonthDays.push([nextMonth.valueOf(), nextMonth.jYear(), nextMonth.jMonth(), nextMonth.jDate()]);
       nextMonth.add(1, 'day');
     }
   }
@@ -274,11 +274,11 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     return this.weekDays;
   }
 
-  getYears(): Array<moment.Moment> {
+  getYears(): Array<Array<number>> {
     return this.years;
   }
 
-  getMonths(): Array<moment.Moment> {
+  getMonths(): Array<Array<number>> {
     return this.months;
   }
 
@@ -362,7 +362,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     }
   }
 
-  getDayOfMonth(row: number, col: number): moment.Moment {
+  getDayOfMonth(row: number, col: number): Array<number> {
     const fromPrevMonth = (this.viewDate.day() === 6) ? 0 : (this.viewDate.day() + 1);
     let index = ((row * 7) + col) - fromPrevMonth;
     if (index < 0) {
@@ -377,23 +377,23 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
 
   isDayDisabled(row: number, col: number): boolean {
     const day = this.getDayOfMonth(row, col);
-    return !this.isDateInRange(day, false, false);
+    return !this.isDateInRange(day[0], false, false);
   }
 
   isDayOfToday(row: number, col: number): boolean {
     const day = this.getDayOfMonth(row, col);
     return (
-      day.jYear() === this.today.jYear() &&
-      day.jMonth() === this.today.jMonth() &&
-      day.jDate() === this.today.jDate()
+      day[1] === this.today.jYear() &&
+      day[2] === this.today.jMonth() &&
+      day[3] === this.today.jDate()
     );
   }
 
   isInCurrentMonth(row: number, col: number): boolean {
     const day = this.getDayOfMonth(row, col);
     return (
-      day.jYear() === this.viewDate.jYear() &&
-      day.jMonth() === this.viewDate.jMonth()
+      day[1] === this.viewDate.jYear() &&
+      day[2] === this.viewDate.jMonth()
     );
   }
 
@@ -403,37 +403,37 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     }
     const day = this.getDayOfMonth(row, col);
     return (
-      day.jYear() === this.selectedDate.jYear() &&
-      day.jMonth() === this.selectedDate.jMonth() &&
-      day.jDate() === this.selectedDate.jDate()
+      day[1] === this.selectedDate.jYear() &&
+      day[2] === this.selectedDate.jMonth() &&
+      day[3] === this.selectedDate.jDate()
     );
   }
 
-  isMonthOfSelectedDate(month: moment.Moment): boolean {
+  isMonthOfSelectedDate(month: Array<number>): boolean {
     if (!this.selectedDate) {
       return false;
     }
     return (
-      month.jYear() === this.selectedDate.jYear() &&
-      month.jMonth() === this.selectedDate.jMonth()
+      month[1] === this.selectedDate.jYear() &&
+      month[2] === this.selectedDate.jMonth()
     );
   }
 
-  isYearOfSelectedDate(month: moment.Moment): boolean {
+  isYearOfSelectedDate(year: Array<number>): boolean {
     if (!this.selectedDate) {
       return false;
     }
     return (
-      month.jYear() === this.selectedDate.jYear()
+      year[1] === this.selectedDate.jYear()
     );
   }
 
   changeDate(row: number, col: number): void {
-    const date = this.getDayOfMonth(row, col);
-    if (!this.isDateInRange(date, false, false)) {
+    const day = this.getDayOfMonth(row, col);
+    if (!this.isDateInRange(day[0], false, false)) {
       return;
     }
-    this.changeSelectedDate(date);
+    this.changeSelectedDate(moment(day[0]));
   }
 
   changeSelectedDate(date: moment.Moment): void {
@@ -529,11 +529,11 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     this.currentViewMode++;
   }
 
-  yearClick(date: moment.Moment): void {
-    if (!this.isDateInRange(date, true, false)) {
+  yearClick(year: Array<number>): void {
+    if (!this.isDateInRange(year[0], true, false)) {
       return;
     }
-    this.viewDate = moment(date);
+    this.viewDate = moment(year[0]);
     this.onChangeViewDate();
     let viewModeIndex = this.viewModes.indexOf('month');
     if (viewModeIndex === -1) {
@@ -542,11 +542,11 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     this.currentViewMode = viewModeIndex;
   }
 
-  monthClick(date: moment.Moment): void {
-    if (!this.isDateInRange(date, false, true)) {
+  monthClick(month: Array<number>): void {
+    if (!this.isDateInRange(month[0], false, true)) {
       return;
     }
-    this.viewDate = moment(date);
+    this.viewDate = moment(month[0]);
     this.onChangeViewDate();
     this.currentViewMode = this.viewModes.indexOf('day');
   }
@@ -555,16 +555,16 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     return this.uiTheme === name;
   }
 
-  isYearOfToday(year: moment.Moment): boolean {
+  isYearOfToday(year: Array<number>): boolean {
     return (
-      this.today.jYear() === year.jYear()
+      this.today.jYear() === year[1]
     );
   }
 
-  isMonthOfToday(month: moment.Moment): boolean {
+  isMonthOfToday(month: Array<number>): boolean {
     return (
-      this.today.jYear() === month.jYear() &&
-      this.today.jMonth() === month.jMonth()
+      this.today.jYear() === month[1] &&
+      this.today.jMonth() === month[2]
     );
   }
 
@@ -743,7 +743,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     clearInterval(this.decreaseSecondInterval);
   }
 
-  isDateInRange(date: moment.Moment, isYear: boolean, isMonth: boolean): boolean {
+  isDateInRange(date: number, isYear: boolean, isMonth: boolean): boolean {
     const result: Array<boolean> = [];
     if (this.dateMin) {
       const min = moment(this.dateMin);
@@ -753,7 +753,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       if (isMonth) {
         min.startOf('jMonth');
       }
-      result.push(min.valueOf() <= date.valueOf());
+      result.push(min.valueOf() <= date);
     }
     if (this.dateMax) {
       const max = moment(this.dateMax);
@@ -763,7 +763,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       if (isMonth) {
         max.startOf('jMonth');
       }
-      result.push(max.valueOf() >= date.valueOf());
+      result.push(max.valueOf() >= date);
     }
     return !(result.indexOf(false) !== -1);
   }

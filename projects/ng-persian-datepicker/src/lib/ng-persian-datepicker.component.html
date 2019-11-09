@@ -68,7 +68,7 @@
             [class.disabled]="isDayDisabled(row, col)"
             (click)="changeDate(row, col)"
             *ngFor="let col of [0, 1, 2, 3, 4, 5, 6]">
-            <span>{{ getDayOfMonth(row, col).jDate() }}</span>
+            <span>{{ getDayOfMonth(row, col)[3] }}</span>
           </div>
         </ng-container>
       </div>
@@ -82,10 +82,10 @@
           class="month-col three-col-per-row dp-btn"
           [class.today]="isMonthOfToday(month)"
           [class.selected]="isMonthOfSelectedDate(month)"
-          [class.disabled]="!isDateInRange(month, false, true)"
+          [class.disabled]="!isDateInRange(month[0], false, true)"
           (click)="monthClick(month)"
           *ngFor="let month of getMonths()">
-          <span>{{ month.format('jMMMM') }}</span>
+          <span>{{ month[2] | monthText }}</span>
         </div>
       </div>
     </div>
@@ -98,10 +98,10 @@
           class="year-col three-col-per-row dp-btn"
           [class.today]="isYearOfToday(year)"
           [class.selected]="isYearOfSelectedDate(year)"
-          [class.disabled]="!isDateInRange(year, true, false)"
+          [class.disabled]="!isDateInRange(year[0], true, false)"
           (click)="yearClick(year)"
           *ngFor="let year of getYears()">
-          <span>{{ year.jYear() }}</span>
+          <span>{{ year[1] }}</span>
         </div>
       </div>
     </div>

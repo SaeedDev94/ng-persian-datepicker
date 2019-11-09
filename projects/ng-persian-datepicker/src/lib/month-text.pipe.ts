@@ -10,7 +10,7 @@ export class MonthTextPipe implements PipeTransform {
     'اردیبهشت',
     'خرداد',
     'تیر',
-    'اردیبهشت',
+    'مرداد',
     'شهریور',
     'مهر',
     'آبان',

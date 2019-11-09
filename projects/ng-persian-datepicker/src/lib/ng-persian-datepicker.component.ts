@@ -95,7 +95,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   @Input() uiHideAfterSelectDate = true;
   @Input() uiYearView = true;
   @Input() uiMonthView = true;
-  @Input() uiAutoPosition = true;
+  @Input() uiAutoPosition = false;
   @Input() uiPositionOffset: Array<number> = [0, 0];
   @Input() uiContainerWidth = '';
   //

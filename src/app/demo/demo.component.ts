@@ -1,4 +1,3 @@
-import moment from 'moment-jalaali';
 import { ConfigModel } from '../../../projects/ng-persian-datepicker/src/lib/model/config.model';
 import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
@@ -17,8 +16,8 @@ export class DemoComponent implements OnInit, AfterContentInit {
   config: ConfigModel = {
     date: {
       value: new Date().valueOf(),
-      onSelect: (shamsiDate: string, gregorianDate: string, date: moment.Moment) => {
-        console.log(shamsiDate, gregorianDate, date);
+      onSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => {
+        console.log(shamsiDate, gregorianDate, timestamp);
       }
     },
     ui: {

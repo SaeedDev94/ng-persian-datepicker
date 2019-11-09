@@ -42,5 +42,5 @@ export interface DateConfigModel {
   /**
    * @description onSelect date callback
    */
-  onSelect?: (shamsiDate: string, gregorianDate: string, date: moment.Moment) => void;
+  onSelect?: (shamsiDate: string, gregorianDate: string, timestamp: number) => void;
 }

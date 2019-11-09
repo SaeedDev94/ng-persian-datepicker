@@ -81,8 +81,8 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   @Input() dateIsGregorian = false;
   @Input() dateFormat = 'jYYYY-jMM-jDD HH:mm:ss';
   @Input() dateGregorianFormat = 'YYYY-MM-DD HH:mm:ss';
-  @Input() dateMin: moment.Moment = null;
-  @Input() dateMax: moment.Moment = null;
+  @Input() dateMin: number = null;
+  @Input() dateMax: number = null;
   @Input() dateOnSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
   // time
   @Input() timeEnable = true;

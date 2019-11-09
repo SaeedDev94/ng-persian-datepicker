@@ -1,5 +1,3 @@
-import moment from 'moment-jalaali';
-
 export interface DateConfigModel {
 
   /**
@@ -30,14 +28,14 @@ export interface DateConfigModel {
   gregorianFormat?: string;
 
   /**
-   * @description min date that user can select
+   * @description min date that user can select (timestamp)
    */
-  min?: moment.Moment;
+  min?: number;
 
   /**
-   * @description max date that user can select
+   * @description max date that user can select (timestamp)
    */
-  max?: moment.Moment;
+  max?: number;
 
   /**
    * @description onSelect date callback

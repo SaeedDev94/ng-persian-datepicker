@@ -67,14 +67,10 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   private inputEventFocusListener: any;
   private inputEventInputListener: any;
   //
-  private inputWidth = 0;
-  private inputHeight = 0;
-  private inputTop = 0;
-  private inputLeft = 0;
-  //
   private afterContentInitDone = false;
-  // HTMLInput
-  @Input() input: HTMLInputElement;
+  //
+  private inputClientRect: ClientRect = null;
+  @Input() input: HTMLInputElement = null;
   // date
   @Input() dateValue: string | number = '';
   @Input() dateInitValue = true;
@@ -119,7 +115,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
 
   ngAfterContentInit(): void {
     this.setViewModes();
-    this.calcInputDetails();
+    this.calcInputClientRect();
     //
     this.setToday();
     this.setDateInitValue();
@@ -149,13 +145,9 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   }
 
   @HostListener('window:resize')
-  calcInputDetails() {
+  calcInputClientRect() {
     if (this.input) {
-      this.inputWidth = this.input.offsetWidth;
-      this.inputHeight = this.input.offsetHeight;
-      const rect = this.input.getBoundingClientRect();
-      this.inputTop = rect.top;
-      this.inputLeft = rect.left;
+      this.inputClientRect = this.input.getBoundingClientRect();
     }
   }
 
@@ -171,12 +163,13 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       top: String(this.uiPositionOffset[0]) + 'px',
       left: String(this.uiPositionOffset[0]) + 'px',
     };
+    if (this.input && this.inputClientRect) {
+      containerWidth.width = String(this.inputClientRect.width) + 'px';
+      containerPosition.top = String(this.inputClientRect.top + this.inputClientRect.height + this.uiPositionOffset[0]) + 'px';
+      containerPosition.left = String(this.inputClientRect.left + this.uiPositionOffset[1]) + 'px';
+    }
     if (this.uiContainerWidth) {
       containerWidth.width = this.uiContainerWidth;
-    } else if (this.input) {
-      containerWidth.width = String(this.inputWidth) + 'px';
-      containerPosition.top = String(this.inputTop + this.inputHeight + this.uiPositionOffset[0]) + 'px';
-      containerPosition.left = String(this.inputLeft + this.uiPositionOffset[1]) + 'px';
     }
     return Object.assign(containerWidth, containerPosition);
   }
@@ -313,7 +306,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     }
     this.input.setAttribute('data-datepicker-id', this.id);
     this.inputEventFocusListener = () => {
-      this.calcInputDetails();
+      this.calcInputClientRect();
       this.uiIsVisible = true;
     };
     this.input.addEventListener('focus', this.inputEventFocusListener);

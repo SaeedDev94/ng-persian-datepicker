@@ -132,8 +132,10 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   }
 
   ngOnDestroy(): void {
-    this.input.removeEventListener('focus', this.inputEventFocusListener);
-    this.input.removeEventListener('input', this.inputEventInputListener);
+    if (this.input) {
+      this.input.removeEventListener('focus', this.inputEventFocusListener);
+      this.input.removeEventListener('input', this.inputEventInputListener);
+    }
   }
 
   setId(): void {

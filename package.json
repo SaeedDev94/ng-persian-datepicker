@@ -9,6 +9,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build ng-persian-datepicker && cp projects/ng-persian-datepicker/README.md .",
+    "build-demo": "ng build --prod --output-path docs --base-href /ng-persian-datepicker/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

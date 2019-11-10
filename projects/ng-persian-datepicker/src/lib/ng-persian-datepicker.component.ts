@@ -289,7 +289,9 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     if (!this.input) {
       return;
     }
-    this.input.value = moment((this.dateValue as number)).format(this.dateFormat);
+    if (this.dateValue) {
+      this.input.value = moment((this.dateValue as number)).format(this.dateFormat);
+    }
   }
 
   lockInputValue(): void {

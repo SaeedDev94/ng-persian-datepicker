@@ -1,14 +1,14 @@
 import moment from 'moment-jalaali';
+import { YearModel } from './model/year.model';
+import { MonthModel } from './model/month.model';
+import { DayModel } from './model/day.model';
 import {
   AfterContentInit,
   Component,
-  DoCheck,
-  ElementRef,
   HostListener,
   Input,
   OnDestroy,
-  OnInit,
-  ViewChild
+  OnInit
 } from '@angular/core';
 
 @Component({
@@ -16,31 +16,39 @@ import {
   templateUrl: './ng-persian-datepicker.component.html',
   styleUrls: ['./ng-persian-datepicker.component.scss']
 })
-export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, DoCheck, OnDestroy {
+export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, OnDestroy {
 
   constructor(
   ) {}
 
-  private id: string;
+  id: string;
+  containerInlineStyle: object = {};
+  weekDays: Array<string>;
   //
   private preventClose: boolean;
-  private weekDays: Array<string>;
+  private uiYearViewModel = true;
+  private uiMonthViewModel = true;
   //
-  private viewModes: Array<string> = ['day'];
-  private currentViewMode = 0;
+  viewDateTitle = '';
+  viewModes: Array<string> = ['day'];
+  currentViewMode = 0;
   //
   private today: moment.Moment;
   private selectedDate: moment.Moment;
   private viewDate: moment.Moment;
-  private years: Array<Array<number>> = [];
-  private months: Array<Array<number>> = [];
-  private prevMonthDays: Array<Array<number>> = [];
-  private currentMonthDays: Array<Array<number>> = [];
-  private nextMonthDays: Array<Array<number>> = [];
+  //
+  years: YearModel[] = [];
+  months: MonthModel[] = [];
+  days: Array<DayModel[]> = [];
   //
   private hour = 0;
   private minute = 0;
   private second = 0;
+  //
+  hourText = '';
+  minuteText = '';
+  secondText = '';
+  amPmText = '';
   //
   private fastTimeChangeTimeOut = 345;
   private fastTimeChangeInterval = 123;
@@ -67,9 +75,8 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   private inputEventFocusListener: any;
   private inputEventInputListener: any;
   //
-  private afterContentInitDone = false;
-  //
-  private inputClientRect: ClientRect = null;
+  private inputPosition: Array<number>;
+  private inputSize: Array<number>;
   @Input() input: HTMLInputElement = null;
   // date
   @Input() dateValue: string | number = '';
@@ -89,13 +96,25 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
   @Input() uiIsVisible = false;
   @Input() uiHideOnOutsideClick = true;
   @Input() uiHideAfterSelectDate = true;
-  @Input() uiYearView = true;
-  @Input() uiMonthView = true;
   @Input() uiAutoPosition = false;
   @Input() uiPositionOffset: Array<number> = [0, 0];
   @Input() uiContainerWidth = '';
-  //
-  @ViewChild('container', {static: false}) container: ElementRef;
+  @Input()
+  set uiYearView(value: boolean) {
+    this.uiYearViewModel = value;
+    this.checkViewModes();
+  }
+  get uiYearView(): boolean {
+    return this.uiYearViewModel;
+  }
+  @Input()
+  set uiMonthView(value: boolean) {
+    this.uiMonthViewModel = value;
+    this.checkViewModes();
+  }
+  get uiMonthView(): boolean {
+    return this.uiMonthViewModel;
+  }
 
   ngOnInit(): void {
     this.setId();
@@ -106,29 +125,21 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     this.setWeekDays();
   }
 
-  ngDoCheck(): void {
-    if (!this.afterContentInitDone) {
-      return;
-    }
-    this.checkViewModes();
-  }
-
   ngAfterContentInit(): void {
     this.setViewModes();
-    this.calcInputClientRect();
     //
     this.setToday();
     this.setDateInitValue();
     //
     this.setSelectedDate();
-    this.setTime();
     this.setViewDate();
+    //
+    this.setTime();
+    this.seTimeText();
     //
     this.setInputValue();
     this.lockInputValue();
     this.setShowOnInputFocus();
-    //
-    this.afterContentInitDone = true;
   }
 
   ngOnDestroy(): void {
@@ -142,38 +153,39 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     this.id = 'ng-persian-datepicker-' + Math.random().toString(36).substr(2, 9);
   }
 
-  getId(): string {
-    return this.id;
+  setWeekDays(): void {
+    this.weekDays = moment.weekdaysMin();
+    this.weekDays.unshift(this.weekDays.pop());
   }
 
-  @HostListener('window:resize')
-  calcInputClientRect() {
-    if (this.input) {
-      this.inputClientRect = this.input.getBoundingClientRect();
+  setViewModes(): void {
+    this.viewModes = ['day'];
+    if (this.uiMonthView) {
+      this.viewModes.push('month');
+    }
+    if (this.uiYearView) {
+      this.viewModes.push('year');
+    }
+    if (this.viewModes.length <= this.currentViewMode) {
+      this.currentViewMode = 0;
     }
   }
 
-  containerStyle(): object {
-    if (!this.uiAutoPosition) {
-      return {};
+  checkViewModes(): void {
+    let viewModesCount = 1;
+    if (this.uiYearView) {
+      viewModesCount++;
     }
-    const containerWidth = {
-      width: '200px'
-    };
-    const containerPosition = {
-      position: 'absolute',
-      top: String(this.uiPositionOffset[0]) + 'px',
-      left: String(this.uiPositionOffset[0]) + 'px',
-    };
-    if (this.input && this.inputClientRect) {
-      containerWidth.width = String(this.inputClientRect.width) + 'px';
-      containerPosition.top = String(this.inputClientRect.top + this.inputClientRect.height + this.uiPositionOffset[0]) + 'px';
-      containerPosition.left = String(this.inputClientRect.left + this.uiPositionOffset[1]) + 'px';
+    if (this.uiMonthView) {
+      viewModesCount++;
     }
-    if (this.uiContainerWidth) {
-      containerWidth.width = this.uiContainerWidth;
+    if (viewModesCount !== this.viewModes.length) {
+      this.setViewModes();
     }
-    return Object.assign(containerWidth, containerPosition);
+  }
+
+  setToday(): void {
+    this.today = moment();
   }
 
   setDateInitValue(): void {
@@ -197,6 +209,135 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     this.selectedDate = moment((this.dateValue as number));
   }
 
+  setViewDate(): void {
+    if (!this.dateValue) {
+      this.viewDate = moment(this.today);
+    } else {
+      this.viewDate = moment(this.selectedDate);
+    }
+    this.onChangeViewDate();
+  }
+
+  onChangeViewDate(): void {
+    this.viewDate.startOf('jMonth');
+    this.setYears();
+    this.setMonths();
+    this.setDays();
+    this.setViewDateTitle();
+  }
+
+  setYears(): void {
+    this.years = [];
+    const years = moment(this.viewDate);
+    years.startOf('jYear');
+    years.add(-6, 'jYear');
+    for (let i = 0 ; i < 12 ; i++) {
+      const year = [years.valueOf(), years.jYear()];
+      this.years.push({
+        timestamp: year[0],
+        value: year[1],
+        isYearOfTodayDate: this.isYearOfTodayDate(year),
+        isYearOfSelectedDate: this.isYearOfSelectedDate(year),
+        isYearDisabled: this.isYearDisabled(year)
+      });
+      years.add(1, 'jYear');
+    }
+  }
+
+  setMonths(): void {
+    this.months = [];
+    const months = moment(this.viewDate);
+    months.startOf('jYear');
+    for (let i = 0 ; i < 12 ; i++) {
+      const month = [months.valueOf(), months.jYear(), months.jMonth()];
+      this.months.push({
+        timestamp: month[0],
+        year: month[1],
+        indexValue: month[2],
+        isMonthOfTodayDate: this.isMonthOfToday(month),
+        isMonthOfSelectedDate: this.isMonthOfSelectedDate(month),
+        isMonthDisabled: this.isMonthDisabled(month)
+      });
+      months.add(1, 'jMonth');
+    }
+  }
+
+  setDays(): void {
+    this.days = [];
+    //
+    const prevMonthDetails: Array<Array<number>> = [];
+    const currentMonthDetails: Array<Array<number>> = [];
+    const nextMonthDetails: Array<Array<number>> = [];
+    //
+    const prevMonth = moment(this.viewDate);
+    const currentMonth = moment(this.viewDate);
+    const nextMonth = moment(this.viewDate);
+    //
+    prevMonth.add(-1, 'jMonth');
+    nextMonth.add(1, 'jMonth');
+    //
+    const currentMonthDays = moment.jDaysInMonth(currentMonth.jYear(), currentMonth.jMonth());
+    const prevMonthDays = moment.jDaysInMonth(prevMonth.jYear(), prevMonth.jMonth());
+    const nextMonthDays = moment.jDaysInMonth(nextMonth.jYear(), nextMonth.jMonth());
+    //
+    for (let i = 0 ; i < prevMonthDays ; i++) {
+      prevMonthDetails.push([prevMonth.valueOf(), prevMonth.jYear(), prevMonth.jMonth(), prevMonth.jDate()]);
+      prevMonth.add(1, 'day');
+    }
+    for (let i = 0 ; i < currentMonthDays ; i++) {
+      currentMonthDetails.push([currentMonth.valueOf(), currentMonth.jYear(), currentMonth.jMonth(), currentMonth.jDate()]);
+      currentMonth.add(1, 'day');
+    }
+    for (let i = 0 ; i < nextMonthDays ; i++) {
+      nextMonthDetails.push([nextMonth.valueOf(), nextMonth.jYear(), nextMonth.jMonth(), nextMonth.jDate()]);
+      nextMonth.add(1, 'day');
+    }
+    //
+    for (let row = 0; row < 6 ; row++) {
+      const rowValue: DayModel[] = [];
+      for (let col = 0; col < 7 ; col++) {
+        const fromPrevMonth = (this.viewDate.day() === 6) ? 0 : (this.viewDate.day() + 1);
+        let index = ((row * 7) + col) - fromPrevMonth;
+        let day: Array<number> = null;
+        if (index < 0) {
+          index = prevMonthDetails.length - (fromPrevMonth - col);
+          day = prevMonthDetails[index];
+        } else if (index >= currentMonthDetails.length) {
+          index = index - currentMonthDetails.length;
+          day = nextMonthDetails[index];
+        } else {
+          day = currentMonthDetails[index];
+        }
+        rowValue.push({
+          timestamp: day[0],
+          year: day[1],
+          monthIndex: day[2],
+          value: day[3],
+          isDayInCurrentMonth: this.isDayInCurrentMonth(day),
+          isDayOfTodayDate: this.isDayOfTodayDate(day),
+          isDayOfSelectedDate: this.isDayOfSelectedDate(day),
+          isDayDisabled: this.isDayDisabled(day)
+        });
+      }
+      this.days.push(rowValue);
+    }
+  }
+
+  setViewDateTitle(): void {
+    const year = this.viewDate.jYear();
+    switch (this.viewModes[this.currentViewMode]) {
+      case 'day':
+        this.viewDateTitle = this.viewDate.format('jMMMM') + ' ' + year.toString();
+        break;
+      case 'month':
+        this.viewDateTitle = year.toString();
+        break;
+      case 'year':
+        this.viewDateTitle = (year - 6).toString() + '-' + (year + 5).toString();
+        break;
+    }
+  }
+
   setTime(): void {
     if (this.selectedDate) {
       this.hour = this.selectedDate.hour();
@@ -209,80 +350,44 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     this.second = this.today.second();
   }
 
-  setViewDate(): void {
-    if (!this.dateValue) {
-      this.viewDate = moment(this.today);
-    } else {
-      this.viewDate = moment(this.selectedDate);
+  seTimeText(): void {
+    this.setHourText();
+    this.setMinuteText();
+    this.setSecondText();
+    this.setAmPmText();
+  }
+
+  setHourText(): void {
+    const hour = this.hour;
+    if (!this.timeMeridian) {
+      this.hourText = hour.toString().padStart(2, '0');
+      return;
     }
-    this.onChangeViewDate();
-  }
-
-  onChangeViewDate(): void {
-    this.viewDate.startOf('jMonth');
-    this.years = [];
-    this.months = [];
-    this.currentMonthDays = [];
-    this.prevMonthDays = [];
-    this.nextMonthDays = [];
-    const years = moment(this.viewDate);
-    const months = moment(this.viewDate);
-    const prevMonth = moment(this.viewDate);
-    const currentMonth = moment(this.viewDate);
-    const nextMonth = moment(this.viewDate);
-    years.startOf('jYear');
-    years.add(-6, 'jYear');
-    months.startOf('jYear');
-    prevMonth.add(-1, 'jMonth');
-    nextMonth.add(1, 'jMonth');
-    const currentMonthDays = moment.jDaysInMonth(currentMonth.jYear(), currentMonth.jMonth());
-    const prevMonthDays = moment.jDaysInMonth(prevMonth.jYear(), prevMonth.jMonth());
-    const nextMonthDays = moment.jDaysInMonth(nextMonth.jYear(), nextMonth.jMonth());
-    for (let i = 0 ; i < 12 ; i++) {
-      this.years.push([years.valueOf(), years.jYear()]);
-      years.add(1, 'jYear');
+    if (hour === 0) {
+      this.hourText = (12).toString().padStart(2, '0');
+      return;
     }
-    for (let i = 0 ; i < 12 ; i++) {
-      this.months.push([months.valueOf(), months.jYear(), months.jMonth()]);
-      months.add(1, 'jMonth');
+    if (hour > 12) {
+      this.hourText = (hour - 12).toString().padStart(2, '0');
+      return;
     }
-    for (let i = 0 ; i < prevMonthDays ; i++) {
-      this.prevMonthDays.push([prevMonth.valueOf(), prevMonth.jYear(), prevMonth.jMonth(), prevMonth.jDate()]);
-      prevMonth.add(1, 'day');
+    this.hourText = hour.toString().padStart(2, '0');
+  }
+
+  setMinuteText(): void {
+    this.minuteText = this.minute.toString().padStart(2, '0');
+  }
+
+  setSecondText(): void {
+    this.secondText = this.second.toString().padStart(2, '0');
+  }
+
+  setAmPmText(): void {
+    if (this.hour >= 12) {
+      this.amPmText = 'PM';
+      return;
     }
-    for (let i = 0 ; i < currentMonthDays ; i++) {
-      this.currentMonthDays.push([currentMonth.valueOf(), currentMonth.jYear(), currentMonth.jMonth(), currentMonth.jDate()]);
-      currentMonth.add(1, 'day');
-    }
-    for (let i = 0 ; i < nextMonthDays ; i++) {
-      this.nextMonthDays.push([nextMonth.valueOf(), nextMonth.jYear(), nextMonth.jMonth(), nextMonth.jDate()]);
-      nextMonth.add(1, 'day');
-    }
-  }
-
-  setToday(): void {
-    this.today = moment();
-  }
-
-  setWeekDays(): void {
-    this.weekDays = moment.weekdaysMin();
-    this.weekDays.unshift(this.weekDays.pop());
-  }
-
-  getWeekDays(): Array<string> {
-    return this.weekDays;
-  }
-
-  getYears(): Array<Array<number>> {
-    return this.years;
-  }
-
-  getMonths(): Array<Array<number>> {
-    return this.months;
-  }
-
-  isViewMode(mode: string): boolean {
-    return this.viewModes[this.currentViewMode] === mode;
+    this.amPmText = 'AM';
   }
 
   setInputValue(): void {
@@ -310,103 +415,110 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     }
     this.input.setAttribute('data-datepicker-id', this.id);
     this.inputEventFocusListener = () => {
-      this.calcInputClientRect();
+      this.calcInputPositionAndSize();
       this.uiIsVisible = true;
     };
     this.input.addEventListener('focus', this.inputEventFocusListener);
   }
 
-  @HostListener('click')
-  onInsideClick(): void {
-    this.wasInsideClick = true;
+  skipViewDate(skip: number, type: number): void {
+    if (type === 1) {
+      this.viewDate.add(skip, 'jYear');
+    } else if (type === 2) {
+      this.viewDate.add(skip, 'jMonth');
+    }
   }
 
-  @HostListener('document:click', ['$event'])
-  onOutsideClick(event: any): void {
-    const wasInsideClick = this.wasInsideClick;
-    this.wasInsideClick = false;
-    if (wasInsideClick) {
+  navigate(forward: boolean = true): void {
+    let skip = 1;
+    if (!forward) {
+      skip = skip * -1;
+    }
+    switch (this.viewModes[this.currentViewMode]) {
+      case 'day':
+        this.skipViewDate(skip, 2);
+        break;
+      case 'month':
+        this.skipViewDate(skip, 1);
+        break;
+      case 'year':
+        this.skipViewDate((skip * 12), 1);
+        break;
+    }
+    this.onChangeViewDate();
+  }
+
+  nextViewMode(): void {
+    if (this.viewModes.length === 1) {
       return;
     }
-    if (
-      !this.uiHideOnOutsideClick ||
-      (this.input && (event.target.getAttribute('data-datepicker-id') === this.id))
-    ) {
-      return;
-    }
-    this.uiIsVisible = false;
-  }
-
-  checkViewModes(): void {
-    let viewModesCount = 1;
-    if (this.uiYearView) {
-      viewModesCount++;
-    }
-    if (this.uiMonthView) {
-      viewModesCount++;
-    }
-    if (viewModesCount !== this.viewModes.length) {
-      this.setViewModes();
-    }
-  }
-
-  setViewModes(): void {
-    this.viewModes = ['day'];
-    if (this.uiMonthView) {
-      this.viewModes.push('month');
-    }
-    if (this.uiYearView) {
-      this.viewModes.push('year');
-    }
-    if (this.viewModes.length <= this.currentViewMode) {
+    if (this.viewModes.length <= (this.currentViewMode + 1)) {
       this.currentViewMode = 0;
+      this.setViewDateTitle();
+      return;
     }
+    this.currentViewMode++;
+    this.setViewDateTitle();
   }
 
-  getDayOfMonth(row: number, col: number): Array<number> {
-    const fromPrevMonth = (this.viewDate.day() === 6) ? 0 : (this.viewDate.day() + 1);
-    let index = ((row * 7) + col) - fromPrevMonth;
-    if (index < 0) {
-      index = this.prevMonthDays.length - (fromPrevMonth - col);
-      return this.prevMonthDays[index];
-    } else if (index >= this.currentMonthDays.length) {
-      index = index - this.currentMonthDays.length;
-      return this.nextMonthDays[index];
+  selectToday(): void {
+    this.setToday();
+    this.preventClose = true;
+    this.changeSelectedDate(this.today);
+  }
+
+  yearClick(year: YearModel): void {
+    if (year.isYearDisabled) {
+      return;
     }
-    return this.currentMonthDays[index];
+    this.viewDate = moment(year.timestamp);
+    let viewModeIndex = this.viewModes.indexOf('month');
+    if (viewModeIndex === -1) {
+      viewModeIndex = this.viewModes.indexOf('day');
+    }
+    this.currentViewMode = viewModeIndex;
+    this.onChangeViewDate();
   }
 
-  isDayDisabled(row: number, col: number): boolean {
-    const day = this.getDayOfMonth(row, col);
-    return !this.isDateInRange(day[0], false, false);
+  monthClick(month: MonthModel): void {
+    if (month.isMonthDisabled) {
+      return;
+    }
+    this.viewDate = moment(month.timestamp);
+    this.currentViewMode = this.viewModes.indexOf('day');
+    this.onChangeViewDate();
   }
 
-  isDayOfToday(row: number, col: number): boolean {
-    const day = this.getDayOfMonth(row, col);
+  dayClick(day: DayModel): void {
+    if (day.isDayDisabled) {
+      return;
+    }
+    this.changeSelectedDate(moment(day.timestamp));
+  }
+
+  isYearOfTodayDate(year: Array<number>): boolean {
     return (
-      day[1] === this.today.jYear() &&
-      day[2] === this.today.jMonth() &&
-      day[3] === this.today.jDate()
+      this.today.jYear() === year[1]
     );
   }
 
-  isInCurrentMonth(row: number, col: number): boolean {
-    const day = this.getDayOfMonth(row, col);
-    return (
-      day[1] === this.viewDate.jYear() &&
-      day[2] === this.viewDate.jMonth()
-    );
-  }
-
-  isDayOfSelectedDate(row: number, col: number): boolean {
+  isYearOfSelectedDate(year: Array<number>): boolean {
     if (!this.selectedDate) {
       return false;
     }
-    const day = this.getDayOfMonth(row, col);
     return (
-      day[1] === this.selectedDate.jYear() &&
-      day[2] === this.selectedDate.jMonth() &&
-      day[3] === this.selectedDate.jDate()
+      year[1] === this.selectedDate.jYear()
+    );
+  }
+
+  isYearDisabled(month: Array<number>): boolean {
+    return !this.isDateInRange(month[0], true, false);
+  }
+
+  isMonthOfToday(month: Array<number>): boolean {
+    return (
+      this.today.jYear() === month[1] &&
+      this.today.jMonth() === month[2]
     );
   }
 
@@ -420,21 +532,63 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     );
   }
 
-  isYearOfSelectedDate(year: Array<number>): boolean {
+  isMonthDisabled(month: Array<number>): boolean {
+    return !this.isDateInRange(month[0], false, true);
+  }
+
+  isDayInCurrentMonth(day: Array<number>): boolean {
+    return (
+      day[1] === this.viewDate.jYear() &&
+      day[2] === this.viewDate.jMonth()
+    );
+  }
+
+  isDayOfTodayDate(day: Array<number>): boolean {
+    return (
+      day[1] === this.today.jYear() &&
+      day[2] === this.today.jMonth() &&
+      day[3] === this.today.jDate()
+    );
+  }
+
+  isDayOfSelectedDate(day: Array<number>): boolean {
     if (!this.selectedDate) {
       return false;
     }
     return (
-      year[1] === this.selectedDate.jYear()
+      day[1] === this.selectedDate.jYear() &&
+      day[2] === this.selectedDate.jMonth() &&
+      day[3] === this.selectedDate.jDate()
     );
   }
 
-  changeDate(row: number, col: number): void {
-    const day = this.getDayOfMonth(row, col);
-    if (!this.isDateInRange(day[0], false, false)) {
-      return;
+  isDayDisabled(day: Array<number>): boolean {
+    return !this.isDateInRange(day[0], false, false);
+  }
+
+  isDateInRange(date: number, isYear: boolean, isMonth: boolean): boolean {
+    const result: Array<boolean> = [];
+    if (this.dateMin) {
+      const min = moment(this.dateMin);
+      if (isYear) {
+        min.startOf('jYear');
+      }
+      if (isMonth) {
+        min.startOf('jMonth');
+      }
+      result.push(min.valueOf() <= date);
     }
-    this.changeSelectedDate(moment(day[0]));
+    if (this.dateMax) {
+      const max = moment(this.dateMax);
+      if (isYear) {
+        max.startOf('jYear');
+      }
+      if (isMonth) {
+        max.startOf('jMonth');
+      }
+      result.push(max.valueOf() >= date);
+    }
+    return !(result.indexOf(false) !== -1);
   }
 
   changeSelectedDate(date: moment.Moment): void {
@@ -466,134 +620,6 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
       String(this.selectedDate.format(this.dateGregorianFormat)),
       Number(this.selectedDate.valueOf())
     );
-  }
-
-  skipViewDate(skip: number, type: number): void {
-    if (type === 1) {
-      this.viewDate.add(skip, 'jYear');
-    } else if (type === 2) {
-      this.viewDate.add(skip, 'jMonth');
-    }
-  }
-
-  navigate(forward: boolean = true): void {
-    let skip = 1;
-    if (!forward) {
-      skip = skip * -1;
-    }
-    switch (this.viewModes[this.currentViewMode]) {
-      case 'day':
-        this.skipViewDate(skip, 2);
-        this.onChangeViewDate();
-        break;
-      case 'month':
-        this.skipViewDate(skip, 1);
-        this.onChangeViewDate();
-        break;
-      case 'year':
-        this.skipViewDate((skip * 12), 1);
-        this.onChangeViewDate();
-        break;
-    }
-  }
-
-  getViewDateTitle(): string {
-    const year = this.viewDate.jYear();
-    switch (this.viewModes[this.currentViewMode]) {
-      case 'day':
-        return this.viewDate.format('jMMMM') + ' ' + year.toString();
-      case 'month':
-        return year.toString();
-      case 'year':
-        return (year - 6).toString() + '-' + (year + 5).toString();
-      default:
-        return '';
-    }
-  }
-
-  selectToday(): void {
-    this.setToday();
-    this.preventClose = true;
-    this.changeSelectedDate(this.today);
-  }
-
-  nextViewMode(): void {
-    if (this.viewModes.length === 1) {
-      return;
-    }
-    if (this.viewModes.length <= (this.currentViewMode + 1)) {
-      this.currentViewMode = 0;
-      return;
-    }
-    this.currentViewMode++;
-  }
-
-  yearClick(year: Array<number>): void {
-    if (!this.isDateInRange(year[0], true, false)) {
-      return;
-    }
-    this.viewDate = moment(year[0]);
-    this.onChangeViewDate();
-    let viewModeIndex = this.viewModes.indexOf('month');
-    if (viewModeIndex === -1) {
-      viewModeIndex = this.viewModes.indexOf('day');
-    }
-    this.currentViewMode = viewModeIndex;
-  }
-
-  monthClick(month: Array<number>): void {
-    if (!this.isDateInRange(month[0], false, true)) {
-      return;
-    }
-    this.viewDate = moment(month[0]);
-    this.onChangeViewDate();
-    this.currentViewMode = this.viewModes.indexOf('day');
-  }
-
-  isTheme(name: string): boolean {
-    return this.uiTheme === name;
-  }
-
-  isYearOfToday(year: Array<number>): boolean {
-    return (
-      this.today.jYear() === year[1]
-    );
-  }
-
-  isMonthOfToday(month: Array<number>): boolean {
-    return (
-      this.today.jYear() === month[1] &&
-      this.today.jMonth() === month[2]
-    );
-  }
-
-  getHourText(): string {
-    const hour = this.hour;
-    if (!this.timeMeridian) {
-      return hour.toString().padStart(2, '0');
-    }
-    if (hour === 0) {
-      return (12).toString().padStart(2, '0');
-    }
-    if (hour > 12) {
-      return (hour - 12).toString().padStart(2, '0');
-    }
-    return hour.toString().padStart(2, '0');
-  }
-
-  getMinuteText(): string {
-    return this.minute.toString().padStart(2, '0');
-  }
-
-  getSecondText(): string {
-    return this.second.toString().padStart(2, '0');
-  }
-
-  getAmPmText(): string {
-    if (this.hour >= 12) {
-      return 'PM';
-    }
-    return 'AM';
   }
 
   increaseHour(): void {
@@ -661,6 +687,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
 
   onTimeChange(): void {
     this.preventClose = true;
+    this.seTimeText();
     this.changeSelectedDate(this.selectedDate);
   }
 
@@ -742,29 +769,68 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, D
     clearInterval(this.decreaseSecondInterval);
   }
 
-  isDateInRange(date: number, isYear: boolean, isMonth: boolean): boolean {
-    const result: Array<boolean> = [];
-    if (this.dateMin) {
-      const min = moment(this.dateMin);
-      if (isYear) {
-        min.startOf('jYear');
-      }
-      if (isMonth) {
-        min.startOf('jMonth');
-      }
-      result.push(min.valueOf() <= date);
+  setContainerInlineStyle(): void {
+    if (!this.uiAutoPosition) {
+      return;
     }
-    if (this.dateMax) {
-      const max = moment(this.dateMax);
-      if (isYear) {
-        max.startOf('jYear');
-      }
-      if (isMonth) {
-        max.startOf('jMonth');
-      }
-      result.push(max.valueOf() >= date);
+    const containerWidth = {
+      width: '200px'
+    };
+    const containerPosition = {
+      position: 'absolute',
+      top: String(this.uiPositionOffset[0]) + 'px',
+      left: String(this.uiPositionOffset[1]) + 'px',
+    };
+    if (this.input && this.inputPosition) {
+      containerWidth.width = String(this.inputSize[0]) + 'px';
+      containerPosition.top = String(this.inputPosition[0] + this.inputSize[1] + this.uiPositionOffset[0]) + 'px';
+      containerPosition.left = String(this.inputPosition[1] + this.uiPositionOffset[1]) + 'px';
     }
-    return !(result.indexOf(false) !== -1);
+    if (this.uiContainerWidth) {
+      containerWidth.width = this.uiContainerWidth;
+    }
+    this.containerInlineStyle = Object.assign(containerWidth, containerPosition);
+  }
+
+  @HostListener('window:resize')
+  calcInputPositionAndSize(): void {
+    if (!this.input) {
+      return;
+    }
+    this.inputPosition = [0, 0];
+    let element: HTMLElement = this.input;
+    while (element) {
+      this.inputPosition[0] += element.offsetTop || 0;
+      this.inputPosition[1] += element.offsetLeft || 0;
+      element = element.offsetParent as HTMLElement;
+    }
+    //
+    this.inputSize = [0, 0];
+    this.inputSize[0] = this.input.getBoundingClientRect().width;
+    this.inputSize[1] = this.input.getBoundingClientRect().height;
+    //
+    this.setContainerInlineStyle();
+  }
+
+  @HostListener('click')
+  onInsideClick(): void {
+    this.wasInsideClick = true;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onOutsideClick(event: any): void {
+    const wasInsideClick = this.wasInsideClick;
+    this.wasInsideClick = false;
+    if (wasInsideClick) {
+      return;
+    }
+    if (
+      !this.uiHideOnOutsideClick ||
+      (this.input && (event.target.getAttribute('data-datepicker-id') === this.id))
+    ) {
+      return;
+    }
+    this.uiIsVisible = false;
   }
 
 }

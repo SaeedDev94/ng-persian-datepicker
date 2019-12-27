@@ -1,5 +1,5 @@
 import { ConfigModel } from '../../../projects/ng-persian-datepicker/src/lib/model/config.model';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-demo',
@@ -7,8 +7,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./demo.component.scss']
 })
 export class DemoComponent implements OnInit {
-
-  @ViewChild('datepickerInput', {static: false}) datepickerInput: ElementRef;
 
   constructor(
   ) {}

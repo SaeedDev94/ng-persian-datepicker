@@ -1,16 +1,18 @@
 <div
   class="datepicker-outer-container"
-  [class.theme-default]="isTheme('default')"
-  [class.theme-blue]="isTheme('blue')"
-  [class.theme-gray]="isTheme('gray')"
-  [class.theme-dark]="isTheme('dark')"
-  [class.theme-black]="isTheme('black')"
+  [class.theme-default]="uiTheme === 'default'"
+  [class.theme-blue]="uiTheme === 'blue'"
+  [class.theme-gray]="uiTheme === 'gray'"
+  [class.theme-dark]="uiTheme === 'dark'"
+  [class.theme-black]="uiTheme === 'black'"
   [class.manual-position]="!uiAutoPosition"
   [class.hide]="!uiIsVisible"
-  [attr.data-datepicker-id]="getId()"
-  [ngStyle]="containerStyle()" #container>
+  [attr.data-datepicker-id]="id"
+  [ngStyle]="containerInlineStyle">
   <div
     class="datepicker-inner-container">
+
+    <!-- Start: navigation -->
     <div
       class="content-container navigation-container">
       <div
@@ -29,7 +31,7 @@
       <div
         class="switch-view dp-btn"
         (click)="nextViewMode()">
-        <span>{{ getViewDateTitle() }}</span>
+        <span>{{ viewDateTitle }}</span>
       </div>
       <div
         class="go-forward dp-btn"
@@ -45,66 +47,78 @@
         </svg>
       </div>
     </div>
+    <!-- End: navigation -->
+
+    <!-- Start: year view mode -->
     <div
-      *ngIf="isViewMode('day')"
+      *ngIf="viewModes[currentViewMode] === 'year'"
+      class="years-container">
+      <div
+        class="content-container">
+        <div
+          class="year-col three-col-per-row dp-btn"
+          [class.today]="year.isYearOfTodayDate"
+          [class.selected]="year.isYearOfSelectedDate"
+          [class.disabled]="year.isYearDisabled"
+          (click)="yearClick(year)"
+          *ngFor="let year of years">
+          <span>{{ year.value }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- End: year view mode -->
+
+    <!-- Start: month view mode -->
+    <div
+      *ngIf="viewModes[currentViewMode] === 'month'"
+      class="months-container">
+      <div
+        class="content-container">
+        <div
+          class="month-col three-col-per-row dp-btn"
+          [class.today]="month.isMonthOfTodayDate"
+          [class.selected]="month.isMonthOfSelectedDate"
+          [class.disabled]="month.isMonthDisabled"
+          (click)="monthClick(month)"
+          *ngFor="let month of months">
+          <span>{{ month.indexValue | monthText }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- End: month view mode -->
+
+    <!-- Start: day view mode -->
+    <div
+      *ngIf="viewModes[currentViewMode] === 'day'"
       class="days-container">
       <div
         class="content-container week-days">
         <div
           class="day-col"
-          *ngFor="let weekDay of getWeekDays()">
+          *ngFor="let weekDay of weekDays">
           <span>{{ weekDay }}</span>
         </div>
       </div>
       <div
         class="content-container month-days">
         <ng-container
-          *ngFor="let row of [0, 1, 2, 3, 4, 5]">
+          *ngFor="let row of days">
           <div
             class="day-col dp-btn"
-            [class.other-month]="!isInCurrentMonth(row, col)"
-            [class.today]="isDayOfToday(row, col)"
-            [class.selected]="isDayOfSelectedDate(row, col)"
-            [class.disabled]="isDayDisabled(row, col)"
-            (click)="changeDate(row, col)"
-            *ngFor="let col of [0, 1, 2, 3, 4, 5, 6]">
-            <span>{{ getDayOfMonth(row, col)[3] }}</span>
+            [class.other-month]="!day.isDayInCurrentMonth"
+            [class.today]="day.isDayOfTodayDate"
+            [class.selected]="day.isDayOfSelectedDate"
+            [class.disabled]="day.isDayDisabled"
+            (click)="dayClick(day)"
+            *ngFor="let day of row">
+            <span>{{ day.value }}</span>
           </div>
         </ng-container>
       </div>
     </div>
-    <div
-      *ngIf="isViewMode('month')"
-      class="months-container">
-      <div
-        class="content-container">
-        <div
-          class="month-col three-col-per-row dp-btn"
-          [class.today]="isMonthOfToday(month)"
-          [class.selected]="isMonthOfSelectedDate(month)"
-          [class.disabled]="!isDateInRange(month[0], false, true)"
-          (click)="monthClick(month)"
-          *ngFor="let month of getMonths()">
-          <span>{{ month[2] | monthText }}</span>
-        </div>
-      </div>
-    </div>
-    <div
-      *ngIf="isViewMode('year')"
-      class="years-container">
-      <div
-        class="content-container">
-        <div
-          class="year-col three-col-per-row dp-btn"
-          [class.today]="isYearOfToday(year)"
-          [class.selected]="isYearOfSelectedDate(year)"
-          [class.disabled]="!isDateInRange(year[0], true, false)"
-          (click)="yearClick(year)"
-          *ngFor="let year of getYears()">
-          <span>{{ year[1] }}</span>
-        </div>
-      </div>
-    </div>
+    <!-- End: day view mode -->
+
+    <!-- Start: time picker -->
     <div
       *ngIf="timeEnable"
       class="content-container time-container"
@@ -115,7 +129,10 @@
         <div
           (click)="increaseHour()"
           (mousedown)="setIncreaseHourInterval()"
-          (mouseup)="clearIncreaseHourInterval()">
+          (mouseup)="clearIncreaseHourInterval()"
+          (touchstart)="setIncreaseHourInterval()"
+          (touchend)="clearIncreaseHourInterval()"
+          (touchcancel)="clearIncreaseHourInterval()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 255 255"
@@ -125,12 +142,15 @@
           </svg>
         </div>
         <div>
-          <span>{{ getHourText() }}</span>
+          <span>{{ hourText }}</span>
         </div>
         <div
           (click)="decreaseHour()"
           (mousedown)="setDecreaseHourInterval()"
-          (mouseup)="clearDecreaseHourInterval()">
+          (mouseup)="clearDecreaseHourInterval()"
+          (touchstart)="setDecreaseHourInterval()"
+          (touchend)="clearDecreaseHourInterval()"
+          (touchcancel)="clearDecreaseHourInterval()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 255 255"
@@ -146,7 +166,10 @@
         <div
           (click)="increaseMinute()"
           (mousedown)="setIncreaseMinuteInterval()"
-          (mouseup)="clearIncreaseMinuteInterval()">
+          (mouseup)="clearIncreaseMinuteInterval()"
+          (touchstart)="setIncreaseMinuteInterval()"
+          (touchend)="clearIncreaseMinuteInterval()"
+          (touchcancel)="clearIncreaseMinuteInterval()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 255 255"
@@ -156,12 +179,15 @@
           </svg>
         </div>
         <div>
-          <span>{{ getMinuteText() }}</span>
+          <span>{{ minuteText }}</span>
         </div>
         <div
           (click)="decreaseMinute()"
           (mousedown)="setDecreaseMinuteInterval()"
-          (mouseup)="clearDecreaseMinuteInterval()">
+          (mouseup)="clearDecreaseMinuteInterval()"
+          (touchstart)="setDecreaseMinuteInterval()"
+          (touchend)="clearDecreaseMinuteInterval()"
+          (touchcancel)="clearDecreaseMinuteInterval()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 255 255"
@@ -177,7 +203,10 @@
         <div
           (click)="increaseSecond()"
           (mousedown)="setIncreaseSecondInterval()"
-          (mouseup)="clearIncreaseSecondInterval()">
+          (mouseup)="clearIncreaseSecondInterval()"
+          (touchstart)="setIncreaseSecondInterval()"
+          (touchend)="clearIncreaseSecondInterval()"
+          (touchcancel)="clearIncreaseSecondInterval()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 255 255"
@@ -187,12 +216,15 @@
           </svg>
         </div>
         <div>
-          <span>{{ getSecondText() }}</span>
+          <span>{{ secondText }}</span>
         </div>
         <div
           (click)="decreaseSecond()"
           (mousedown)="setDecreaseSecondInterval()"
-          (mouseup)="clearDecreaseSecondInterval()">
+          (mouseup)="clearDecreaseSecondInterval()"
+          (touchstart)="setDecreaseSecondInterval()"
+          (touchend)="clearDecreaseSecondInterval()"
+          (touchcancel)="clearDecreaseSecondInterval()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 255 255"
@@ -216,7 +248,7 @@
           </svg>
         </div>
         <div>
-          <span>{{ getAmPmText() }}</span>
+          <span>{{ amPmText }}</span>
         </div>
         <div
           (click)="toggleAmPm()">
@@ -230,6 +262,9 @@
         </div>
       </div>
     </div>
+    <!-- End: time picker -->
+
+    <!-- Start: toolbox -->
     <div
       class="the-toolbox">
       <div
@@ -238,5 +273,7 @@
         <span>امروز</span>
       </div>
     </div>
+    <!-- End: toolbox -->
+
   </div>
 </div>

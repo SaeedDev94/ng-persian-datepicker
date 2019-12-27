@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class MonthTextPipe implements PipeTransform {
 
-  static months = [
+  private readonly months = [
     'فروردین',
     'اردیبهشت',
     'خرداد',
@@ -21,7 +21,7 @@ export class MonthTextPipe implements PipeTransform {
   ];
 
   transform(index: number): string {
-    return MonthTextPipe.months[index];
+    return this.months[index];
   }
 
 }

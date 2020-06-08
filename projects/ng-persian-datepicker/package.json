@@ -8,8 +8,12 @@
   "repository": "Saeed-Pooyanfar/ng-persian-datepicker",
   "peerDependencies": {
     "@angular/common": "^8.0.0",
-    "@angular/core": "^8.0.0",
-    "moment-jalaali": "^0.9.1",
+    "@angular/core": "^8.0.0"
+  },
+  "dependencies": {
+    "moment-jalaali": "^0.9.1"
+  },
+  "devDependencies": {
     "@types/moment-jalaali": "^0.7.4"
   }
 }

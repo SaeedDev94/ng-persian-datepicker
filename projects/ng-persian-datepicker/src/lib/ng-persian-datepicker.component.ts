@@ -390,12 +390,15 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, O
     this.amPmText = 'AM';
   }
 
-  setInputValue(): void {
+  setInputValue(dispatchEvent: boolean = true): void {
     if (!this.input) {
       return;
     }
     if (this.dateValue) {
       this.input.value = moment((this.dateValue as number)).format(this.dateFormat);
+      if (dispatchEvent) {
+        this.input.dispatchEvent(new Event('input'));
+      }
     }
   }
 
@@ -404,7 +407,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, O
       return;
     }
     this.inputEventInputListener = () => {
-      this.setInputValue();
+      this.setInputValue(false);
     };
     this.input.addEventListener('input', this.inputEventInputListener);
   }

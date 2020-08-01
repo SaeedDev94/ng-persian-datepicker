@@ -364,9 +364,9 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       this.second = this.selectedDate.second();
       return;
     }
-    this.hour = this.today.hour();
-    this.minute = this.today.minute();
-    this.second = this.today.second();
+    this.hour = this.today?.hour() || 0;
+    this.minute = this.today?.minute() || 0;
+    this.second = this.today?.second() || 0;
   }
 
   seTimeText(): void {

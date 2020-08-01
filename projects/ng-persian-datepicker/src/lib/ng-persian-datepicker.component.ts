@@ -3,7 +3,6 @@ import { YearModel } from './model/year.model';
 import { MonthModel } from './model/month.model';
 import { DayModel } from './model/day.model';
 import {
-  AfterContentInit,
   Component,
   HostListener,
   Input,
@@ -16,7 +15,7 @@ import {
   templateUrl: './ng-persian-datepicker.component.html',
   styleUrls: ['./ng-persian-datepicker.component.scss']
 })
-export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, OnDestroy {
+export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   constructor(
   ) {}
@@ -79,6 +78,8 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, O
   private inputSize: Array<number>;
   @Input() input: HTMLInputElement = null;
   // date
+  // tslint:disable-next-line:variable-name
+  private _dateValue: string | number = '';
   @Input() dateValue: string | number = '';
   @Input() dateInitValue = true;
   @Input() dateIsGregorian = false;
@@ -86,6 +87,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, O
   @Input() dateGregorianFormat = 'YYYY-MM-DD HH:mm:ss';
   @Input() dateMin: number = null;
   @Input() dateMax: number = null;
+  @Input() dateOnInit: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
   @Input() dateOnSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
   // time
   @Input() timeEnable = true;
@@ -123,9 +125,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, O
       dialect: 'persian-modern'
     });
     this.setWeekDays();
-  }
-
-  ngAfterContentInit(): void {
+    //
     this.setViewModes();
     //
     this.setToday();
@@ -192,25 +192,32 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, O
     if (this.dateValue || !this.dateInitValue) {
       return;
     }
-    this.dateValue = this.today.valueOf();
+    this._dateValue = this.today.valueOf();
+    this.selectedDate = moment((this._dateValue as number));
+    this.dateOnInit(
+      String(this.selectedDate.format(this.dateFormat)),
+      String(this.selectedDate.format(this.dateGregorianFormat)),
+      Number(this.selectedDate.valueOf())
+    );
   }
 
   setSelectedDate(): void {
     if (!this.dateValue) {
       return;
     }
-    if (typeof this.dateValue === 'string') {
+    this._dateValue = this.dateValue;
+    if (typeof this._dateValue === 'string') {
       if (this.dateIsGregorian) {
-        this.dateValue = moment((this.dateValue as string), this.dateGregorianFormat).valueOf();
+        this._dateValue = moment((this._dateValue as string), this.dateGregorianFormat).valueOf();
       } else {
-        this.dateValue = moment((this.dateValue as string), this.dateFormat).valueOf();
+        this._dateValue = moment((this._dateValue as string), this.dateFormat).valueOf();
       }
     }
-    this.selectedDate = moment((this.dateValue as number));
+    this.selectedDate = moment((this._dateValue as number));
   }
 
   setViewDate(): void {
-    if (!this.dateValue) {
+    if (!this._dateValue) {
       this.viewDate = moment(this.today);
     } else {
       this.viewDate = moment(this.selectedDate);
@@ -394,8 +401,8 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, O
     if (!this.input) {
       return;
     }
-    if (this.dateValue) {
-      this.input.value = moment((this.dateValue as number)).format(this.dateFormat);
+    if (this._dateValue) {
+      this.input.value = moment((this._dateValue as number)).format(this.dateFormat);
       if (dispatchEvent) {
         this.input.dispatchEvent(new Event('input'));
       }
@@ -610,7 +617,7 @@ export class NgPersianDatepickerComponent implements OnInit, AfterContentInit, O
       this.selectedDate.minute(this.today.minute());
       this.selectedDate.second(this.today.second());
     }
-    this.dateValue = this.selectedDate.valueOf();
+    this._dateValue = this.selectedDate.valueOf();
     this.setInputValue();
     if (this.uiHideAfterSelectDate && !this.preventClose) {
       this.uiIsVisible = false;

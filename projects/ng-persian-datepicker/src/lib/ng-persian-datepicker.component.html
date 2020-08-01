@@ -123,7 +123,7 @@
       *ngIf="timeEnable"
       class="content-container time-container"
       [class.include-second]="timeShowSecond"
-      [class.include-12-hour]="timeMeridian">
+      [class.include-12-hour]="_timeMeridian">
       <div
         class="time-col hour-col the-divider">
         <div
@@ -235,7 +235,7 @@
         </div>
       </div>
       <div
-        *ngIf="timeMeridian"
+        *ngIf="_timeMeridian"
         class="time-col time-in-12-hour-format-col">
         <div
           (click)="toggleAmPm()">

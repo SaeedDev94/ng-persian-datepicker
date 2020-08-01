@@ -92,7 +92,13 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   // time
   @Input() timeEnable = true;
   @Input() timeShowSecond = true;
-  @Input() timeMeridian = false;
+  // tslint:disable-next-line:variable-name
+  _timeMeridian = false;
+  @Input()
+  set timeMeridian(value: boolean) {
+    this._timeMeridian = value;
+    this.seTimeText();
+  }
   // ui
   @Input() uiTheme = 'default';
   @Input() uiIsVisible = false;
@@ -366,7 +372,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   setHourText(): void {
     const hour = this.hour;
-    if (!this.timeMeridian) {
+    if (!this._timeMeridian) {
       this.hourText = hour.toString().padStart(2, '0');
       return;
     }

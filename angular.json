@@ -23,6 +23,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": false,
+            "allowedCommonJsDependencies": [
+              "moment-jalaali"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

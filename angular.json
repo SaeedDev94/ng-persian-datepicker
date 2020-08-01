@@ -139,6 +139,11 @@
           "options": {
             "tsConfig": "projects/ng-persian-datepicker/tsconfig.lib.json",
             "project": "projects/ng-persian-datepicker/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-persian-datepicker/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {

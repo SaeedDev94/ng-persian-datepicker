@@ -127,6 +127,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     return this.uiMonthViewModel;
   }
   @Input() uiInitViewMode: 'year' | 'month' | 'day' = 'day';
+  @Input() uiTodayBtnEnable = true;
 
   ngOnInit(): void {
     this.setId();

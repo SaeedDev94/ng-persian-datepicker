@@ -8,7 +8,7 @@ Persian datepicker for angular 8+
 ```
 npm install ng-persian-datepicker --save
 npm install moment-jalaali@^0.9.1 --save
-npm install @types/moment-jalaali@^0.7.4 --save
+npm install @types/moment-jalaali@^0.7.4 --save-dev
 ```
 
 After install, edit tsconfig.json:

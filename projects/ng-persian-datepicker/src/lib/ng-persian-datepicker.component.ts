@@ -17,9 +17,6 @@ import {
 })
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
-  constructor(
-  ) {}
-
   id: string;
   containerInlineStyle: object = {};
   weekDays: Array<string>;
@@ -129,6 +126,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   get uiMonthView(): boolean {
     return this.uiMonthViewModel;
   }
+  @Input() uiInitViewMode: 'year' | 'month' | 'day' = 'day';
 
   ngOnInit(): void {
     this.setId();
@@ -139,6 +137,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.setWeekDays();
     //
     this.setViewModes();
+    this.setInitViewMode();
     //
     this.setToday();
     this.setDateInitValue();
@@ -181,6 +180,11 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (this.viewModes.length <= this.currentViewMode) {
       this.currentViewMode = 0;
     }
+  }
+
+  setInitViewMode(): void {
+    const index = this.viewModes.indexOf(this.uiInitViewMode);
+    if (index >= 0) this.currentViewMode = index;
   }
 
   checkViewModes(): void {

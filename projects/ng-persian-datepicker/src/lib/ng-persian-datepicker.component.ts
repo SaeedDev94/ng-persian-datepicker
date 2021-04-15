@@ -234,7 +234,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   setViewDate(): void {
     if (!this._dateValue) {
-      this.viewDate = moment(this.today);
+      this.viewDate = this.dateMax ? moment(this.dateMax).endOf('jYear') : moment(this.today);
     } else {
       this.viewDate = moment(this.selectedDate);
     }

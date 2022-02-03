@@ -17,14 +17,14 @@ import {
 })
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
-  id!: string;
+  id: string = 'ng-persian-datepicker-' + Math.random().toString(36).slice(2, 11);
   containerInlineStyle: object = {};
   weekDays: string[] = [];
-  //
+
   private preventClose!: boolean;
   private uiYearViewModel = true;
   private uiMonthViewModel = true;
-  //
+
   viewDateTitle = '';
   viewModes: string[] = ['day'];
   currentViewMode = 0;
@@ -125,7 +125,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input() uiTodayBtnEnable = true;
 
   ngOnInit(): void {
-    this.setId();
     moment.loadPersian({
       usePersianDigits: false,
       dialect: 'persian-modern'
@@ -154,10 +153,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       this.input.removeEventListener('focus', this.inputEventFocusListener);
       this.input.removeEventListener('input', this.inputEventInputListener);
     }
-  }
-
-  setId(): void {
-    this.id = 'ng-persian-datepicker-' + Math.random().toString(36).slice(2, 11);
   }
 
   setWeekDays(): void {

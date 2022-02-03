@@ -27,7 +27,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   viewDateTitle: string = '';
   viewModes: string[] = ['day'];
-  currentViewMode = 0;
+  currentViewMode: number = 0;
 
   private today!: moment.Moment;
   private selectedDate!: moment.Moment;
@@ -37,16 +37,16 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   months: IMonth[] = [];
   days: IDay[][] = [];
 
-  private hour = 0;
-  private minute = 0;
-  private second = 0;
+  private hour: number = 0;
+  private minute: number = 0;
+  private second: number = 0;
 
-  hourText = '';
-  minuteText = '';
-  secondText = '';
-  amPmText = '';
+  hourText: string = '';
+  minuteText: string = '';
+  secondText: string = '';
+  amPmText: string = '';
 
-  private wasInsideClick = false;
+  private wasInsideClick: boolean = false;
   private inputEventFocusListener: any;
   private inputEventInputListener: any;
 
@@ -59,16 +59,16 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   dateValue: string | number = '';
 
   @Input()
-  dateInitValue = true;
+  dateInitValue: boolean = true;
 
   @Input()
-  dateIsGregorian = false;
+  dateIsGregorian: boolean = false;
 
   @Input()
-  dateFormat = 'jYYYY-jMM-jDD HH:mm:ss';
+  dateFormat: string = 'jYYYY-jMM-jDD HH:mm:ss';
 
   @Input()
-  dateGregorianFormat = 'YYYY-MM-DD HH:mm:ss';
+  dateGregorianFormat: string = 'YYYY-MM-DD HH:mm:ss';
 
   @Input()
   dateMin: number | null = null;
@@ -83,7 +83,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   dateOnSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
 
   // time
-  _timeEnable = true;
+  _timeEnable: boolean = true;
   @Input()
   set timeEnable(value: boolean) {
     this._timeEnable = value;
@@ -92,9 +92,9 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  timeShowSecond = true;
+  timeShowSecond: boolean = true;
 
-  _timeMeridian = false;
+  _timeMeridian: boolean = false;
   @Input()
   set timeMeridian(value: boolean) {
     this._timeMeridian = value;
@@ -103,19 +103,19 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   // ui
   @Input()
-  uiTheme = 'default';
+  uiTheme: string = 'default';
 
   @Input()
-  uiIsVisible = false;
+  uiIsVisible: boolean = false;
 
   @Input()
-  uiHideOnOutsideClick = true;
+  uiHideOnOutsideClick: boolean = true;
 
   @Input()
-  uiHideAfterSelectDate = true;
+  uiHideAfterSelectDate: boolean = true;
 
   @Input()
-  uiContainerWidth = '';
+  uiContainerWidth: string = '';
 
   @Input()
   set uiYearView(value: boolean) {
@@ -141,7 +141,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   uiInitViewMode: 'year' | 'month' | 'day' = 'day';
 
   @Input()
-  uiTodayBtnEnable = true;
+  uiTodayBtnEnable: boolean = true;
 
   ngOnInit(): void {
     moment.loadPersian({
@@ -299,9 +299,9 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   setDays(): void {
     this.days = [];
     //
-    const prevMonthDetails: Array<Array<number>> = [];
-    const currentMonthDetails: Array<Array<number>> = [];
-    const nextMonthDetails: Array<Array<number>> = [];
+    const prevMonthDetails: number[][] = [];
+    const currentMonthDetails: number[][] = [];
+    const nextMonthDetails: number[][] = [];
     //
     const prevMonth = moment(this.viewDate);
     const currentMonth = moment(this.viewDate);
@@ -532,13 +532,13 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.changeSelectedDate(moment(day.timestamp));
   }
 
-  isYearOfTodayDate(year: Array<number>): boolean {
+  isYearOfTodayDate(year: number[]): boolean {
     return (
       this.today.jYear() === year[1]
     );
   }
 
-  isYearOfSelectedDate(year: Array<number>): boolean {
+  isYearOfSelectedDate(year: number[]): boolean {
     if (!this.selectedDate) {
       return false;
     }
@@ -547,18 +547,18 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     );
   }
 
-  isYearDisabled(month: Array<number>): boolean {
+  isYearDisabled(month: number[]): boolean {
     return !this.isDateInRange(month[0], true, false);
   }
 
-  isMonthOfToday(month: Array<number>): boolean {
+  isMonthOfToday(month: number[]): boolean {
     return (
       this.today.jYear() === month[1] &&
       this.today.jMonth() === month[2]
     );
   }
 
-  isMonthOfSelectedDate(month: Array<number>): boolean {
+  isMonthOfSelectedDate(month: number[]): boolean {
     if (!this.selectedDate) {
       return false;
     }
@@ -568,18 +568,18 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     );
   }
 
-  isMonthDisabled(month: Array<number>): boolean {
+  isMonthDisabled(month: number[]): boolean {
     return !this.isDateInRange(month[0], false, true);
   }
 
-  isDayInCurrentMonth(day: Array<number>): boolean {
+  isDayInCurrentMonth(day: number[]): boolean {
     return (
       day[1] === this.viewDate.jYear() &&
       day[2] === this.viewDate.jMonth()
     );
   }
 
-  isDayOfTodayDate(day: Array<number>): boolean {
+  isDayOfTodayDate(day: number[]): boolean {
     return (
       day[1] === this.today.jYear() &&
       day[2] === this.today.jMonth() &&
@@ -587,7 +587,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     );
   }
 
-  isDayOfSelectedDate(day: Array<number>): boolean {
+  isDayOfSelectedDate(day: number[]): boolean {
     if (!this.selectedDate) {
       return false;
     }
@@ -598,12 +598,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     );
   }
 
-  isDayDisabled(day: Array<number>): boolean {
+  isDayDisabled(day: number[]): boolean {
     return !this.isDateInRange(day[0], false, false);
   }
 
   isDateInRange(date: number, isYear: boolean, isMonth: boolean): boolean {
-    const result: Array<boolean> = [];
+    const result: boolean[] = [];
     if (this.dateMin) {
       const min = moment(this.dateMin);
       if (isYear) {

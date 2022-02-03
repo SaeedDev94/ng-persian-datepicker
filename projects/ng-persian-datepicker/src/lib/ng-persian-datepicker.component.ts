@@ -181,12 +181,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   setInitViewMode(): void {
-    const index = this.viewModes.indexOf(this.uiInitViewMode);
-    if (index >= 0) this.viewModeIndex = index;
+    const index: number = this.viewModes.indexOf(this.uiInitViewMode);
+    if (index !== -1) this.viewModeIndex = index;
   }
 
   checkViewModes(): void {
-    let viewModesCount = 1;
+    let viewModesCount: number = 1;
     if (this.uiYearView) {
       viewModesCount++;
     }
@@ -249,11 +249,11 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   setYears(): void {
     this.years = [];
-    const years = moment(this.viewDate);
+    const years: moment.Moment = moment(this.viewDate);
     years.startOf('jYear');
     years.add(-6, 'jYear');
     for (let i = 0 ; i < 12 ; i++) {
-      const year = [years.valueOf(), years.jYear()];
+      const year: number[] = [years.valueOf(), years.jYear()];
       this.years.push({
         timestamp: year[0],
         value: year[1],
@@ -267,10 +267,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   setMonths(): void {
     this.months = [];
-    const months = moment(this.viewDate);
+    const months: moment.Moment = moment(this.viewDate);
     months.startOf('jYear');
     for (let i = 0 ; i < 12 ; i++) {
-      const month = [months.valueOf(), months.jYear(), months.jMonth()];
+      const month: number[] = [months.valueOf(), months.jYear(), months.jMonth()];
       this.months.push({
         timestamp: month[0],
         year: month[1],
@@ -290,16 +290,16 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     const currentMonthDetails: number[][] = [];
     const nextMonthDetails: number[][] = [];
 
-    const prevMonth = moment(this.viewDate);
-    const currentMonth = moment(this.viewDate);
-    const nextMonth = moment(this.viewDate);
+    const prevMonth: moment.Moment = moment(this.viewDate);
+    const currentMonth: moment.Moment = moment(this.viewDate);
+    const nextMonth: moment.Moment = moment(this.viewDate);
 
     prevMonth.add(-1, 'jMonth');
     nextMonth.add(1, 'jMonth');
 
-    const currentMonthDays = moment.jDaysInMonth(currentMonth.jYear(), currentMonth.jMonth());
-    const prevMonthDays = moment.jDaysInMonth(prevMonth.jYear(), prevMonth.jMonth());
-    const nextMonthDays = moment.jDaysInMonth(nextMonth.jYear(), nextMonth.jMonth());
+    const currentMonthDays: number = moment.jDaysInMonth(currentMonth.jYear(), currentMonth.jMonth());
+    const prevMonthDays: number = moment.jDaysInMonth(prevMonth.jYear(), prevMonth.jMonth());
+    const nextMonthDays: number = moment.jDaysInMonth(nextMonth.jYear(), nextMonth.jMonth());
 
     for (let i = 0 ; i < prevMonthDays ; i++) {
       prevMonthDetails.push([prevMonth.valueOf(), prevMonth.jYear(), prevMonth.jMonth(), prevMonth.jDate()]);
@@ -318,8 +318,8 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       const rowValue: IDay[] = [];
 
       for (let col = 0; col < 7 ; col++) {
-        const fromPrevMonth = (this.viewDate.day() === 6) ? 0 : (this.viewDate.day() + 1);
-        let index = ((row * 7) + col) - fromPrevMonth;
+        const fromPrevMonth: number = (this.viewDate.day() === 6) ? 0 : (this.viewDate.day() + 1);
+        let index: number = ((row * 7) + col) - fromPrevMonth;
         let day: number[] = [];
 
         if (index < 0) {
@@ -349,7 +349,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   setViewDateTitle(): void {
-    const year = this.viewDate.jYear();
+    const year: number = this.viewDate.jYear();
     switch (this.viewModes[this.viewModeIndex]) {
       case 'day':
         this.viewDateTitle = this.viewDate.format('jMMMM') + ' ' + year.toString();
@@ -417,7 +417,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   navigate(forward: boolean = true): void {
-    let skip = 1;
+    let skip: number = 1;
     if (!forward) {
       skip = skip * -1;
     }
@@ -459,7 +459,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       return;
     }
     this.viewDate = moment(year.timestamp);
-    let viewModeIndex = this.viewModes.indexOf('month');
+    let viewModeIndex: number = this.viewModes.indexOf('month');
     if (viewModeIndex === -1) {
       viewModeIndex = this.viewModes.indexOf('day');
     }
@@ -556,7 +556,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   isDateInRange(date: number, isYear: boolean, isMonth: boolean): boolean {
     const result: boolean[] = [];
     if (this.dateMin) {
-      const min = moment(this.dateMin);
+      const min: moment.Moment = moment(this.dateMin);
       if (isYear) {
         min.startOf('jYear');
       }
@@ -566,7 +566,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       result.push(min.valueOf() <= date);
     }
     if (this.dateMax) {
-      const max = moment(this.dateMax);
+      const max: moment.Moment = moment(this.dateMax);
       if (isYear) {
         max.startOf('jYear');
       }
@@ -684,7 +684,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   onOutsideClick(event: any): void {
-    const wasInsideClick = this.wasInsideClick;
+    const wasInsideClick: boolean = this.wasInsideClick;
     this.wasInsideClick = false;
     if (wasInsideClick) {
       return;

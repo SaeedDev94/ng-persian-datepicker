@@ -18,6 +18,7 @@ export class DemoComponent {
   uiMonthView: boolean = true;
   uiHideAfterSelectDate: boolean = false;
   uiHideOnOutsideClick: boolean = false;
+  uiTodayBtnEnable: boolean = true;
 
   timeEnable: boolean = true;
   timeShowSecond: boolean = true;

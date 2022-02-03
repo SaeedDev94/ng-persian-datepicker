@@ -89,6 +89,14 @@
         </label>
       </div>
       <div class="switch">
+        <p>Today button</p>
+        <label>
+          <input type="checkbox"
+                 [(ngModel)]="uiTodayBtnEnable" />
+          <span class="lever"></span>
+        </label>
+      </div>
+      <div class="switch">
         <p>Time</p>
         <label>
           <input type="checkbox"
@@ -131,6 +139,7 @@
                                [uiMonthView]="uiMonthView"
                                [uiHideAfterSelectDate]="uiHideAfterSelectDate"
                                [uiHideOnOutsideClick]="uiHideOnOutsideClick"
+                               [uiTodayBtnEnable]="uiTodayBtnEnable"
                                [timeEnable]="timeEnable"
                                [timeShowSecond]="timeShowSecond"
                                [timeMeridian]="timeMeridian"></ng-persian-datepicker>

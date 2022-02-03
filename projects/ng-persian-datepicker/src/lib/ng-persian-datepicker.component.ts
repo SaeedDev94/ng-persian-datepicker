@@ -17,6 +17,16 @@ import {
 })
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
+  constructor() {
+    moment.loadPersian({
+      usePersianDigits: false,
+      dialect: 'persian-modern'
+    });
+
+    this.setToday();
+    this.setWeekDays();
+  }
+
   private _dateValue: number = 0;
   private preventClose: boolean = false;
 
@@ -126,23 +136,16 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   uiTodayBtnEnable: boolean = true;
 
   ngOnInit(): void {
-    moment.loadPersian({
-      usePersianDigits: false,
-      dialect: 'persian-modern'
-    });
-    this.setWeekDays();
-    //
     this.setViewModes();
     this.setInitViewMode();
-    //
-    this.setToday();
+
     this.setDateInitValue();
-    //
+
     this.setSelectedDate();
     this.setViewDate();
-    //
+
     this.setTime();
-    //
+
     this.setInputValue();
     this.lockInputValue();
     this.setShowOnInputFocus();
@@ -153,6 +156,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       this.input.removeEventListener('focus', this.inputEventFocusListener);
       this.input.removeEventListener('input', this.inputEventInputListener);
     }
+  }
+
+  setToday(): void {
+    this.today = moment();
   }
 
   setWeekDays(): void {
@@ -189,10 +196,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (viewModesCount !== this.viewModes.length) {
       this.setViewModes();
     }
-  }
-
-  setToday(): void {
-    this.today = moment();
   }
 
   setDateInitValue(): void {

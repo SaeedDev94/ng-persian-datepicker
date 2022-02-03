@@ -1,67 +1,51 @@
-<div
-  class="datepicker-outer-container"
-  [class.theme-default]="uiTheme === 'default'"
-  [class.theme-blue]="uiTheme === 'blue'"
-  [class.theme-gray]="uiTheme === 'gray'"
-  [class.theme-dark]="uiTheme === 'dark'"
-  [class.theme-black]="uiTheme === 'black'"
-  [class.manual-position]="!uiAutoPosition"
-  [class.hide]="!uiIsVisible"
-  [attr.data-datepicker-id]="id"
-  [ngStyle]="containerInlineStyle">
-  <div
-    class="datepicker-inner-container">
+<div class="datepicker-outer-container"
+     [class.theme-default]="uiTheme === 'default'"
+     [class.theme-blue]="uiTheme === 'blue'"
+     [class.theme-gray]="uiTheme === 'gray'"
+     [class.theme-dark]="uiTheme === 'dark'"
+     [class.theme-black]="uiTheme === 'black'"
+     [class.hide]="!uiIsVisible"
+     [attr.data-datepicker-id]="id"
+     [ngStyle]="containerInlineStyle">
+  <div class="datepicker-inner-container">
 
     <!-- Start: navigation -->
-    <div
-      class="content-container navigation-container">
-      <div
-        class="go-back dp-btn"
-        (click)="navigate(false)">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 240.823 240.823"
-          xml:space="preserve">
-          <path
-            d="M183.189,111.816L74.892,3.555c-4.752-4.74-12.451-4.74-17.215,0c-4.752,4.74-4.752,12.439,0,17.179
-            l99.707,99.671l-99.695,99.671c-4.752,4.74-4.752,12.439,0,17.191c4.752,4.74,12.463,4.74,17.215,0l108.297-108.261
-            C187.881,124.315,187.881,116.495,183.189,111.816z"></path>
+    <div class="content-container navigation-container">
+      <div class="go-back dp-btn"
+           (click)="navigate(false)">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 240.823 240.823">
+          <path d="M183.189,111.816L74.892,3.555c-4.752-4.74-12.451-4.74-17.215,0c-4.752,4.74-4.752,12.439,0,17.179
+                   l99.707,99.671l-99.695,99.671c-4.752,4.74-4.752,12.439,0,17.191c4.752,4.74,12.463,4.74,17.215,0l108.297-108.261
+                   C187.881,124.315,187.881,116.495,183.189,111.816z"></path>
         </svg>
       </div>
-      <div
-        class="switch-view dp-btn"
-        (click)="nextViewMode()">
+      <div class="switch-view dp-btn"
+           (click)="nextViewMode()">
         <span>{{ viewDateTitle }}</span>
       </div>
-      <div
-        class="go-forward dp-btn"
-        (click)="navigate(true)">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 240.823 240.823"
-          xml:space="preserve">
-          <path
-            d="M57.633,129.007L165.93,237.268c4.752,4.74,12.451,4.74,17.215,0c4.752-4.74,4.752-12.439,0-17.179
-            l-99.707-99.671l99.695-99.671c4.752-4.74,4.752-12.439,0-17.191c-4.752-4.74-12.463-4.74-17.215,0L57.621,111.816
-            C52.942,116.507,52.942,124.327,57.633,129.007z"></path>
+      <div class="go-forward dp-btn"
+           (click)="navigate(true)">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 240.823 240.823">
+          <path d="M57.633,129.007L165.93,237.268c4.752,4.74,12.451,4.74,17.215,0c4.752-4.74,4.752-12.439,0-17.179
+                   l-99.707-99.671l99.695-99.671c4.752-4.74,4.752-12.439,0-17.191c-4.752-4.74-12.463-4.74-17.215,0L57.621,111.816
+                   C52.942,116.507,52.942,124.327,57.633,129.007z"></path>
         </svg>
       </div>
     </div>
     <!-- End: navigation -->
 
     <!-- Start: year view mode -->
-    <div
-      *ngIf="viewModes[currentViewMode] === 'year'"
-      class="years-container">
-      <div
-        class="content-container">
-        <div
-          class="year-col three-col-per-row dp-btn"
-          [class.today]="year.isYearOfTodayDate"
-          [class.selected]="year.isYearOfSelectedDate"
-          [class.disabled]="year.isYearDisabled"
-          (click)="yearClick(year)"
-          *ngFor="let year of years">
+    <div *ngIf="viewModes[currentViewMode] === 'year'"
+         class="years-container">
+      <div class="content-container">
+        <div class="year-col three-col-per-row dp-btn"
+             [class.today]="year.isYearOfTodayDate"
+             [class.selected]="year.isYearOfSelectedDate"
+             [class.disabled]="year.isYearDisabled"
+             (click)="yearClick(year)"
+             *ngFor="let year of years">
           <span>{{ year.value }}</span>
         </div>
       </div>
@@ -69,18 +53,15 @@
     <!-- End: year view mode -->
 
     <!-- Start: month view mode -->
-    <div
-      *ngIf="viewModes[currentViewMode] === 'month'"
-      class="months-container">
-      <div
-        class="content-container">
-        <div
-          class="month-col three-col-per-row dp-btn"
-          [class.today]="month.isMonthOfTodayDate"
-          [class.selected]="month.isMonthOfSelectedDate"
-          [class.disabled]="month.isMonthDisabled"
-          (click)="monthClick(month)"
-          *ngFor="let month of months">
+    <div *ngIf="viewModes[currentViewMode] === 'month'"
+         class="months-container">
+      <div class="content-container">
+        <div class="month-col three-col-per-row dp-btn"
+             [class.today]="month.isMonthOfTodayDate"
+             [class.selected]="month.isMonthOfSelectedDate"
+             [class.disabled]="month.isMonthDisabled"
+             (click)="monthClick(month)"
+             *ngFor="let month of months">
           <span>{{ month.indexValue | monthText }}</span>
         </div>
       </div>
@@ -88,29 +69,23 @@
     <!-- End: month view mode -->
 
     <!-- Start: day view mode -->
-    <div
-      *ngIf="viewModes[currentViewMode] === 'day'"
-      class="days-container">
-      <div
-        class="content-container week-days">
-        <div
-          class="day-col"
-          *ngFor="let weekDay of weekDays">
+    <div *ngIf="viewModes[currentViewMode] === 'day'"
+         class="days-container">
+      <div class="content-container week-days">
+        <div class="day-col"
+             *ngFor="let weekDay of weekDays">
           <span>{{ weekDay }}</span>
         </div>
       </div>
-      <div
-        class="content-container month-days">
-        <ng-container
-          *ngFor="let row of days">
-          <div
-            class="day-col dp-btn"
-            [class.other-month]="!day.isDayInCurrentMonth"
-            [class.today]="day.isDayOfTodayDate"
-            [class.selected]="day.isDayOfSelectedDate"
-            [class.disabled]="day.isDayDisabled"
-            (click)="dayClick(day)"
-            *ngFor="let day of row">
+      <div class="content-container month-days">
+        <ng-container *ngFor="let row of days">
+          <div class="day-col dp-btn"
+               [class.other-month]="!day.isDayInCurrentMonth"
+               [class.today]="day.isDayOfTodayDate"
+               [class.selected]="day.isDayOfSelectedDate"
+               [class.disabled]="day.isDayDisabled"
+               (click)="dayClick(day)"
+               *ngFor="let day of row">
             <span>{{ day.value }}</span>
           </div>
         </ng-container>
@@ -119,145 +94,110 @@
     <!-- End: day view mode -->
 
     <!-- Start: time picker -->
-    <div
-      *ngIf="_timeEnable"
-      class="content-container time-container"
-      [class.include-second]="timeShowSecond"
-      [class.include-12-hour]="_timeMeridian">
+    <div *ngIf="_timeEnable"
+         class="content-container time-container"
+         [class.include-second]="timeShowSecond"
+         [class.include-12-hour]="_timeMeridian">
       <div
         class="time-col hour-col the-divider">
-        <div
-          (click)="increaseHour()"
-          (mousedown)="setIncreaseHourInterval()"
-          (mouseup)="clearIncreaseHourInterval()"
-          (touchstart)="setIncreaseHourInterval()"
-          (touchend)="clearIncreaseHourInterval()"
-          (touchcancel)="clearIncreaseHourInterval()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255"
-            xml:space="preserve">
-            <polygon
-              points="0,191.25 127.5,63.75 255,191.25"></polygon>
+        <div (click)="increaseHour()"
+             (mousedown)="setIncreaseHourInterval()"
+             (mouseup)="clearIncreaseHourInterval()"
+             (touchstart)="setIncreaseHourInterval()"
+             (touchend)="clearIncreaseHourInterval()"
+             (touchcancel)="clearIncreaseHourInterval()">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 255 255">
+            <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
           </svg>
         </div>
         <div>
           <span>{{ hourText }}</span>
         </div>
-        <div
-          (click)="decreaseHour()"
-          (mousedown)="setDecreaseHourInterval()"
-          (mouseup)="clearDecreaseHourInterval()"
-          (touchstart)="setDecreaseHourInterval()"
-          (touchend)="clearDecreaseHourInterval()"
-          (touchcancel)="clearDecreaseHourInterval()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255"
-            xml:space="preserve">
-            <polygon
-              points="0,63.75 127.5,191.25 255,63.75"></polygon>
+        <div (click)="decreaseHour()"
+             (mousedown)="setDecreaseHourInterval()"
+             (mouseup)="clearDecreaseHourInterval()"
+             (touchstart)="setDecreaseHourInterval()"
+             (touchend)="clearDecreaseHourInterval()"
+             (touchcancel)="clearDecreaseHourInterval()">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 255 255">
+            <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
           </svg>
         </div>
       </div>
-      <div
-        class="time-col minute-col"
-        [class.the-divider]="timeShowSecond">
-        <div
-          (click)="increaseMinute()"
-          (mousedown)="setIncreaseMinuteInterval()"
-          (mouseup)="clearIncreaseMinuteInterval()"
-          (touchstart)="setIncreaseMinuteInterval()"
-          (touchend)="clearIncreaseMinuteInterval()"
-          (touchcancel)="clearIncreaseMinuteInterval()">
+      <div class="time-col minute-col"
+           [class.the-divider]="timeShowSecond">
+        <div (click)="increaseMinute()"
+             (mousedown)="setIncreaseMinuteInterval()"
+             (mouseup)="clearIncreaseMinuteInterval()"
+             (touchstart)="setIncreaseMinuteInterval()"
+             (touchend)="clearIncreaseMinuteInterval()"
+             (touchcancel)="clearIncreaseMinuteInterval()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255"
-            xml:space="preserve">
-            <polygon
-              points="0,191.25 127.5,63.75 255,191.25"></polygon>
+            viewBox="0 0 255 255">
+            <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
           </svg>
         </div>
         <div>
           <span>{{ minuteText }}</span>
         </div>
-        <div
-          (click)="decreaseMinute()"
-          (mousedown)="setDecreaseMinuteInterval()"
-          (mouseup)="clearDecreaseMinuteInterval()"
-          (touchstart)="setDecreaseMinuteInterval()"
-          (touchend)="clearDecreaseMinuteInterval()"
-          (touchcancel)="clearDecreaseMinuteInterval()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255"
-            xml:space="preserve">
-            <polygon
-              points="0,63.75 127.5,191.25 255,63.75"></polygon>
+        <div (click)="decreaseMinute()"
+             (mousedown)="setDecreaseMinuteInterval()"
+             (mouseup)="clearDecreaseMinuteInterval()"
+             (touchstart)="setDecreaseMinuteInterval()"
+             (touchend)="clearDecreaseMinuteInterval()"
+             (touchcancel)="clearDecreaseMinuteInterval()">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 255 255">
+            <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
           </svg>
         </div>
       </div>
-      <div
-        *ngIf="timeShowSecond"
-        class="time-col second-col">
-        <div
-          (click)="increaseSecond()"
-          (mousedown)="setIncreaseSecondInterval()"
-          (mouseup)="clearIncreaseSecondInterval()"
-          (touchstart)="setIncreaseSecondInterval()"
-          (touchend)="clearIncreaseSecondInterval()"
-          (touchcancel)="clearIncreaseSecondInterval()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255"
-            xml:space="preserve">
-            <polygon
-              points="0,191.25 127.5,63.75 255,191.25"></polygon>
+      <div *ngIf="timeShowSecond"
+           class="time-col second-col">
+        <div (click)="increaseSecond()"
+             (mousedown)="setIncreaseSecondInterval()"
+             (mouseup)="clearIncreaseSecondInterval()"
+             (touchstart)="setIncreaseSecondInterval()"
+             (touchend)="clearIncreaseSecondInterval()"
+             (touchcancel)="clearIncreaseSecondInterval()">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 255 255">
+            <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
           </svg>
         </div>
         <div>
           <span>{{ secondText }}</span>
         </div>
-        <div
-          (click)="decreaseSecond()"
-          (mousedown)="setDecreaseSecondInterval()"
-          (mouseup)="clearDecreaseSecondInterval()"
-          (touchstart)="setDecreaseSecondInterval()"
-          (touchend)="clearDecreaseSecondInterval()"
-          (touchcancel)="clearDecreaseSecondInterval()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255"
-            xml:space="preserve">
-            <polygon
-              points="0,63.75 127.5,191.25 255,63.75"></polygon>
+        <div (click)="decreaseSecond()"
+             (mousedown)="setDecreaseSecondInterval()"
+             (mouseup)="clearDecreaseSecondInterval()"
+             (touchstart)="setDecreaseSecondInterval()"
+             (touchend)="clearDecreaseSecondInterval()"
+             (touchcancel)="clearDecreaseSecondInterval()">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 255 255">
+            <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
           </svg>
         </div>
       </div>
-      <div
-        *ngIf="_timeMeridian"
-        class="time-col time-in-12-hour-format-col">
-        <div
-          (click)="toggleAmPm()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255"
-            xml:space="preserve">
-            <polygon
-              points="0,191.25 127.5,63.75 255,191.25"></polygon>
+      <div *ngIf="_timeMeridian"
+           class="time-col time-in-12-hour-format-col">
+        <div (click)="toggleAmPm()">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 255 255">
+            <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
           </svg>
         </div>
         <div>
           <span>{{ amPmText }}</span>
         </div>
-        <div
-          (click)="toggleAmPm()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255"
-            xml:space="preserve">
-            <polygon
-              points="0,63.75 127.5,191.25 255,63.75"></polygon>
+        <div (click)="toggleAmPm()">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 255 255">
+            <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
           </svg>
         </div>
       </div>
@@ -265,12 +205,10 @@
     <!-- End: time picker -->
 
     <!-- Start: toolbox -->
-    <div
-      class="the-toolbox">
-      <div
-        *ngIf="uiTodayBtnEnable"
-        class="the-item dp-btn"
-        (click)="selectToday()">
+    <div class="the-toolbox">
+      <div *ngIf="uiTodayBtnEnable"
+           class="the-item dp-btn"
+           (click)="selectToday()">
         <span>امروز</span>
       </div>
     </div>

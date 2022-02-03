@@ -17,21 +17,21 @@ import {
 })
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
-  id: string;
+  id!: string;
   containerInlineStyle: object = {};
-  weekDays: Array<string>;
+  weekDays: string[] = [];
   //
-  private preventClose: boolean;
+  private preventClose!: boolean;
   private uiYearViewModel = true;
   private uiMonthViewModel = true;
   //
   viewDateTitle = '';
-  viewModes: Array<string> = ['day'];
+  viewModes: string[] = ['day'];
   currentViewMode = 0;
   //
-  private today: moment.Moment;
-  private selectedDate: moment.Moment;
-  private viewDate: moment.Moment;
+  private today!: moment.Moment;
+  private selectedDate!: moment.Moment;
+  private viewDate!: moment.Moment;
   //
   years: YearModel[] = [];
   months: MonthModel[] = [];
@@ -71,19 +71,17 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   private inputEventFocusListener: any;
   private inputEventInputListener: any;
   //
-  private inputPosition: Array<number>;
-  private inputSize: Array<number>;
-  @Input() input: HTMLInputElement = null;
-  // date
-  // tslint:disable-next-line:variable-name
+  @Input()
+  input: HTMLInputElement | null = null;
+
   private _dateValue: string | number = '';
   @Input() dateValue: string | number = '';
   @Input() dateInitValue = true;
   @Input() dateIsGregorian = false;
   @Input() dateFormat = 'jYYYY-jMM-jDD HH:mm:ss';
   @Input() dateGregorianFormat = 'YYYY-MM-DD HH:mm:ss';
-  @Input() dateMin: number = null;
-  @Input() dateMax: number = null;
+  @Input() dateMin: number | null = null;
+  @Input() dateMax: number | null = null;
   @Input() dateOnInit: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
   @Input() dateOnSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
   // time
@@ -95,7 +93,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.seTimeText();
   }
   @Input() timeShowSecond = true;
-  // tslint:disable-next-line:variable-name
   _timeMeridian = false;
   @Input()
   set timeMeridian(value: boolean) {
@@ -107,8 +104,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input() uiIsVisible = false;
   @Input() uiHideOnOutsideClick = true;
   @Input() uiHideAfterSelectDate = true;
-  @Input() uiAutoPosition = false;
-  @Input() uiPositionOffset: Array<number> = [0, 0];
   @Input() uiContainerWidth = '';
   @Input()
   set uiYearView(value: boolean) {
@@ -162,12 +157,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   setId(): void {
-    this.id = 'ng-persian-datepicker-' + Math.random().toString(36).substr(2, 9);
+    this.id = 'ng-persian-datepicker-' + Math.random().toString(36).slice(2, 11);
   }
 
   setWeekDays(): void {
     this.weekDays = moment.weekdaysMin();
-    this.weekDays.unshift(this.weekDays.pop());
+    this.weekDays.unshift(this.weekDays.pop()!);
   }
 
   setViewModes(): void {
@@ -323,7 +318,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       for (let col = 0; col < 7 ; col++) {
         const fromPrevMonth = (this.viewDate.day() === 6) ? 0 : (this.viewDate.day() + 1);
         let index = ((row * 7) + col) - fromPrevMonth;
-        let day: Array<number> = null;
+        let day: number[] = [];
         if (index < 0) {
           index = prevMonthDetails.length - (fromPrevMonth - col);
           day = prevMonthDetails[index];
@@ -443,7 +438,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
     this.input.setAttribute('data-datepicker-id', this.id);
     this.inputEventFocusListener = () => {
-      this.calcInputPositionAndSize();
       this.uiIsVisible = true;
     };
     this.input.addEventListener('focus', this.inputEventFocusListener);
@@ -795,49 +789,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   clearDecreaseSecondInterval(): void {
     clearTimeout(this.decreaseSecondTimeout);
     clearInterval(this.decreaseSecondInterval);
-  }
-
-  setContainerInlineStyle(): void {
-    if (!this.uiAutoPosition) {
-      return;
-    }
-    const containerWidth = {
-      width: '200px'
-    };
-    const containerPosition = {
-      position: 'absolute',
-      top: String(this.uiPositionOffset[0]) + 'px',
-      left: String(this.uiPositionOffset[1]) + 'px',
-    };
-    if (this.input && this.inputPosition) {
-      containerWidth.width = String(this.inputSize[0]) + 'px';
-      containerPosition.top = String(this.inputPosition[0] + this.inputSize[1] + this.uiPositionOffset[0]) + 'px';
-      containerPosition.left = String(this.inputPosition[1] + this.uiPositionOffset[1]) + 'px';
-    }
-    if (this.uiContainerWidth) {
-      containerWidth.width = this.uiContainerWidth;
-    }
-    this.containerInlineStyle = Object.assign(containerWidth, containerPosition);
-  }
-
-  @HostListener('window:resize')
-  calcInputPositionAndSize(): void {
-    if (!this.input) {
-      return;
-    }
-    this.inputPosition = [0, 0];
-    let element: HTMLElement = this.input;
-    while (element) {
-      this.inputPosition[0] += element.offsetTop || 0;
-      this.inputPosition[1] += element.offsetLeft || 0;
-      element = element.offsetParent as HTMLElement;
-    }
-    //
-    this.inputSize = [0, 0];
-    this.inputSize[0] = this.input.getBoundingClientRect().width;
-    this.inputSize[1] = this.input.getBoundingClientRect().height;
-    //
-    this.setContainerInlineStyle();
   }
 
   @HostListener('click')

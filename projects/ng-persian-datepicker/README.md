@@ -87,9 +87,6 @@ complete config reference:
 | uiHideAfterSelectDate  | boolean          | hide datepicker after date select. default: `true`                                                                   | true                                                                   |
 | uiYearView             | boolean          | if set to true year view will enable. default: `true`                                                                | true                                                                   |
 | uiMonthView            | boolean          | if set to true month view will enable. default: `true`                                                               | true                                                                   |
-| uiAutoPosition         | boolean          | datepicker absolute position (beta: not working as expected in every cases). default: `false`                        | true                                                                   |
-| uiPositionOffset       | Array<number>    | modify datepicker uiAutoPosition. default: `[0, 0]`                                                                  | [15, 10]                                                               |
-| uiContainerWidth       | string           | if uiAutoPosition is true you can set container width. default: `''`                                                 | '200px'                                                                |
 | uiInitViewMode         | string           | Initial view mode ('year', 'month', 'day'). default: `'day'`                                                         | 'year'                                                                 |
 | uiTodayBtnEnable       | boolean          | Show go to today btn or not                                                                                          | false                                                                  |
 

@@ -29,19 +29,4 @@ export interface UiConfigModel {
    * @description if set to true month view will enable
    */
   monthView?: boolean;
-
-  /**
-   * @description datepicker absolute position (always under input)
-   */
-  autoPosition?: boolean;
-
-  /**
-   * @description modify datepicker autoPosition
-   */
-  positionOffset?: Array<number>;
-
-  /**
-   * @description if autoPosition is true you can set container width (for example {containerWidth: '200px'})
-   */
-  containerWidth?: string;
 }

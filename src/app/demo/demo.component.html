@@ -15,7 +15,7 @@
                  name="theme"
                  class="with-gap"
                  [value]="'default'"
-                 [(ngModel)]="config.ui!.theme!" />
+                 [(ngModel)]="uiTheme" />
           <span>Default</span>
         </label>
         <label>
@@ -23,7 +23,7 @@
                  name="theme"
                  class="with-gap"
                  [value]="'blue'"
-                 [(ngModel)]="config.ui!.theme!" />
+                 [(ngModel)]="uiTheme" />
           <span>Blue</span>
         </label>
         <label>
@@ -31,7 +31,7 @@
                  name="theme"
                  class="with-gap"
                  [value]="'gray'"
-                 [(ngModel)]="config.ui!.theme!" />
+                 [(ngModel)]="uiTheme" />
           <span>Gray</span>
         </label>
         <label>
@@ -39,7 +39,7 @@
                  name="theme"
                  class="with-gap"
                  [value]="'dark'"
-                 [(ngModel)]="config.ui!.theme!" />
+                 [(ngModel)]="uiTheme" />
           <span>Dark</span>
         </label>
         <label>
@@ -47,7 +47,7 @@
                  name="theme"
                  class="with-gap"
                  [value]="'black'"
-                 [(ngModel)]="config.ui!.theme!" />
+                 [(ngModel)]="uiTheme" />
           <span>Black</span>
         </label>
       </div>
@@ -61,14 +61,14 @@
         </label>
         <label>
           <input type="checkbox"
-                 [checked]="config.ui!.monthView!"
-                 [(ngModel)]="config.ui!.monthView!" />
+                 [checked]="uiMonthView"
+                 [(ngModel)]="uiMonthView" />
           <span>Month</span>
         </label>
         <label>
           <input type="checkbox"
-                 [checked]="config.ui!.yearView!"
-                 [(ngModel)]="config.ui!.yearView!" />
+                 [checked]="uiYearView"
+                 [(ngModel)]="uiYearView" />
           <span>Year</span>
         </label>
       </div>
@@ -76,7 +76,7 @@
         <p>Hide after select date</p>
         <label>
           <input type="checkbox"
-                 [(ngModel)]="config.ui!.hideAfterSelectDate!" />
+                 [(ngModel)]="uiHideAfterSelectDate" />
           <span class="lever"></span>
         </label>
       </div>
@@ -84,7 +84,7 @@
         <p>Hide on outside click</p>
         <label>
           <input type="checkbox"
-                 [(ngModel)]="config.ui!.hideOnOutsideClick!" />
+                 [(ngModel)]="uiHideOnOutsideClick" />
           <span class="lever"></span>
         </label>
       </div>
@@ -92,7 +92,7 @@
         <p>Time</p>
         <label>
           <input type="checkbox"
-                 [(ngModel)]="config.time!.enable!" />
+                 [(ngModel)]="timeEnable" />
           <span class="lever"></span>
         </label>
       </div>
@@ -100,8 +100,8 @@
         <p>Show second</p>
         <label>
           <input type="checkbox"
-                 [disabled]="!config.time!.enable!"
-                 [(ngModel)]="config.time!.showSecond!" />
+                 [disabled]="!timeEnable"
+                 [(ngModel)]="timeShowSecond" />
           <span class="lever"></span>
         </label>
       </div>
@@ -109,8 +109,8 @@
         <p>Meridian</p>
         <label>
           <input type="checkbox"
-                 [disabled]="!config.time!.enable!"
-                 [(ngModel)]="config.time!.meridian!" />
+                 [disabled]="!timeEnable"
+                 [(ngModel)]="timeMeridian" />
           <span class="lever"></span>
         </label>
       </div>
@@ -123,17 +123,17 @@
       </div>
       <div class="datepicker-container">
         <ng-persian-datepicker [input]="datepickerInput"
-                               [dateValue]="config.date!.value!"
-                               [dateOnSelect]="config.date!.onSelect!"
-                               [uiTheme]="config.ui!.theme!"
-                               [uiIsVisible]="config.ui!.isVisible!"
-                               [uiHideAfterSelectDate]="config.ui!.hideAfterSelectDate!"
-                               [uiHideOnOutsideClick]="config.ui!.hideOnOutsideClick!"
-                               [uiYearView]="config.ui!.yearView!"
-                               [uiMonthView]="config.ui!.monthView!"
-                               [timeEnable]="config.time!.enable!"
-                               [timeShowSecond]="config.time!.showSecond!"
-                               [timeMeridian]="config.time!.meridian!"></ng-persian-datepicker>
+                               [dateValue]="dateValue"
+                               [dateOnSelect]="dateOnSelect"
+                               [uiIsVisible]="uiIsVisible"
+                               [uiTheme]="uiTheme"
+                               [uiYearView]="uiYearView"
+                               [uiMonthView]="uiMonthView"
+                               [uiHideAfterSelectDate]="uiHideAfterSelectDate"
+                               [uiHideOnOutsideClick]="uiHideOnOutsideClick"
+                               [timeEnable]="timeEnable"
+                               [timeShowSecond]="timeShowSecond"
+                               [timeMeridian]="timeMeridian"></ng-persian-datepicker>
       </div>
     </div>
   </div>

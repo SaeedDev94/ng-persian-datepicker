@@ -17,23 +17,27 @@ import {
 })
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
-  id: string = 'ng-persian-datepicker-' + Math.random().toString(36).slice(2, 11);
-  containerInlineStyle: object = {};
-  weekDays: string[] = [];
-
   private _dateValue: number = 0;
   private preventClose: boolean = false;
 
   private uiYearView: boolean = true;
   private uiMonthView: boolean = true;
 
-  viewDateTitle: string = '';
-  viewModes: string[] = ['day'];
-  currentViewMode: number = 0;
-
   private today!: moment.Moment;
   private selectedDate!: moment.Moment;
   private viewDate!: moment.Moment;
+
+  private wasInsideClick: boolean = false;
+  private inputEventFocusListener: any;
+  private inputEventInputListener: any;
+
+  id: string = 'ng-persian-datepicker-' + Math.random().toString(36).slice(2, 11);
+  containerInlineStyle: object = {};
+  weekDays: string[] = [];
+
+  viewDateTitle: string = '';
+  viewModes: string[] = ['day'];
+  currentViewMode: number = 0;
 
   years: IYear[] = [];
   months: IMonth[] = [];
@@ -42,10 +46,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   hour: number = 0;
   minute: number = 0;
   second: number = 0;
-
-  private wasInsideClick: boolean = false;
-  private inputEventFocusListener: any;
-  private inputEventInputListener: any;
 
   @Input()
   input: HTMLInputElement | null = null;

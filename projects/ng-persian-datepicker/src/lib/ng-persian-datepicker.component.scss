@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "theme";
 
 .datepicker-outer-container {
@@ -58,7 +59,7 @@
       .day-col {
         display: inline-block;
         vertical-align: top;
-        width: (100% / 7);
+        width: math.div(100%, 7);
         padding: 3px 0;
       }
 
@@ -78,7 +79,7 @@
     .three-col-per-row {
       display: inline-block;
       vertical-align: top;
-      width: (100% / 3);
+      width: math.div(100%, 3);
       padding: 9px 0;
       margin: 1px 0;
       cursor: pointer;
@@ -93,7 +94,7 @@
       .time-col {
         display: inline-block;
         vertical-align: top;
-        width: (100% / 2);
+        width: math.div(100%, 2);
         position: relative;
         cursor: pointer;
         div {
@@ -115,19 +116,19 @@
 
       &.include-second {
         .time-col {
-          width: (100% / 3);
+          width: math.div(100%, 3);
         }
 
         &.include-12-hour {
           .time-col {
-            width: (100% / 4);
+            width: math.div(100%, 4);
           }
         }
       }
 
       &.include-12-hour {
         .time-col {
-          width: (100% / 3);
+          width: math.div(100%, 3);
         }
       }
     }

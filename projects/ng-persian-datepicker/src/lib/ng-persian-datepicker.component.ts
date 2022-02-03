@@ -17,6 +17,8 @@ import {
 })
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
+  private _dateValue: number = 0;
+
   id: string = 'ng-persian-datepicker-' + Math.random().toString(36).slice(2, 11);
   containerInlineStyle: object = {};
   weekDays: string[] = [];
@@ -47,8 +49,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   @Input()
   input: HTMLInputElement | null = null;
-
-  private _dateValue: string | number = '';
 
   @Input()
   dateValue: string | number = '';
@@ -208,7 +208,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       return;
     }
     this._dateValue = this.today.valueOf();
-    this.selectedDate = moment((this._dateValue as number));
+    this.selectedDate = moment(this._dateValue);
     this.dateOnInit(
       String(this.selectedDate.format(this.dateFormat)),
       String(this.selectedDate.format(this.dateGregorianFormat)),
@@ -220,15 +220,18 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (!this.dateValue) {
       return;
     }
-    this._dateValue = this.dateValue;
-    if (typeof this._dateValue === 'string') {
+
+    if (typeof this.dateValue === 'string') {
       if (this.dateIsGregorian) {
-        this._dateValue = moment((this._dateValue as string), this.dateGregorianFormat).valueOf();
+        this._dateValue = moment(this.dateValue, this.dateGregorianFormat).valueOf();
       } else {
-        this._dateValue = moment((this._dateValue as string), this.dateFormat).valueOf();
+        this._dateValue = moment(this.dateValue, this.dateFormat).valueOf();
       }
+    } else {
+      this._dateValue = this.dateValue;
     }
-    this.selectedDate = moment((this._dateValue as number));
+
+    this.selectedDate = moment(this._dateValue);
   }
 
   setViewDate(): void {
@@ -378,7 +381,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       return;
     }
     if (this._dateValue) {
-      this.input.value = moment((this._dateValue as number)).format(this.dateFormat);
+      this.input.value = moment(this._dateValue).format(this.dateFormat);
       if (dispatchEvent) {
         this.input.dispatchEvent(new Event('input'));
       }

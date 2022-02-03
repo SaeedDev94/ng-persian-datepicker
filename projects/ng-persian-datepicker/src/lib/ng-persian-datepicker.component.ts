@@ -47,7 +47,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   viewDateTitle: string = '';
   viewModes: string[] = [];
-  currentViewMode: number = 0;
+  viewModeIndex: number = 0;
 
   years: IYear[] = [];
   months: IMonth[] = [];
@@ -175,14 +175,14 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (this.uiYearView) {
       this.viewModes.push('year');
     }
-    if (this.viewModes.length <= this.currentViewMode) {
-      this.currentViewMode = 0;
+    if (this.viewModes.length <= this.viewModeIndex) {
+      this.viewModeIndex = 0;
     }
   }
 
   setInitViewMode(): void {
     const index = this.viewModes.indexOf(this.uiInitViewMode);
-    if (index >= 0) this.currentViewMode = index;
+    if (index >= 0) this.viewModeIndex = index;
   }
 
   checkViewModes(): void {
@@ -346,7 +346,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   setViewDateTitle(): void {
     const year = this.viewDate.jYear();
-    switch (this.viewModes[this.currentViewMode]) {
+    switch (this.viewModes[this.viewModeIndex]) {
       case 'day':
         this.viewDateTitle = this.viewDate.format('jMMMM') + ' ' + year.toString();
         break;
@@ -417,7 +417,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (!forward) {
       skip = skip * -1;
     }
-    switch (this.viewModes[this.currentViewMode]) {
+    switch (this.viewModes[this.viewModeIndex]) {
       case 'day':
         this.skipViewDate(skip, 2);
         break;
@@ -435,12 +435,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (this.viewModes.length === 1) {
       return;
     }
-    if (this.viewModes.length <= (this.currentViewMode + 1)) {
-      this.currentViewMode = 0;
+    if (this.viewModes.length <= (this.viewModeIndex + 1)) {
+      this.viewModeIndex = 0;
       this.setViewDateTitle();
       return;
     }
-    this.currentViewMode++;
+    this.viewModeIndex++;
     this.setViewDateTitle();
   }
 
@@ -459,7 +459,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (viewModeIndex === -1) {
       viewModeIndex = this.viewModes.indexOf('day');
     }
-    this.currentViewMode = viewModeIndex;
+    this.viewModeIndex = viewModeIndex;
     this.onChangeViewDate();
   }
 
@@ -468,7 +468,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       return;
     }
     this.viewDate = moment(month.timestamp);
-    this.currentViewMode = this.viewModes.indexOf('day');
+    this.viewModeIndex = this.viewModes.indexOf('day');
     this.onChangeViewDate();
   }
 

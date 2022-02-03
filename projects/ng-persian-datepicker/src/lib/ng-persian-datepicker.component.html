@@ -37,7 +37,7 @@
     <!-- End: navigation -->
 
     <!-- Start: year view mode -->
-    <div *ngIf="viewModes[currentViewMode] === 'year'"
+    <div *ngIf="viewModes[viewModeIndex] === 'year'"
          class="years-container">
       <div class="content-container">
         <div class="year-col three-col-per-row dp-btn"
@@ -53,7 +53,7 @@
     <!-- End: year view mode -->
 
     <!-- Start: month view mode -->
-    <div *ngIf="viewModes[currentViewMode] === 'month'"
+    <div *ngIf="viewModes[viewModeIndex] === 'month'"
          class="months-container">
       <div class="content-container">
         <div class="month-col three-col-per-row dp-btn"
@@ -69,7 +69,7 @@
     <!-- End: month view mode -->
 
     <!-- Start: day view mode -->
-    <div *ngIf="viewModes[currentViewMode] === 'day'"
+    <div *ngIf="viewModes[viewModeIndex] === 'day'"
          class="days-container">
       <div class="content-container week-days">
         <div class="day-col"

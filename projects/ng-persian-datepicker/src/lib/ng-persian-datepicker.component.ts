@@ -285,22 +285,22 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   setDays(): void {
     this.days = [];
-    //
+
     const prevMonthDetails: number[][] = [];
     const currentMonthDetails: number[][] = [];
     const nextMonthDetails: number[][] = [];
-    //
+
     const prevMonth = moment(this.viewDate);
     const currentMonth = moment(this.viewDate);
     const nextMonth = moment(this.viewDate);
-    //
+
     prevMonth.add(-1, 'jMonth');
     nextMonth.add(1, 'jMonth');
-    //
+
     const currentMonthDays = moment.jDaysInMonth(currentMonth.jYear(), currentMonth.jMonth());
     const prevMonthDays = moment.jDaysInMonth(prevMonth.jYear(), prevMonth.jMonth());
     const nextMonthDays = moment.jDaysInMonth(nextMonth.jYear(), nextMonth.jMonth());
-    //
+
     for (let i = 0 ; i < prevMonthDays ; i++) {
       prevMonthDetails.push([prevMonth.valueOf(), prevMonth.jYear(), prevMonth.jMonth(), prevMonth.jDate()]);
       prevMonth.add(1, 'day');
@@ -313,13 +313,15 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       nextMonthDetails.push([nextMonth.valueOf(), nextMonth.jYear(), nextMonth.jMonth(), nextMonth.jDate()]);
       nextMonth.add(1, 'day');
     }
-    //
+
     for (let row = 0; row < 6 ; row++) {
       const rowValue: IDay[] = [];
+
       for (let col = 0; col < 7 ; col++) {
         const fromPrevMonth = (this.viewDate.day() === 6) ? 0 : (this.viewDate.day() + 1);
         let index = ((row * 7) + col) - fromPrevMonth;
         let day: number[] = [];
+
         if (index < 0) {
           index = prevMonthDetails.length - (fromPrevMonth - col);
           day = prevMonthDetails[index];
@@ -329,6 +331,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
         } else {
           day = currentMonthDetails[index];
         }
+
         rowValue.push({
           timestamp: day[0],
           year: day[1],
@@ -340,6 +343,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
           isDayDisabled: this.isDayDisabled(day)
         });
       }
+
       this.days.push(rowValue);
     }
   }

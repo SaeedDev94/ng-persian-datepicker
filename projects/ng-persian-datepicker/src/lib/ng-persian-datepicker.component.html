@@ -100,12 +100,7 @@
          [class.include-12-hour]="_timeMeridian">
       <div
         class="time-col hour-col the-divider">
-        <div (click)="increaseHour()"
-             (mousedown)="setIncreaseHourInterval()"
-             (mouseup)="clearIncreaseHourInterval()"
-             (touchstart)="setIncreaseHourInterval()"
-             (touchend)="clearIncreaseHourInterval()"
-             (touchcancel)="clearIncreaseHourInterval()">
+        <div (click)="increaseHour()">
           <svg xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 255 255">
             <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
@@ -114,12 +109,7 @@
         <div>
           <span>{{ hourText }}</span>
         </div>
-        <div (click)="decreaseHour()"
-             (mousedown)="setDecreaseHourInterval()"
-             (mouseup)="clearDecreaseHourInterval()"
-             (touchstart)="setDecreaseHourInterval()"
-             (touchend)="clearDecreaseHourInterval()"
-             (touchcancel)="clearDecreaseHourInterval()">
+        <div (click)="decreaseHour()">
           <svg xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 255 255">
             <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
@@ -128,12 +118,7 @@
       </div>
       <div class="time-col minute-col"
            [class.the-divider]="timeShowSecond">
-        <div (click)="increaseMinute()"
-             (mousedown)="setIncreaseMinuteInterval()"
-             (mouseup)="clearIncreaseMinuteInterval()"
-             (touchstart)="setIncreaseMinuteInterval()"
-             (touchend)="clearIncreaseMinuteInterval()"
-             (touchcancel)="clearIncreaseMinuteInterval()">
+        <div (click)="increaseMinute()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 255 255">
@@ -143,12 +128,7 @@
         <div>
           <span>{{ minuteText }}</span>
         </div>
-        <div (click)="decreaseMinute()"
-             (mousedown)="setDecreaseMinuteInterval()"
-             (mouseup)="clearDecreaseMinuteInterval()"
-             (touchstart)="setDecreaseMinuteInterval()"
-             (touchend)="clearDecreaseMinuteInterval()"
-             (touchcancel)="clearDecreaseMinuteInterval()">
+        <div (click)="decreaseMinute()">
           <svg xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 255 255">
             <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
@@ -157,12 +137,7 @@
       </div>
       <div *ngIf="timeShowSecond"
            class="time-col second-col">
-        <div (click)="increaseSecond()"
-             (mousedown)="setIncreaseSecondInterval()"
-             (mouseup)="clearIncreaseSecondInterval()"
-             (touchstart)="setIncreaseSecondInterval()"
-             (touchend)="clearIncreaseSecondInterval()"
-             (touchcancel)="clearIncreaseSecondInterval()">
+        <div (click)="increaseSecond()">
           <svg xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 255 255">
             <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
@@ -171,12 +146,7 @@
         <div>
           <span>{{ secondText }}</span>
         </div>
-        <div (click)="decreaseSecond()"
-             (mousedown)="setDecreaseSecondInterval()"
-             (mouseup)="clearDecreaseSecondInterval()"
-             (touchstart)="setDecreaseSecondInterval()"
-             (touchend)="clearDecreaseSecondInterval()"
-             (touchcancel)="clearDecreaseSecondInterval()">
+        <div (click)="decreaseSecond()">
           <svg xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 255 255">
             <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>

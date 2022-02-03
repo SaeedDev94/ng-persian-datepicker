@@ -46,27 +46,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   secondText = '';
   amPmText = '';
 
-  private fastTimeChangeTimeOut = 345;
-  private fastTimeChangeInterval = 123;
-
-  private increaseHourTimeout: any;
-  private increaseHourInterval: any;
-
-  private decreaseHourTimeout: any;
-  private decreaseHourInterval: any;
-
-  private increaseMinuteTimeout: any;
-  private increaseMinuteInterval: any;
-
-  private decreaseMinuteTimeout: any;
-  private decreaseMinuteInterval: any;
-
-  private increaseSecondTimeout: any;
-  private increaseSecondInterval: any;
-
-  private decreaseSecondTimeout: any;
-  private decreaseSecondInterval: any;
-
   private wasInsideClick = false;
   private inputEventFocusListener: any;
   private inputEventInputListener: any;
@@ -746,84 +725,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.preventClose = true;
     this.seTimeText();
     this.changeSelectedDate(this.selectedDate);
-  }
-
-  setIncreaseHourInterval(): void {
-    this.increaseHourTimeout = setTimeout(() => {
-      this.increaseHourInterval = setInterval(() => {
-        this.increaseHour();
-      }, this.fastTimeChangeInterval);
-    }, this.fastTimeChangeTimeOut);
-  }
-
-  clearIncreaseHourInterval(): void {
-    clearTimeout(this.increaseHourTimeout);
-    clearInterval(this.increaseHourInterval);
-  }
-
-  setDecreaseHourInterval(): void {
-    this.decreaseHourTimeout = setTimeout(() => {
-      this.decreaseHourInterval = setInterval(() => {
-        this.decreaseHour();
-      }, this.fastTimeChangeInterval);
-    }, this.fastTimeChangeTimeOut);
-  }
-
-  clearDecreaseHourInterval(): void {
-    clearTimeout(this.decreaseHourTimeout);
-    clearInterval(this.decreaseHourInterval);
-  }
-
-  setIncreaseMinuteInterval(): void {
-    this.increaseMinuteTimeout = setTimeout(() => {
-      this.increaseMinuteInterval = setInterval(() => {
-        this.increaseMinute();
-      }, this.fastTimeChangeInterval);
-    }, this.fastTimeChangeTimeOut);
-  }
-
-  clearIncreaseMinuteInterval(): void {
-    clearTimeout(this.increaseMinuteTimeout);
-    clearInterval(this.increaseMinuteInterval);
-  }
-
-  setDecreaseMinuteInterval(): void {
-    this.decreaseMinuteTimeout = setTimeout(() => {
-      this.decreaseMinuteInterval = setInterval(() => {
-        this.decreaseMinute();
-      }, this.fastTimeChangeInterval);
-    }, this.fastTimeChangeTimeOut);
-  }
-
-  clearDecreaseMinuteInterval(): void {
-    clearTimeout(this.decreaseMinuteTimeout);
-    clearInterval(this.decreaseMinuteInterval);
-  }
-
-  setIncreaseSecondInterval(): void {
-    this.increaseSecondTimeout = setTimeout(() => {
-      this.increaseSecondInterval = setInterval(() => {
-        this.increaseSecond();
-      }, this.fastTimeChangeInterval);
-    }, this.fastTimeChangeTimeOut);
-  }
-
-  clearIncreaseSecondInterval(): void {
-    clearTimeout(this.increaseSecondTimeout);
-    clearInterval(this.increaseSecondInterval);
-  }
-
-  setDecreaseSecondInterval(): void {
-    this.decreaseSecondTimeout = setTimeout(() => {
-      this.decreaseSecondInterval = setInterval(() => {
-        this.decreaseSecond();
-      }, this.fastTimeChangeInterval);
-    }, this.fastTimeChangeTimeOut);
-  }
-
-  clearDecreaseSecondInterval(): void {
-    clearTimeout(this.decreaseSecondTimeout);
-    clearInterval(this.decreaseSecondInterval);
   }
 
   @HostListener('click')

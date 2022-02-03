@@ -17,15 +17,15 @@ import {
 })
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
-  private _dateValue: number = 0;
-
   id: string = 'ng-persian-datepicker-' + Math.random().toString(36).slice(2, 11);
   containerInlineStyle: object = {};
   weekDays: string[] = [];
 
+  private _dateValue: number = 0;
   private preventClose: boolean = false;
-  private uiYearViewModel = true;
-  private uiMonthViewModel = true;
+
+  private uiYearView: boolean = true;
+  private uiMonthView: boolean = true;
 
   viewDateTitle: string = '';
   viewModes: string[] = ['day'];
@@ -107,24 +107,16 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input()
   uiContainerWidth: string = '';
 
-  @Input()
-  set uiYearView(value: boolean) {
-    this.uiYearViewModel = value;
+  @Input('uiYearView')
+  set _uiYearView(value: boolean) {
+    this.uiYearView = value;
     this.checkViewModes();
   }
 
-  get uiYearView(): boolean {
-    return this.uiYearViewModel;
-  }
-
-  @Input()
-  set uiMonthView(value: boolean) {
-    this.uiMonthViewModel = value;
+  @Input('uiMonthView')
+  set _uiMonthView(value: boolean) {
+    this.uiMonthView = value;
     this.checkViewModes();
-  }
-
-  get uiMonthView(): boolean {
-    return this.uiMonthViewModel;
   }
 
   @Input()

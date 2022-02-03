@@ -46,7 +46,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   weekDays: string[] = [];
 
   viewDateTitle: string = '';
-  viewModes: string[] = ['day'];
+  viewModes: string[] = [];
   currentViewMode: number = 0;
 
   years: IYear[] = [];

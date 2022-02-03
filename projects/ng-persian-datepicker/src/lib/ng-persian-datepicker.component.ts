@@ -78,10 +78,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   dateOnSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
 
   // time
-  _timeEnable: boolean = true;
-  @Input()
-  set timeEnable(value: boolean) {
-    this._timeEnable = value;
+  timeEnable: boolean = true;
+  @Input('timeEnable')
+  set _timeEnable(value: boolean) {
+    this.timeEnable = value;
     this.setTime();
   }
 
@@ -585,7 +585,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   onChangeSelectedDate(): void {
-    if (this._timeEnable) {
+    if (this.timeEnable) {
       this.selectedDate.hour(this.hour);
       this.selectedDate.minute(this.minute);
       this.selectedDate.second(this.second);

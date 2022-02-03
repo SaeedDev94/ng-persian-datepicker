@@ -94,7 +94,7 @@
     <!-- End: day view mode -->
 
     <!-- Start: time picker -->
-    <div *ngIf="_timeEnable"
+    <div *ngIf="timeEnable"
          class="content-container time-container"
          [class.include-second]="timeShowSecond"
          [class.include-12-hour]="timeMeridian">

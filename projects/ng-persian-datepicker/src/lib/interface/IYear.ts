@@ -1,4 +1,4 @@
-export interface YearModel {
+export interface IYear {
   timestamp: number;
   value: number;
   isYearOfTodayDate: boolean;

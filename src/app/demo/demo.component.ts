@@ -1,4 +1,4 @@
-import { ConfigModel } from '../../../projects/ng-persian-datepicker/src/lib/model/config.model';
+import { IConfig } from '../../../projects/ng-persian-datepicker/src/lib/interface/IConfig';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -11,7 +11,7 @@ export class DemoComponent implements OnInit {
   constructor(
   ) {}
 
-  config: ConfigModel = {
+  config: IConfig = {
     date: {
       value: new Date().valueOf(),
       onSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => {

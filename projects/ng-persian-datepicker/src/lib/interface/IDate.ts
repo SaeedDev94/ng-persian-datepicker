@@ -1,4 +1,4 @@
-export interface DateConfigModel {
+export interface IDate {
 
   /**
    * @description value of date

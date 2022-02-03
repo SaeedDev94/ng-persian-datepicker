@@ -1,4 +1,4 @@
-export interface MonthModel {
+export interface IMonth {
   timestamp: number;
   year: number;
   indexValue: number;

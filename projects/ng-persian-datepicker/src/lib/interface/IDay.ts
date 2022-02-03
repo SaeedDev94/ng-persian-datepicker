@@ -1,4 +1,4 @@
-export interface DayModel {
+export interface IDay {
   timestamp: number;
   year: number;
   monthIndex: number;

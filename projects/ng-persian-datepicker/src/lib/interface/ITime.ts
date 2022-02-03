@@ -1,4 +1,4 @@
-export interface TimeConfigModel {
+export interface ITime {
 
   /**
    * @description if set it to true time picker will visible

@@ -1,7 +1,7 @@
 import moment from 'moment-jalaali';
-import { YearModel } from './model/year.model';
-import { MonthModel } from './model/month.model';
-import { DayModel } from './model/day.model';
+import { IYear } from './interface/IYear';
+import { IMonth } from './interface/IMonth';
+import { IDay } from './interface/IDay';
 import {
   Component,
   HostListener,
@@ -21,69 +21,88 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   containerInlineStyle: object = {};
   weekDays: string[] = [];
 
-  private preventClose!: boolean;
+  private preventClose: boolean = false;
   private uiYearViewModel = true;
   private uiMonthViewModel = true;
 
-  viewDateTitle = '';
+  viewDateTitle: string = '';
   viewModes: string[] = ['day'];
   currentViewMode = 0;
-  //
+
   private today!: moment.Moment;
   private selectedDate!: moment.Moment;
   private viewDate!: moment.Moment;
-  //
-  years: YearModel[] = [];
-  months: MonthModel[] = [];
-  days: Array<DayModel[]> = [];
-  //
+
+  years: IYear[] = [];
+  months: IMonth[] = [];
+  days: IDay[][] = [];
+
   private hour = 0;
   private minute = 0;
   private second = 0;
-  //
+
   hourText = '';
   minuteText = '';
   secondText = '';
   amPmText = '';
-  //
+
   private fastTimeChangeTimeOut = 345;
   private fastTimeChangeInterval = 123;
-  //
+
   private increaseHourTimeout: any;
   private increaseHourInterval: any;
-  //
+
   private decreaseHourTimeout: any;
   private decreaseHourInterval: any;
-  //
+
   private increaseMinuteTimeout: any;
   private increaseMinuteInterval: any;
-  //
+
   private decreaseMinuteTimeout: any;
   private decreaseMinuteInterval: any;
-  //
+
   private increaseSecondTimeout: any;
   private increaseSecondInterval: any;
-  //
+
   private decreaseSecondTimeout: any;
   private decreaseSecondInterval: any;
-  //
+
   private wasInsideClick = false;
   private inputEventFocusListener: any;
   private inputEventInputListener: any;
-  //
+
   @Input()
   input: HTMLInputElement | null = null;
 
   private _dateValue: string | number = '';
-  @Input() dateValue: string | number = '';
-  @Input() dateInitValue = true;
-  @Input() dateIsGregorian = false;
-  @Input() dateFormat = 'jYYYY-jMM-jDD HH:mm:ss';
-  @Input() dateGregorianFormat = 'YYYY-MM-DD HH:mm:ss';
-  @Input() dateMin: number | null = null;
-  @Input() dateMax: number | null = null;
-  @Input() dateOnInit: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
-  @Input() dateOnSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
+
+  @Input()
+  dateValue: string | number = '';
+
+  @Input()
+  dateInitValue = true;
+
+  @Input()
+  dateIsGregorian = false;
+
+  @Input()
+  dateFormat = 'jYYYY-jMM-jDD HH:mm:ss';
+
+  @Input()
+  dateGregorianFormat = 'YYYY-MM-DD HH:mm:ss';
+
+  @Input()
+  dateMin: number | null = null;
+
+  @Input()
+  dateMax: number | null = null;
+
+  @Input()
+  dateOnInit: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
+
+  @Input()
+  dateOnSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
+
   // time
   _timeEnable = true;
   @Input()
@@ -92,37 +111,58 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.setTime();
     this.seTimeText();
   }
-  @Input() timeShowSecond = true;
+
+  @Input()
+  timeShowSecond = true;
+
   _timeMeridian = false;
   @Input()
   set timeMeridian(value: boolean) {
     this._timeMeridian = value;
     this.seTimeText();
   }
+
   // ui
-  @Input() uiTheme = 'default';
-  @Input() uiIsVisible = false;
-  @Input() uiHideOnOutsideClick = true;
-  @Input() uiHideAfterSelectDate = true;
-  @Input() uiContainerWidth = '';
+  @Input()
+  uiTheme = 'default';
+
+  @Input()
+  uiIsVisible = false;
+
+  @Input()
+  uiHideOnOutsideClick = true;
+
+  @Input()
+  uiHideAfterSelectDate = true;
+
+  @Input()
+  uiContainerWidth = '';
+
   @Input()
   set uiYearView(value: boolean) {
     this.uiYearViewModel = value;
     this.checkViewModes();
   }
+
   get uiYearView(): boolean {
     return this.uiYearViewModel;
   }
+
   @Input()
   set uiMonthView(value: boolean) {
     this.uiMonthViewModel = value;
     this.checkViewModes();
   }
+
   get uiMonthView(): boolean {
     return this.uiMonthViewModel;
   }
-  @Input() uiInitViewMode: 'year' | 'month' | 'day' = 'day';
-  @Input() uiTodayBtnEnable = true;
+
+  @Input()
+  uiInitViewMode: 'year' | 'month' | 'day' = 'day';
+
+  @Input()
+  uiTodayBtnEnable = true;
 
   ngOnInit(): void {
     moment.loadPersian({
@@ -309,7 +349,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
     //
     for (let row = 0; row < 6 ; row++) {
-      const rowValue: DayModel[] = [];
+      const rowValue: IDay[] = [];
       for (let col = 0; col < 7 ; col++) {
         const fromPrevMonth = (this.viewDate.day() === 6) ? 0 : (this.viewDate.day() + 1);
         let index = ((row * 7) + col) - fromPrevMonth;
@@ -484,7 +524,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.changeSelectedDate(this.today);
   }
 
-  yearClick(year: YearModel): void {
+  yearClick(year: IYear): void {
     if (year.isYearDisabled) {
       return;
     }
@@ -497,7 +537,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.onChangeViewDate();
   }
 
-  monthClick(month: MonthModel): void {
+  monthClick(month: IMonth): void {
     if (month.isMonthDisabled) {
       return;
     }
@@ -506,7 +546,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.onChangeViewDate();
   }
 
-  dayClick(day: DayModel): void {
+  dayClick(day: IDay): void {
     if (day.isDayDisabled) {
       return;
     }

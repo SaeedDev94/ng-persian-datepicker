@@ -1,4 +1,4 @@
-export interface UiConfigModel {
+export interface IUi {
 
   /**
    * @description datepicker theme

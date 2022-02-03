@@ -37,14 +37,9 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   months: IMonth[] = [];
   days: IDay[][] = [];
 
-  private hour: number = 0;
-  private minute: number = 0;
-  private second: number = 0;
-
-  hourText: string = '';
-  minuteText: string = '';
-  secondText: string = '';
-  amPmText: string = '';
+  hour: number = 0;
+  minute: number = 0;
+  second: number = 0;
 
   private wasInsideClick: boolean = false;
   private inputEventFocusListener: any;
@@ -88,18 +83,13 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   set timeEnable(value: boolean) {
     this._timeEnable = value;
     this.setTime();
-    this.seTimeText();
   }
 
   @Input()
   timeShowSecond: boolean = true;
 
-  _timeMeridian: boolean = false;
   @Input()
-  set timeMeridian(value: boolean) {
-    this._timeMeridian = value;
-    this.seTimeText();
-  }
+  timeMeridian: boolean = false;
 
   // ui
   @Input()
@@ -160,7 +150,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.setViewDate();
     //
     this.setTime();
-    this.seTimeText();
     //
     this.setInputValue();
     this.lockInputValue();
@@ -382,46 +371,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.hour = this.today?.hour() || 0;
     this.minute = this.today?.minute() || 0;
     this.second = this.today?.second() || 0;
-  }
-
-  seTimeText(): void {
-    this.setHourText();
-    this.setMinuteText();
-    this.setSecondText();
-    this.setAmPmText();
-  }
-
-  setHourText(): void {
-    const hour = this.hour;
-    if (!this._timeMeridian) {
-      this.hourText = hour.toString().padStart(2, '0');
-      return;
-    }
-    if (hour === 0) {
-      this.hourText = (12).toString().padStart(2, '0');
-      return;
-    }
-    if (hour > 12) {
-      this.hourText = (hour - 12).toString().padStart(2, '0');
-      return;
-    }
-    this.hourText = hour.toString().padStart(2, '0');
-  }
-
-  setMinuteText(): void {
-    this.minuteText = this.minute.toString().padStart(2, '0');
-  }
-
-  setSecondText(): void {
-    this.secondText = this.second.toString().padStart(2, '0');
-  }
-
-  setAmPmText(): void {
-    if (this.hour >= 12) {
-      this.amPmText = 'PM';
-      return;
-    }
-    this.amPmText = 'AM';
   }
 
   setInputValue(dispatchEvent: boolean = true): void {
@@ -723,7 +672,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   onTimeChange(): void {
     this.preventClose = true;
-    this.seTimeText();
     this.changeSelectedDate(this.selectedDate);
   }
 

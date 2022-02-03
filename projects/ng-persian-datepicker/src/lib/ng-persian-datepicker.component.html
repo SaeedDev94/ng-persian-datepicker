@@ -97,7 +97,7 @@
     <div *ngIf="_timeEnable"
          class="content-container time-container"
          [class.include-second]="timeShowSecond"
-         [class.include-12-hour]="_timeMeridian">
+         [class.include-12-hour]="timeMeridian">
       <div
         class="time-col hour-col the-divider">
         <div (click)="increaseHour()">
@@ -107,7 +107,7 @@
           </svg>
         </div>
         <div>
-          <span>{{ hourText }}</span>
+          <span>{{ hour | number: '2.0' }}</span>
         </div>
         <div (click)="decreaseHour()">
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +126,7 @@
           </svg>
         </div>
         <div>
-          <span>{{ minuteText }}</span>
+          <span>{{ minute | number: '2.0' }}</span>
         </div>
         <div (click)="decreaseMinute()">
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +144,7 @@
           </svg>
         </div>
         <div>
-          <span>{{ secondText }}</span>
+          <span>{{ second | number: '2.0' }}</span>
         </div>
         <div (click)="decreaseSecond()">
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +153,7 @@
           </svg>
         </div>
       </div>
-      <div *ngIf="_timeMeridian"
+      <div *ngIf="timeMeridian"
            class="time-col time-in-12-hour-format-col">
         <div (click)="toggleAmPm()">
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +162,7 @@
           </svg>
         </div>
         <div>
-          <span>{{ amPmText }}</span>
+          <span>{{ hour >= 12 ? 'PM' : 'AM' }}</span>
         </div>
         <div (click)="toggleAmPm()">
           <svg xmlns="http://www.w3.org/2000/svg"

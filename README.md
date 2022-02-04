@@ -68,7 +68,7 @@ You can customize datepicker config:
 complete config reference:
 
 | Key                    | Type             | Description                                                                                                          | Example                                                                |
-| ---------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| ---------------------- | ---------------- |----------------------------------------------------------------------------------------------------------------------| ---------------------------------------------------------------------- |
 | dateValue              | string or number | value of date. default: `''`                                                                                         | '1398-12-15 14:32:45' or 1583406165000                                 |
 | dateInitValue          | boolean          | if no dateValue provided use today as init value. default: `true`                                                    | true                                                                   |
 | dateIsGregorian        | boolean          | is dateValue gregorian?. default: `false`                                                                            | false                                                                  |

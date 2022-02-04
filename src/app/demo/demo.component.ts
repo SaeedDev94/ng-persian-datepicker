@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IActiveDate } from '../../../projects/ng-persian-datepicker/src/lib/interface/IActiveDate';
+import { IActiveDate } from '../../../projects/ng-persian-datepicker/src/public-api';
 
 @Component({
   selector: 'app-demo',

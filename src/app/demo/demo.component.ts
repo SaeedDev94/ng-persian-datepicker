@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IActiveDate } from '../../../projects/ng-persian-datepicker/src/lib/interface/IActiveDate';
 
 @Component({
   selector: 'app-demo',
@@ -8,9 +9,6 @@ import { Component } from '@angular/core';
 export class DemoComponent {
 
   dateValue = new Date().valueOf();
-  dateOnSelect = (shamsiDate: string, gregorianDate: string, timestamp: number) => {
-    console.log(shamsiDate, gregorianDate, timestamp);
-  }
 
   uiIsVisible: boolean = true;
   uiTheme: string = 'default';
@@ -23,5 +21,9 @@ export class DemoComponent {
   timeEnable: boolean = true;
   timeShowSecond: boolean = true;
   timeMeridian: boolean = false;
+
+  onSelect(date: IActiveDate) {
+    console.log(date);
+  }
 
 }

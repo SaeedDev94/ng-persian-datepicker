@@ -132,7 +132,7 @@
       <div class="datepicker-container">
         <ng-persian-datepicker [input]="datepickerInput"
                                [dateValue]="dateValue"
-                               [dateOnSelect]="dateOnSelect"
+                               (dateOnSelect)="onSelect($event)"
                                [(uiIsVisible)]="uiIsVisible"
                                [uiTheme]="uiTheme"
                                [uiYearView]="uiYearView"

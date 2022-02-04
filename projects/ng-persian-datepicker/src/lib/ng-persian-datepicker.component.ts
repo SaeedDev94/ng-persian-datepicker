@@ -3,11 +3,11 @@ import { IYear } from './interface/IYear';
 import { IMonth } from './interface/IMonth';
 import { IDay } from './interface/IDay';
 import {
-  Component,
+  Component, EventEmitter,
   HostListener,
   Input,
   OnDestroy,
-  OnInit
+  OnInit, Output
 } from '@angular/core';
 
 @Component({
@@ -116,6 +116,9 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   @Input()
   uiContainerWidth: string = '';
+
+  @Output()
+  uiIsVisibleChange = new EventEmitter<boolean>();
 
   @Input('uiYearView')
   set _uiYearView(value: boolean) {
@@ -402,9 +405,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       return;
     }
     this.input.setAttribute('data-datepicker-id', this.id);
-    this.inputEventFocusListener = () => {
-      this.uiIsVisible = true;
-    };
+    this.inputEventFocusListener = () => this.setUiIsVisible(true);
     this.input.addEventListener('focus', this.inputEventFocusListener);
   }
 
@@ -597,7 +598,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this._dateValue = this.selectedDate.valueOf();
     this.setInputValue();
     if (this.uiHideAfterSelectDate && !this.preventClose) {
-      this.uiIsVisible = false;
+      this.setUiIsVisible(false);
     } else {
       this.preventClose = false;
     }
@@ -695,7 +696,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     ) {
       return;
     }
-    this.uiIsVisible = false;
+    this.setUiIsVisible(false);
+  }
+
+  private setUiIsVisible(value: boolean): void {
+    this.uiIsVisible = value;
+    this.uiIsVisibleChange.next(value);
   }
 
 }

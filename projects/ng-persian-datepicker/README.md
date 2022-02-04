@@ -68,7 +68,7 @@ You can customize datepicker config:
 complete config reference:
 
 | Key                    | Type             | Description                                                                                                          | Example                                                                |
-| ---------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| ---------------------- | ---------------- |----------------------------------------------------------------------------------------------------------------------| ---------------------------------------------------------------------- |
 | dateValue              | string or number | value of date. default: `''`                                                                                         | '1398-12-15 14:32:45' or 1583406165000                                 |
 | dateInitValue          | boolean          | if no dateValue provided use today as init value. default: `true`                                                    | true                                                                   |
 | dateIsGregorian        | boolean          | is dateValue gregorian?. default: `false`                                                                            | false                                                                  |
@@ -88,9 +88,9 @@ complete config reference:
 | uiYearView             | boolean          | if set to true year view will enable. default: `true`                                                                | true                                                                   |
 | uiMonthView            | boolean          | if set to true month view will enable. default: `true`                                                               | true                                                                   |
 | uiInitViewMode         | string           | Initial view mode ('year', 'month', 'day'). default: `'day'`                                                         | 'year'                                                                 |
-| uiTodayBtnEnable       | boolean          | Show go to today btn or not                                                                                          | false                                                                  |
+| uiTodayBtnEnable       | boolean          | Show go to today btn or not. default: `true`                                                                         | false                                                                  |
 
-# Demo
+# Offline demo
 
 you can download a release and see ng-persian-datepicker demo:
 

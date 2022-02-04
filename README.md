@@ -88,9 +88,9 @@ complete config reference:
 | uiYearView             | boolean          | if set to true year view will enable. default: `true`                                                                | true                                                                   |
 | uiMonthView            | boolean          | if set to true month view will enable. default: `true`                                                               | true                                                                   |
 | uiInitViewMode         | string           | Initial view mode ('year', 'month', 'day'). default: `'day'`                                                         | 'year'                                                                 |
-| uiTodayBtnEnable       | boolean          | Show go to today btn or not                                                                                          | false                                                                  |
+| uiTodayBtnEnable       | boolean          | Show go to today btn or not. default: `true`                                                                         | false                                                                  |
 
-# Demo
+# Offline demo
 
 you can download a release and see ng-persian-datepicker demo:
 

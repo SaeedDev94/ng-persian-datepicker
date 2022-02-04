@@ -10,7 +10,7 @@
   <div class="datepicker-inner-container">
 
     <!-- Start: navigation -->
-    <div class="content-container navigation-container">
+    <div class="content-container navigation-container horizontal-padding">
       <div class="go-back dp-btn"
            (click)="navigate(false)">
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -38,15 +38,18 @@
 
     <!-- Start: year view mode -->
     <div *ngIf="viewModes[viewModeIndex] === 'year'"
-         class="years-container">
-      <div class="content-container">
-        <div class="year-col three-col-per-row dp-btn"
-             [class.today]="year.isYearOfTodayDate"
-             [class.selected]="year.isYearOfSelectedDate"
-             [class.disabled]="year.isYearDisabled"
+         class="years-container horizontal-padding">
+      <div class="content-container"
+           [class.no-margin-bottom]="!timeEnable && !uiTodayBtnEnable">
+        <div class="year-col three-col-per-row"
              (click)="yearClick(year)"
              *ngFor="let year of years">
-          <span>{{ year.value }}</span>
+          <div class="dp-btn"
+               [class.today]="year.isYearOfTodayDate"
+               [class.selected]="year.isYearOfSelectedDate"
+               [class.disabled]="year.isYearDisabled">
+            <span>{{ year.value }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -54,15 +57,18 @@
 
     <!-- Start: month view mode -->
     <div *ngIf="viewModes[viewModeIndex] === 'month'"
-         class="months-container">
-      <div class="content-container">
-        <div class="month-col three-col-per-row dp-btn"
-             [class.today]="month.isMonthOfTodayDate"
-             [class.selected]="month.isMonthOfSelectedDate"
-             [class.disabled]="month.isMonthDisabled"
+         class="months-container horizontal-padding">
+      <div class="content-container"
+           [class.no-margin-bottom]="!timeEnable && !uiTodayBtnEnable">
+        <div class="month-col three-col-per-row"
              (click)="monthClick(month)"
              *ngFor="let month of months">
-          <span>{{ month.indexValue | month }}</span>
+          <div class="dp-btn"
+               [class.today]="month.isMonthOfTodayDate"
+               [class.selected]="month.isMonthOfSelectedDate"
+               [class.disabled]="month.isMonthDisabled">
+            <span>{{ month.indexValue | month }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -70,23 +76,26 @@
 
     <!-- Start: day view mode -->
     <div *ngIf="viewModes[viewModeIndex] === 'day'"
-         class="days-container">
+         class="days-container horizontal-padding">
       <div class="content-container week-days">
         <div class="day-col"
              *ngFor="let weekDay of weekDays">
           <span>{{ weekDay }}</span>
         </div>
       </div>
-      <div class="content-container month-days">
+      <div class="content-container month-days"
+           [class.no-margin-bottom]="!timeEnable && !uiTodayBtnEnable">
         <ng-container *ngFor="let row of days">
-          <div class="day-col dp-btn"
-               [class.other-month]="!day.isDayInCurrentMonth"
-               [class.today]="day.isDayOfTodayDate"
-               [class.selected]="day.isDayOfSelectedDate"
-               [class.disabled]="day.isDayDisabled"
+          <div class="day-col"
                (click)="dayClick(day)"
                *ngFor="let day of row">
-            <span>{{ day.value }}</span>
+            <div class="dp-btn"
+                 [class.other-month]="!day.isDayInCurrentMonth"
+                 [class.today]="day.isDayOfTodayDate"
+                 [class.selected]="day.isDayOfSelectedDate"
+                 [class.disabled]="day.isDayDisabled">
+              <span>{{ day.value }}</span>
+            </div>
           </div>
         </ng-container>
       </div>
@@ -175,7 +184,7 @@
     <!-- End: time picker -->
 
     <!-- Start: toolbox -->
-    <div class="the-toolbox">
+    <div class="the-toolbox horizontal-padding">
       <div *ngIf="uiTodayBtnEnable"
            class="the-item dp-btn"
            (click)="selectToday()">

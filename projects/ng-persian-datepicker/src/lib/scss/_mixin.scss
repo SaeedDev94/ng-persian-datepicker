@@ -2,7 +2,6 @@
   $themeName,
   $backgroundColor,
   $textColor,
-  $boxShadowColor,
   $borderColor,
   $theColHoverBackgroundColor,
   $theColHoverTextColor,
@@ -23,9 +22,7 @@
     &.#{$themeName} {
       background: $backgroundColor;
       color: $textColor;
-      @if $boxShadowColor {
-        box-shadow: 0 5px 10px $boxShadowColor;
-      }
+
       @if $borderColor {
         border: 1px solid $borderColor;
       }
@@ -78,6 +75,7 @@
         .time-container {
           background: $timePickerBackgroundColor;
           border-top-color: $timePickerBorderTopColor;
+          border-bottom-color: $timePickerBorderTopColor;
 
           .time-col {
             div {

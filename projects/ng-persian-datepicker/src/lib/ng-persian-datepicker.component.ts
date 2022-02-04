@@ -416,7 +416,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  navigate(forward: boolean = true): void {
+  navigate(forward: boolean): void {
     let skip: number = 1;
     if (!forward) {
       skip = skip * -1;

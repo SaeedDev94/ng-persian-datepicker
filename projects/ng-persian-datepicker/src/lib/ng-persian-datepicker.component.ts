@@ -150,7 +150,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.setTime();
 
     this.setInputValue();
-    this.lockInputValue();
+    this.setInputListener();
     this.setShowOnInputFocus();
   }
 
@@ -366,7 +366,13 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  setTime(): void {
+  setTime(date: moment.Moment | null = null): void {
+    if (date) {
+      this.hour = date.hour();
+      this.minute = date.minute();
+      this.second = date.second();
+      return;
+    }
     if (this.selectedDate) {
       this.hour = this.selectedDate.hour();
       this.minute = this.selectedDate.minute();
@@ -378,24 +384,27 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.second = this.today?.second() || 0;
   }
 
-  setInputValue(dispatchEvent: boolean = true): void {
+  setInputValue(): void {
     if (!this.input) {
       return;
     }
     if (this._dateValue) {
       this.input.value = moment(this._dateValue).format(this.dateFormat);
-      if (dispatchEvent) {
-        this.input.dispatchEvent(new Event('input'));
-      }
     }
   }
 
-  lockInputValue(): void {
+  setInputListener(): void {
     if (!this.input) {
       return;
     }
-    this.inputEventInputListener = () => {
-      this.setInputValue(false);
+    this.inputEventInputListener = (event: Event) => {
+      const input: HTMLInputElement = event.target as HTMLInputElement;
+      const date: moment.Moment = moment(input.value, this.dateFormat);
+      if (!date.isValid()) {
+        return;
+      }
+      this.setTime(date);
+      this.changeSelectedDate(date, false);
     };
     this.input.addEventListener('input', this.inputEventInputListener);
   }
@@ -579,12 +588,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     return !(result.indexOf(false) !== -1);
   }
 
-  changeSelectedDate(date: moment.Moment): void {
+  changeSelectedDate(date: moment.Moment, setInputValue: boolean = true): void {
     this.selectedDate = moment(date);
-    this.onChangeSelectedDate();
+    this.onChangeSelectedDate(setInputValue);
   }
 
-  onChangeSelectedDate(): void {
+  onChangeSelectedDate(setInputValue: boolean): void {
     if (this.timeEnable) {
       this.selectedDate.hour(this.hour);
       this.selectedDate.minute(this.minute);
@@ -596,11 +605,13 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       this.selectedDate.second(this.today.second());
     }
     this._dateValue = this.selectedDate.valueOf();
-    this.setInputValue();
     if (this.uiHideAfterSelectDate && !this.preventClose) {
       this.setUiIsVisible(false);
     } else {
       this.preventClose = false;
+    }
+    if (setInputValue) {
+      this.setInputValue();
     }
     this.setViewDate();
     this.dateOnSelect(

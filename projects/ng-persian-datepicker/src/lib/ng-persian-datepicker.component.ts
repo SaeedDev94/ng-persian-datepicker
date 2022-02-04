@@ -130,12 +130,14 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   set _uiYearView(value: boolean) {
     this.uiYearView = value;
     this.checkViewModes();
+    this.setViewDateTitle();
   }
 
   @Input('uiMonthView')
   set _uiMonthView(value: boolean) {
     this.uiMonthView = value;
     this.checkViewModes();
+    this.setViewDateTitle();
   }
 
   @Input()
@@ -371,7 +373,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   setViewDateTitle(): void {
-    const year: number = this.viewDate.jYear();
+    const year: number = this.viewDate?.jYear();
+    if (!year) {
+      return;
+    }
     switch (this.viewModes[this.viewModeIndex]) {
       case 'day':
         this.viewDateTitle = this.viewDate.format('jMMMM') + ' ' + year.toString();
@@ -467,12 +472,13 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (this.viewModes.length === 1) {
       return;
     }
+
     if (this.viewModes.length <= (this.viewModeIndex + 1)) {
       this.viewModeIndex = 0;
-      this.setViewDateTitle();
-      return;
+    } else {
+      this.viewModeIndex++;
     }
-    this.viewModeIndex++;
+
     this.setViewDateTitle();
   }
 

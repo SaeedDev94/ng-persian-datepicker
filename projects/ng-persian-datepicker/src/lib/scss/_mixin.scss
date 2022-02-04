@@ -42,11 +42,11 @@
         .dp-btn {
 
           &:not(.disabled):not(.selected):hover {
-            background: $theColHoverBackgroundColor!important;
-            color: $theColHoverTextColor!important;
+            background: $theColHoverBackgroundColor;
+            color: $theColHoverTextColor;
             svg {
               path {
-                fill: $theColHoverTextColor!important;
+                fill: $theColHoverTextColor;
               }
             }
           }
@@ -62,9 +62,9 @@
           }
 
           &.disabled {
-            background: $disabledColBackgroundColor!important;
-            color: $disabledColTextColor!important;
-            cursor: not-allowed!important;
+            background: $disabledColBackgroundColor;
+            color: $disabledColTextColor;
+            cursor: not-allowed;
           }
 
           &.other-month {

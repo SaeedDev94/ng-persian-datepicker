@@ -93,13 +93,22 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   set _timeEnable(value: boolean) {
     this.timeEnable = value;
     this.setTime();
+    this.scrollIntoActiveTime();
   }
 
-  @Input()
   timeShowSecond: boolean = true;
+  @Input('timeShowSecond')
+  set _timeShowSecond(value: boolean) {
+    this.timeShowSecond = value;
+    this.scrollIntoActiveTime();
+  }
 
-  @Input()
   timeMeridian: boolean = false;
+  @Input('timeMeridian')
+  set _timeMeridian(value: boolean) {
+    this.timeMeridian = value;
+    this.scrollIntoActiveTime();
+  }
 
   // ui
   @Input()
@@ -381,17 +390,15 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       this.hour = date.hour();
       this.minute = date.minute();
       this.second = date.second();
-      return;
-    }
-    if (this.selectedDate) {
+    } else if (this.selectedDate) {
       this.hour = this.selectedDate.hour();
       this.minute = this.selectedDate.minute();
       this.second = this.selectedDate.second();
-      return;
+    } else {
+      this.hour = this.today.hour();
+      this.minute = this.today.minute();
+      this.second = this.today.second();
     }
-    this.hour = this.today?.hour() || 0;
-    this.minute = this.today?.minute() || 0;
-    this.second = this.today?.second() || 0;
   }
 
   setInputValue(): void {
@@ -415,6 +422,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       }
       this.setTime(date);
       this.changeSelectedDate(date, false);
+      this.scrollIntoActiveTime();
     };
     this.input.addEventListener('input', this.inputEventInputListener);
   }
@@ -631,61 +639,50 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     });
   }
 
-  increaseHour(): void {
-    if ((this.hour + 1) === 24) {
-      this.hour = 0;
-    } else {
-      this.hour++;
+  set12Hour(value: number): void {
+    let hour: number = value;
+    const isAM: boolean = this.hour < 12;
+    const isPM: boolean = this.hour >= 12;
+    if (isAM && hour === 12) {
+      hour = 0;
     }
+    if (isPM && hour === 12) {
+      hour = 12;
+    }
+    if (isPM && hour < 12) {
+      hour = value + 12;
+    }
+    this.setHour(hour);
+  }
+
+  setHour(value: number): void {
+    if (value === this.hour) {
+      return;
+    }
+    this.hour = value;
     this.onTimeChange();
   }
 
-  decreaseHour(): void {
-    if ((this.hour - 1) === -1) {
-      this.hour = 23;
-    } else {
-      this.hour--;
+  setMinute(value: number): void {
+    if (value === this.minute) {
+      return;
     }
+    this.minute = value;
     this.onTimeChange();
   }
 
-  increaseMinute(): void {
-    if ((this.minute + 1) === 60) {
-      this.minute = 0;
-    } else {
-      this.minute++;
+  setSecond(value: number): void {
+    if (value === this.second) {
+      return;
     }
+    this.second = value;
     this.onTimeChange();
   }
 
-  decreaseMinute(): void {
-    if ((this.minute - 1) === -1) {
-      this.minute = 59;
-    } else {
-      this.minute--;
+  toggleAmPm(current: 'AM' | 'PM'): void {
+    if ((current === 'AM' && this.hour < 12) || (current === 'PM' && this.hour >= 12)) {
+      return;
     }
-    this.onTimeChange();
-  }
-
-  increaseSecond(): void {
-    if ((this.second + 1) === 60) {
-      this.second = 0;
-    } else {
-      this.second++;
-    }
-    this.onTimeChange();
-  }
-
-  decreaseSecond(): void {
-    if ((this.second - 1) === -1) {
-      this.second = 59;
-    } else {
-      this.second--;
-    }
-    this.onTimeChange();
-  }
-
-  toggleAmPm(): void {
     if (this.hour < 12) {
       this.hour += 12;
     } else {
@@ -697,6 +694,24 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   onTimeChange(): void {
     this.preventClose = true;
     this.changeSelectedDate(this.selectedDate);
+  }
+
+  scrollIntoActiveTime(): void {
+    setTimeout(() => {
+      const datePicker: HTMLElement | null = window.document.querySelector(`div[data-datepicker-id="${this.id}"]`);
+      if (!datePicker) {
+        return;
+      }
+      // Hour
+      const activeHour: HTMLElement | null = datePicker.querySelector('.time-col.hour-col .dp-btn.selected');
+      if (activeHour) activeHour.scrollIntoView({block: 'center'});
+      // Minute
+      const activeMinute: HTMLElement | null = datePicker.querySelector('.time-col.minute-col .dp-btn.selected');
+      if (activeMinute) activeMinute.scrollIntoView({block: 'center'});
+      // Second
+      const activeSecond: HTMLElement | null = datePicker.querySelector('.time-col.second-col .dp-btn.selected');
+      if (activeSecond) activeSecond.scrollIntoView({block: 'center'});
+    }, 10);
   }
 
   @HostListener('click')

@@ -12,10 +12,7 @@
   $disabledColBackgroundColor,
   $disabledColTextColor,
   $otherMonthColTextColor,
-  $timePickerBackgroundColor,
-  $timePickerBorderTopColor,
-  $timePickerIconColor,
-  $timePickerHoverIconColor
+  $timePickerBorderColor
 )
 {
   .datepicker-outer-container {
@@ -73,26 +70,8 @@
         }
 
         .time-container {
-          background: $timePickerBackgroundColor;
-          border-top-color: $timePickerBorderTopColor;
-          border-bottom-color: $timePickerBorderTopColor;
-
-          .time-col {
-            div {
-              svg {
-                polygon {
-                  fill: $timePickerIconColor;
-                }
-              }
-              &:hover {
-                svg {
-                  polygon {
-                    fill: $timePickerHoverIconColor;
-                  }
-                }
-              }
-            }
-          }
+          border-top-color: $timePickerBorderColor;
+          border-bottom-color: $timePickerBorderColor;
         }
       }
     }

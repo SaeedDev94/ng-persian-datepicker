@@ -104,80 +104,93 @@
 
     <!-- Start: time picker -->
     <div *ngIf="timeEnable"
-         class="content-container time-container"
-         [class.include-second]="timeShowSecond"
-         [class.include-12-hour]="timeMeridian">
-      <div
-        class="time-col hour-col the-divider">
-        <div (click)="increaseHour()">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 255 255">
-            <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
-          </svg>
+         class="time-container horizontal-padding content-container">
+      <div class="time-col hour-col">
+        <div class="item">
+          <div class="dp-btn disabled">
+            <span>--</span>
+          </div>
         </div>
-        <div>
-          <span>{{ hour | number: '2.0' }}</span>
-        </div>
-        <div (click)="decreaseHour()">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 255 255">
-            <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
-          </svg>
+        <ng-container *ngIf="!timeMeridian">
+          <div class="item"
+               *ngFor="let _ of [].constructor(24); let i = index">
+            <div class="dp-btn"
+                 (click)="setHour(i)"
+                 [class.selected]="hour === i">
+              <span>{{ i | number: '2.0' }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="timeMeridian">
+          <div class="item"
+               *ngFor="let _ of [].constructor(12); let i = index">
+            <div class="dp-btn"
+                 (click)="set12Hour(i + 1)"
+                 [class.selected]="(hour === 0 && (i + 1) === 12) ||
+                                   (hour >= 1 && hour <= 12 && hour === (i + 1)) ||
+                                   (hour > 12 && hour === ((i + 1) + 12))">
+              <span>{{ (i + 1) | number: '2.0' }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <div class="item">
+          <div class="dp-btn disabled">
+            <span>--</span>
+          </div>
         </div>
       </div>
-      <div class="time-col minute-col"
-           [class.the-divider]="timeShowSecond">
-        <div (click)="increaseMinute()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 255 255">
-            <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
-          </svg>
+      <div class="time-col minute-col">
+        <div class="item">
+          <div class="dp-btn disabled">
+            <span>--</span>
+          </div>
         </div>
-        <div>
-          <span>{{ minute | number: '2.0' }}</span>
+        <div class="item"
+             *ngFor="let _ of [].constructor(60); let i = index">
+          <div class="dp-btn"
+               (click)="setMinute(i)"
+               [class.selected]="minute === i">
+            <span>{{ i | number: '2.0' }}</span>
+          </div>
         </div>
-        <div (click)="decreaseMinute()">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 255 255">
-            <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
-          </svg>
+        <div class="item">
+          <div class="dp-btn disabled">
+            <span>--</span>
+          </div>
         </div>
       </div>
       <div *ngIf="timeShowSecond"
            class="time-col second-col">
-        <div (click)="increaseSecond()">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 255 255">
-            <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
-          </svg>
+        <div class="item">
+          <div class="dp-btn disabled">
+            <span>--</span>
+          </div>
         </div>
-        <div>
-          <span>{{ second | number: '2.0' }}</span>
+        <div class="item"
+             *ngFor="let _ of [].constructor(60); let i = index">
+          <div class="dp-btn"
+               (click)="setSecond(i)"
+               [class.selected]="second === i">
+            <span>{{ i | number: '2.0' }}</span>
+          </div>
         </div>
-        <div (click)="decreaseSecond()">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 255 255">
-            <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
-          </svg>
+        <div class="item">
+          <div class="dp-btn disabled">
+            <span>--</span>
+          </div>
         </div>
       </div>
       <div *ngIf="timeMeridian"
-           class="time-col time-in-12-hour-format-col">
-        <div (click)="toggleAmPm()">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 255 255">
-            <polygon points="0,191.25 127.5,63.75 255,191.25"></polygon>
-          </svg>
+           class="time-col meridian-col">
+        <div class="item">
+          <div class="dp-btn" (click)="toggleAmPm('AM')" [class.selected]="hour < 12">
+            <span>AM</span>
+          </div>
         </div>
-        <div>
-          <span>{{ hour >= 12 ? 'PM' : 'AM' }}</span>
-        </div>
-        <div (click)="toggleAmPm()">
-          <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 255 255">
-            <polygon points="0,63.75 127.5,191.25 255,63.75"></polygon>
-          </svg>
+        <div class="item">
+          <div class="dp-btn" (click)="toggleAmPm('PM')" [class.selected]="hour >= 12">
+            <span>PM</span>
+          </div>
         </div>
       </div>
     </div>

@@ -1,13 +1,16 @@
 import moment from 'moment-jalaali';
+import { IActiveDate } from './interface/IActiveDate';
 import { IYear } from './interface/IYear';
 import { IMonth } from './interface/IMonth';
 import { IDay } from './interface/IDay';
 import {
-  Component, EventEmitter,
+  Component,
+  EventEmitter,
   HostListener,
   Input,
   OnDestroy,
-  OnInit, Output
+  OnInit,
+  Output
 } from '@angular/core';
 
 @Component({
@@ -81,12 +84,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input()
   dateMax: number | null = null;
 
-  @Input()
-  dateOnInit: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
-
-  @Input()
-  dateOnSelect: (shamsiDate: string, gregorianDate: string, timestamp: number) => void = () => {};
-
   // time
   timeEnable: boolean = true;
   @Input('timeEnable')
@@ -117,9 +114,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input()
   uiContainerWidth: string = '';
 
-  @Output()
-  uiIsVisibleChange = new EventEmitter<boolean>();
-
   @Input('uiYearView')
   set _uiYearView(value: boolean) {
     this.uiYearView = value;
@@ -137,6 +131,15 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   @Input()
   uiTodayBtnEnable: boolean = true;
+
+  @Output()
+  uiIsVisibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output()
+  dateOnInit: EventEmitter<IActiveDate> = new EventEmitter<IActiveDate>();
+
+  @Output()
+  dateOnSelect: EventEmitter<IActiveDate> = new EventEmitter<IActiveDate>();
 
   ngOnInit(): void {
     this.setViewModes();
@@ -207,11 +210,11 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
     this._dateValue = this.today.valueOf();
     this.selectedDate = moment(this._dateValue);
-    this.dateOnInit(
-      String(this.selectedDate.format(this.dateFormat)),
-      String(this.selectedDate.format(this.dateGregorianFormat)),
-      Number(this.selectedDate.valueOf())
-    );
+    this.dateOnInit.next({
+      shamsi: String(this.selectedDate.format(this.dateFormat)),
+      gregorian: String(this.selectedDate.format(this.dateGregorianFormat)),
+      timestamp: Number(this.selectedDate.valueOf())
+    });
   }
 
   setSelectedDate(): void {
@@ -614,11 +617,11 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       this.setInputValue();
     }
     this.setViewDate();
-    this.dateOnSelect(
-      String(this.selectedDate.format(this.dateFormat)),
-      String(this.selectedDate.format(this.dateGregorianFormat)),
-      Number(this.selectedDate.valueOf())
-    );
+    this.dateOnSelect.next({
+      shamsi: String(this.selectedDate.format(this.dateFormat)),
+      gregorian: String(this.selectedDate.format(this.dateGregorianFormat)),
+      timestamp: Number(this.selectedDate.valueOf())
+    });
   }
 
   increaseHour(): void {

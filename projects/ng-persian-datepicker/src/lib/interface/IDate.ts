@@ -36,9 +36,4 @@ export interface IDate {
    * @description max date that user can select (timestamp)
    */
   max?: number;
-
-  /**
-   * @description onSelect date callback
-   */
-  onSelect?: (shamsiDate: string, gregorianDate: string, timestamp: number) => void;
 }

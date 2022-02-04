@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'monthText'
+  name: 'month'
 })
-export class MonthTextPipe implements PipeTransform {
+export class MonthPipe implements PipeTransform {
 
   private readonly months = [
     'فروردین',

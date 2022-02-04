@@ -62,7 +62,7 @@
              [class.disabled]="month.isMonthDisabled"
              (click)="monthClick(month)"
              *ngFor="let month of months">
-          <span>{{ month.indexValue | monthText }}</span>
+          <span>{{ month.indexValue | month }}</span>
         </div>
       </div>
     </div>

@@ -41,7 +41,7 @@
 
         .dp-btn {
 
-          &:hover {
+          &:not(.disabled):not(.selected):hover {
             background: $theColHoverBackgroundColor!important;
             color: $theColHoverTextColor!important;
             svg {

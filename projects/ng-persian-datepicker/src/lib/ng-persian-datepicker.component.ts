@@ -60,9 +60,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   minute: number = 0;
   second: number = 0;
 
+  /** @Input */
+
   @Input()
   input: HTMLInputElement | null = null;
 
+  // date
   @Input()
   dateValue: string | number = '';
 
@@ -132,14 +135,18 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input()
   uiTodayBtnEnable: boolean = true;
 
-  @Output()
-  uiIsVisibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  /** @Output */
 
+  // date
   @Output()
   dateOnInit: EventEmitter<IActiveDate> = new EventEmitter<IActiveDate>();
 
   @Output()
   dateOnSelect: EventEmitter<IActiveDate> = new EventEmitter<IActiveDate>();
+
+  // ui
+  @Output()
+  uiIsVisibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   ngOnInit(): void {
     this.setViewModes();

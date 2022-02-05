@@ -748,6 +748,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   private setUiIsVisible(value: boolean): void {
     this.uiIsVisible = value;
     this.uiIsVisibleChange.next(value);
+    this.scrollIntoActiveTime();
   }
 
 }

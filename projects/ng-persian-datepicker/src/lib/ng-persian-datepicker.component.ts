@@ -422,7 +422,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.inputEventInputListener = (event: Event) => {
       const input: HTMLInputElement = event.target as HTMLInputElement;
       const date: moment.Moment = moment(input.value, this.dateFormat);
-      if (!date.isValid()) {
+      if (!date.isValid() || !this.isDateInRange(date.valueOf(), false, false)) {
         return;
       }
       this.setTime(date);

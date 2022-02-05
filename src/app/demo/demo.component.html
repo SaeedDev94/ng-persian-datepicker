@@ -89,14 +89,6 @@
         </label>
       </div>
       <div class="switch">
-        <p>Today button</p>
-        <label>
-          <input type="checkbox"
-                 [(ngModel)]="uiTodayBtnEnable" />
-          <span class="lever"></span>
-        </label>
-      </div>
-      <div class="switch">
         <p>Time</p>
         <label>
           <input type="checkbox"
@@ -119,6 +111,14 @@
           <input type="checkbox"
                  [disabled]="!timeEnable"
                  [(ngModel)]="timeMeridian" />
+          <span class="lever"></span>
+        </label>
+      </div>
+      <div class="switch">
+        <p>Today button</p>
+        <label>
+          <input type="checkbox"
+                 [(ngModel)]="uiTodayBtnEnable" />
           <span class="lever"></span>
         </label>
       </div>

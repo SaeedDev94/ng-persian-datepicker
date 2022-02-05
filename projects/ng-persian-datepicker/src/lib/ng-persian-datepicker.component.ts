@@ -703,6 +703,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   scrollIntoActiveTime(): void {
+    if (!this.uiIsVisible || !this.timeEnable) {
+      return;
+    }
+
     setTimeout(() => {
       const datePicker: HTMLElement | null = window.document.querySelector(`div[data-datepicker-id="${this.id}"]`);
       if (!datePicker) {

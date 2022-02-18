@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IActiveDate } from '../../../projects/ng-persian-datepicker/src/public-api';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-demo',
@@ -8,7 +9,14 @@ import { IActiveDate } from '../../../projects/ng-persian-datepicker/src/public-
 })
 export class DemoComponent {
 
-  dateValue = new Date().valueOf();
+  constructor(
+    private formBuilder: FormBuilder
+  ) {
+  }
+
+  form = this.formBuilder.group({
+    dateValue: new Date().valueOf()
+  });
 
   uiIsVisible: boolean = true;
   uiTheme: string = 'default';

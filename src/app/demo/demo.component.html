@@ -124,15 +124,8 @@
       </div>
     </div>
     <div class="col offset-l2 l4 offset-m3 m6 offset-s2 s8">
-      <div class="input-field">
-        <input id="datepicker"
-               type="text"
-               aria-label="Datepicker Input" #datepickerInput />
-      </div>
-      <div class="datepicker-container">
-        <ng-persian-datepicker [input]="datepickerInput"
-                               [dateValue]="dateValue"
-                               (dateOnSelect)="onSelect($event)"
+      <form [formGroup]="form">
+        <ng-persian-datepicker (dateOnSelect)="onSelect($event)"
                                [(uiIsVisible)]="uiIsVisible"
                                [uiTheme]="uiTheme"
                                [uiYearView]="uiYearView"
@@ -142,8 +135,12 @@
                                [uiTodayBtnEnable]="uiTodayBtnEnable"
                                [timeEnable]="timeEnable"
                                [timeShowSecond]="timeShowSecond"
-                               [timeMeridian]="timeMeridian"></ng-persian-datepicker>
-      </div>
+                               [timeMeridian]="timeMeridian">
+          <div class="input-field">
+            <input type="text" formControlName="dateValue" aria-label="Datepicker Input" />
+          </div>
+        </ng-persian-datepicker>
+      </form>
     </div>
   </div>
 </div>

@@ -25,17 +25,19 @@ After install, edit tsconfig.json:
 }
 ```
 
-Import module:
+Import modules:
 
 ```typescript
 ...
 import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
+import { ReactiveFormsModule } from '@angular/forms';
 ...
 
 @NgModule({
   imports: [
     ...
       NgPersianDatepickerModule,
+      ReactiveFormsModule,
     ...
   ],
   ...
@@ -45,10 +47,29 @@ import { NgPersianDatepickerModule } from 'ng-persian-datepicker';
 
 # Implement
 
+```typescript
+import { FormBuilder } from '@angular/forms';
+
+@Component(...)
+class DateComponent {
+  
+  constructor(
+    private formBuilder: FormBuilder
+  ) {
+  }
+
+  form = this.formBuilder.group({
+    date: new Date().valueOf()
+  });
+}
+```
+
 ```html
-<input type="text" #datepickerInput />
-<ng-persian-datepicker
-  [input]="datepickerInput"></ng-persian-datepicker>
+<form [formGroup]="form">
+  <ng-persian-datepicker>
+    <input type="text" formControlName="date" />
+  </ng-persian-datepicker>
+</form>
 ```
 
 That's it! this was a minimal setup ...
@@ -58,18 +79,18 @@ That's it! this was a minimal setup ...
 You can customize datepicker config:
 
 ```html
-<input type="text" #datepickerInput />
-<ng-persian-datepicker
-  [input]="datepickerInput"
-  [uiTheme]="'dark'"
-  [timeMeridian]="true"></ng-persian-datepicker>
+<form [formGroup]="form">
+  <ng-persian-datepicker [uiTheme]="'dark'"
+                         [timeMeridian]="true">
+    <input type="text" formControlName="date" />
+  </ng-persian-datepicker>
+</form>
 ```
 
 complete config reference:
 
 | Key                    | Type             | Description                                                                                                          | Example                                                                |
 | ---------------------- | ---------------- |----------------------------------------------------------------------------------------------------------------------| ---------------------------------------------------------------------- |
-| dateValue              | string or number | value of date. default: `''`                                                                                         | '1398-12-15 14:32:45' or 1583406165000                                 |
 | dateInitValue          | boolean          | if no dateValue provided use today as init value. default: `true`                                                    | true                                                                   |
 | dateIsGregorian        | boolean          | is dateValue gregorian?. default: `false`                                                                            | false                                                                  |
 | dateFormat             | string           | shamsi date format, check moment and moment-jalaali docs to see available formats. default: `jYYYY-jMM-jDD HH:mm:ss` | 'jYYYY-jMM-jDD HH:mm:ss'                                               |

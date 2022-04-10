@@ -14,7 +14,11 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { FormControlName } from '@angular/forms';
+import {
+  FormControl,
+  FormControlDirective,
+  FormControlName
+} from '@angular/forms';
 import { filter, Subscription } from 'rxjs';
 
 @Component({
@@ -25,7 +29,7 @@ import { filter, Subscription } from 'rxjs';
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   constructor(
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {
     moment.loadPersian({
       usePersianDigits: false,
@@ -39,7 +43,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   private input?: HTMLInputElement;
   private inputEventFocusListener?: () => void;
 
-  private formControl?: FormControlName;
+  private formControl?: FormControl;
   private formControlValueChanges?: Subscription;
 
   private dateValue: number = 0;
@@ -70,33 +74,14 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   /** @ReactiveForm */
 
+  @ContentChild(FormControlDirective, {static: false})
+  set _formControlDirective(value: FormControlDirective | undefined) {
+    this.setFormControl(value?.control);
+  }
+
   @ContentChild(FormControlName, {static: false})
-  set _formControl(value: FormControlName) {
-    this.formControl = value;
-
-    if (!this.dateValue) {
-      this.setDateInitValue(this.formControl?.control?.value);
-      this.setSelectedDate(this.formControl?.control?.value);
-      this.setViewDate();
-      this.setTime();
-      this.setFormControlValue();
-    }
-
-    this.formControlValueChanges?.unsubscribe();
-    this.formControlValueChanges = this.formControl?.control
-      ?.valueChanges
-      ?.pipe(filter((date: string | number) => !!date && this.valueOfDate(date) !== this.dateValue))
-      ?.subscribe({
-        next: (value: string | number) => {
-          const date: moment.Moment = moment(value, this.dateFormat);
-          if (!date.isValid() || !this.isDateInRange(date.valueOf(), false, false)) {
-            return;
-          }
-          this.setTime(date);
-          this.changeSelectedDate(date, false);
-          this.scrollIntoActiveTime();
-        }
-      });
+  set _formControlName(value: FormControlName | undefined) {
+    this.setFormControl(value?.control);
   }
 
   /** @Input */
@@ -201,6 +186,36 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (this.input) {
       this.input.removeEventListener('focus', this.inputEventFocusListener!);
     }
+  }
+
+  setFormControl(value: FormControl | undefined): void {
+    if (!value) return;
+
+    this.formControl = value;
+
+    if (!this.dateValue) {
+      this.setDateInitValue(this.formControl?.value);
+      this.setSelectedDate(this.formControl?.value);
+      this.setViewDate();
+      this.setTime();
+      this.setFormControlValue();
+    }
+
+    this.formControlValueChanges?.unsubscribe();
+    this.formControlValueChanges = this.formControl
+      ?.valueChanges
+      ?.pipe(filter((date: string | number) => !!date && this.valueOfDate(date) !== this.dateValue))
+      ?.subscribe({
+        next: (value: string | number) => {
+          const date: moment.Moment = moment(value, this.dateFormat);
+          if (!date.isValid() || !this.isDateInRange(date.valueOf(), false, false)) {
+            return;
+          }
+          this.setTime(date);
+          this.changeSelectedDate(date, false);
+          this.scrollIntoActiveTime();
+        }
+      });
   }
 
   setToday(): void {
@@ -424,7 +439,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
 
     if (this.dateValue) {
-      this.formControl?.control?.setValue(moment(this.dateValue).format(this.dateFormat));
+      this.formControl?.setValue(moment(this.dateValue).format(this.dateFormat));
     }
   }
 

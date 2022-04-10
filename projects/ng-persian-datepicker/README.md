@@ -48,28 +48,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 # Implement
 
 ```typescript
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 @Component(...)
 class DateComponent {
 
-  constructor(
-    private formBuilder: FormBuilder
-  ) {
-  }
+  dateValue = new FormControl();
 
-  form: FormGroup = this.formBuilder.group({
-    date: new Date().valueOf()
-  });
 }
 ```
 
 ```html
-<form [formGroup]="form">
-  <ng-persian-datepicker>
-    <input type="text" formControlName="date" />
-  </ng-persian-datepicker>
-</form>
+<ng-persian-datepicker>
+  <input type="text" [formControl]="dateValue" />
+</ng-persian-datepicker>
 ```
 
 That's it! this was a minimal setup ...
@@ -79,12 +71,10 @@ That's it! this was a minimal setup ...
 You can customize datepicker config:
 
 ```html
-<form [formGroup]="form">
-  <ng-persian-datepicker [uiTheme]="'dark'"
-                         [timeMeridian]="true">
-    <input type="text" formControlName="date" />
-  </ng-persian-datepicker>
-</form>
+<ng-persian-datepicker [uiTheme]="'dark'"
+                       [timeMeridian]="true">
+  <input type="text" [formControl]="dateValue" />
+</ng-persian-datepicker>
 ```
 
 Complete config reference:

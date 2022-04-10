@@ -124,7 +124,7 @@
       </div>
     </div>
     <div class="col offset-l2 l4 offset-m3 m6 offset-s2 s8">
-      <form [formGroup]="form">
+      <form>
         <ng-persian-datepicker (dateOnSelect)="onSelect($event)"
                                [(uiIsVisible)]="uiIsVisible"
                                [uiTheme]="uiTheme"
@@ -137,7 +137,7 @@
                                [timeShowSecond]="timeShowSecond"
                                [timeMeridian]="timeMeridian">
           <div class="input-field">
-            <input type="text" formControlName="dateValue" aria-label="Datepicker Input" />
+            <input type="text" [formControl]="dateValue" aria-label="Datepicker Input" />
           </div>
         </ng-persian-datepicker>
       </form>

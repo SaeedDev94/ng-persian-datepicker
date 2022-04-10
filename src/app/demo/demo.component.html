@@ -124,23 +124,21 @@
       </div>
     </div>
     <div class="col offset-l2 l4 offset-m3 m6 offset-s2 s8">
-      <form>
-        <ng-persian-datepicker (dateOnSelect)="onSelect($event)"
-                               [(uiIsVisible)]="uiIsVisible"
-                               [uiTheme]="uiTheme"
-                               [uiYearView]="uiYearView"
-                               [uiMonthView]="uiMonthView"
-                               [uiHideAfterSelectDate]="uiHideAfterSelectDate"
-                               [uiHideOnOutsideClick]="uiHideOnOutsideClick"
-                               [uiTodayBtnEnable]="uiTodayBtnEnable"
-                               [timeEnable]="timeEnable"
-                               [timeShowSecond]="timeShowSecond"
-                               [timeMeridian]="timeMeridian">
-          <div class="input-field">
-            <input type="text" [formControl]="dateValue" aria-label="Datepicker Input" />
-          </div>
-        </ng-persian-datepicker>
-      </form>
+      <ng-persian-datepicker (dateOnSelect)="onSelect($event)"
+                             [(uiIsVisible)]="uiIsVisible"
+                             [uiTheme]="uiTheme"
+                             [uiYearView]="uiYearView"
+                             [uiMonthView]="uiMonthView"
+                             [uiHideAfterSelectDate]="uiHideAfterSelectDate"
+                             [uiHideOnOutsideClick]="uiHideOnOutsideClick"
+                             [uiTodayBtnEnable]="uiTodayBtnEnable"
+                             [timeEnable]="timeEnable"
+                             [timeShowSecond]="timeShowSecond"
+                             [timeMeridian]="timeMeridian">
+        <div class="input-field">
+          <input type="text" [formControl]="dateValue" aria-label="Datepicker Input" />
+        </div>
+      </ng-persian-datepicker>
     </div>
   </div>
 </div>

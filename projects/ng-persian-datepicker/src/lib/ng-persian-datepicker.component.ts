@@ -385,7 +385,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   setViewDateTitle(): void {
-    const year: number = this.viewDate?.jYear();
+    const year: number = this.viewDate ? this.viewDate.jYear() : 0;
     if (!year) {
       return;
     }

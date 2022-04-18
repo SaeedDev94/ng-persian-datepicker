@@ -1,4 +1,5 @@
 import moment from 'moment-jalaali';
+import { filter, Subscription } from 'rxjs';
 import { IActiveDate } from './interface/IActiveDate';
 import { IYear } from './interface/IYear';
 import { IMonth } from './interface/IMonth';
@@ -19,7 +20,6 @@ import {
   FormControlDirective,
   FormControlName
 } from '@angular/forms';
-import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'ng-persian-datepicker',
@@ -219,7 +219,9 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   setToday(): void {
-    this.today = moment();
+    const today: moment.Moment = moment();
+    if (!this.timeEnable) today.startOf('day');
+    this.today = today;
   }
 
   setWeekDays(): void {
@@ -276,8 +278,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.dateValue = this.valueOfDate(dateValue);
-    this.selectedDate = moment(this.dateValue);
+    const date: moment.Moment = moment(this.valueOfDate(dateValue));
+    if (!this.timeEnable) date.startOf('day');
+    this.dateValue = date.valueOf();
+    this.selectedDate = date;
   }
 
   setViewDate(): void {
@@ -287,6 +291,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       this.viewDate = this.dateMax && this.selectedDate.valueOf() > this.dateMax.valueOf() ?
         moment(this.dateMax) : moment(this.selectedDate);
     }
+    if (!this.timeEnable) this.viewDate.startOf('day');
     this.onChangeViewDate();
   }
 
@@ -759,7 +764,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   private valueOfDate(date: string | number): number {
     if (typeof date === 'string') {
-      return this.dateIsGregorian ?
+      return (this.dateIsGregorian && !this.dateValue) ?
         moment(date, this.dateGregorianFormat).valueOf() :
         moment(date, this.dateFormat).valueOf();
     }

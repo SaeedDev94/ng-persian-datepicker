@@ -646,11 +646,13 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       this.selectedDate.hour(this.hour);
       this.selectedDate.minute(this.minute);
       this.selectedDate.second(this.second);
+      this.selectedDate.millisecond(0);
     } else {
       this.setToday();
       this.selectedDate.hour(this.today.hour());
       this.selectedDate.minute(this.today.minute());
       this.selectedDate.second(this.today.second());
+      this.selectedDate.millisecond(this.today.millisecond());
     }
     this.dateValue = this.selectedDate.valueOf();
     if (this.uiHideAfterSelectDate && !this.preventClose) {

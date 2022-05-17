@@ -133,8 +133,22 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   // ui
-  @Input()
   uiTheme: IDatepickerTheme = datepickerDefaultTheme;
+
+  @Input('uiTheme')
+  set _uiTheme(value: IDatepickerTheme | string) {
+    if (typeof value === 'string') {
+      console.warn('DEPRECATED => uiTheme: string');
+      console.warn('Please migrate to NEW => uiTheme: IDatepickerTheme');
+      console.warn('Using "datepickerDefaultTheme: IDatepickerTheme" for now ...');
+
+      this.uiTheme = datepickerDefaultTheme;
+
+      return;
+    }
+
+    this.uiTheme = value;
+  }
 
   @Input()
   uiIsVisible: boolean = false;

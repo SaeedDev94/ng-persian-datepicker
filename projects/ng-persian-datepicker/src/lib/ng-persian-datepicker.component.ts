@@ -1,9 +1,13 @@
 import moment from 'moment-jalaali';
 import { filter, Subscription } from 'rxjs';
-import { IActiveDate } from './interface/IActiveDate';
-import { IYear } from './interface/IYear';
-import { IMonth } from './interface/IMonth';
-import { IDay } from './interface/IDay';
+import { datepickerDefaultTheme } from './theme';
+import {
+  IActiveDate,
+  IDay,
+  IMonth,
+  IYear,
+  IDatepickerTheme
+} from './interface';
 import {
   Component,
   ContentChild,
@@ -29,7 +33,7 @@ import {
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   constructor(
-    private elementRef: ElementRef,
+    private elementRef: ElementRef
   ) {
     moment.loadPersian({
       usePersianDigits: false,
@@ -130,7 +134,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   // ui
   @Input()
-  uiTheme: string = 'default';
+  uiTheme: IDatepickerTheme = datepickerDefaultTheme;
 
   @Input()
   uiIsVisible: boolean = false;

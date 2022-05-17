@@ -1,33 +1,37 @@
 <div class="datepicker-content">
   <ng-content></ng-content>
   <div class="datepicker-outer-container"
-       [class.theme-default]="uiTheme === 'default'"
-       [class.theme-blue]="uiTheme === 'blue'"
-       [class.theme-gray]="uiTheme === 'gray'"
-       [class.theme-dark]="uiTheme === 'dark'"
-       [class.theme-black]="uiTheme === 'black'"
+       [style.backgroundColor]="uiTheme.background"
+       [style.color]="uiTheme.text"
+       [style.borderColor]="uiTheme.border"
        [class.hide]="!uiIsVisible">
     <div class="datepicker-inner-container">
 
       <!-- Start: navigation -->
       <div class="content-container navigation-container horizontal-padding">
         <div class="go-back dp-btn"
-             (click)="navigate(false)">
+             [style.backgroundColor]="goBack.classList.contains('hover') ? uiTheme.hoverBackground : null"
+             (click)="navigate(false)" themeHover #goBack>
           <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 240.823 240.823">
+               viewBox="0 0 240.823 240.823"
+               [style.fill]="goBack.classList.contains('hover') ? uiTheme.hoverText : uiTheme.text">
             <path d="M183.189,111.816L74.892,3.555c-4.752-4.74-12.451-4.74-17.215,0c-4.752,4.74-4.752,12.439,0,17.179
                    l99.707,99.671l-99.695,99.671c-4.752,4.74-4.752,12.439,0,17.191c4.752,4.74,12.463,4.74,17.215,0l108.297-108.261
                    C187.881,124.315,187.881,116.495,183.189,111.816z"></path>
           </svg>
         </div>
         <div class="switch-view dp-btn"
-             (click)="nextViewMode()">
+             [style.backgroundColor]="switchView.classList.contains('hover') ? uiTheme.hoverBackground : null"
+             [style.color]="switchView.classList.contains('hover') ? uiTheme.hoverText : null"
+             (click)="nextViewMode()" themeHover #switchView>
           <span>{{ viewDateTitle }}</span>
         </div>
         <div class="go-forward dp-btn"
-             (click)="navigate(true)">
+             [style.backgroundColor]="goForward.classList.contains('hover') ? uiTheme.hoverBackground : null"
+             (click)="navigate(true)" themeHover #goForward>
           <svg xmlns="http://www.w3.org/2000/svg"
-               viewBox="0 0 240.823 240.823">
+               viewBox="0 0 240.823 240.823"
+               [style.fill]="goForward.classList.contains('hover') ? uiTheme.hoverText : uiTheme.text">
             <path d="M57.633,129.007L165.93,237.268c4.752,4.74,12.451,4.74,17.215,0c4.752-4.74,4.752-12.439,0-17.179
                    l-99.707-99.671l99.695-99.671c4.752-4.74,4.752-12.439,0-17.191c-4.752-4.74-12.463-4.74-17.215,0L57.621,111.816
                    C52.942,116.507,52.942,124.327,57.633,129.007z"></path>
@@ -45,9 +49,32 @@
                (click)="yearClick(year)"
                *ngFor="let year of years">
             <div class="dp-btn"
-                 [class.today]="year.isYearOfTodayDate"
+                 [class.disabled]="year.isYearDisabled"
                  [class.selected]="year.isYearOfSelectedDate"
-                 [class.disabled]="year.isYearDisabled">
+                 [class.today]="year.isYearOfTodayDate"
+                 [style.backgroundColor]="
+                   (year.isYearDisabled) ?
+                     uiTheme.disabledBackground :
+                     (year.isYearOfSelectedDate) ?
+                       uiTheme.selectedBackground :
+                       (yearCol.classList.contains('hover')) ?
+                         uiTheme.hoverBackground :
+                         (year.isYearOfTodayDate) ?
+                           uiTheme.todayBackground :
+                           null
+                 "
+                 [style.color]="
+                   (year.isYearDisabled) ?
+                     uiTheme.disabledText :
+                     (year.isYearOfSelectedDate) ?
+                       uiTheme.selectedText :
+                       (yearCol.classList.contains('hover')) ?
+                         uiTheme.hoverText :
+                         (year.isYearOfTodayDate) ?
+                           uiTheme.todayText :
+                           null
+                 "
+                 themeHover #yearCol>
               <span>{{ year.value }}</span>
             </div>
           </div>
@@ -64,9 +91,32 @@
                (click)="monthClick(month)"
                *ngFor="let month of months">
             <div class="dp-btn"
-                 [class.today]="month.isMonthOfTodayDate"
+                 [class.disabled]="month.isMonthDisabled"
                  [class.selected]="month.isMonthOfSelectedDate"
-                 [class.disabled]="month.isMonthDisabled">
+                 [class.today]="month.isMonthOfTodayDate"
+                 [style.backgroundColor]="
+                   (month.isMonthDisabled) ?
+                     uiTheme.disabledBackground :
+                     (month.isMonthOfSelectedDate) ?
+                       uiTheme.selectedBackground :
+                       (monthCol.classList.contains('hover')) ?
+                         uiTheme.hoverBackground :
+                         (month.isMonthOfTodayDate) ?
+                           uiTheme.todayBackground :
+                           null
+                 "
+                 [style.color]="
+                   (month.isMonthDisabled) ?
+                     uiTheme.disabledText :
+                     (month.isMonthOfSelectedDate) ?
+                       uiTheme.selectedText :
+                       (monthCol.classList.contains('hover')) ?
+                         uiTheme.hoverText :
+                         (month.isMonthOfTodayDate) ?
+                           uiTheme.todayText :
+                           null
+                 "
+                 themeHover #monthCol>
               <span>{{ month.indexValue | month }}</span>
             </div>
           </div>
@@ -90,10 +140,37 @@
                  (click)="dayClick(day)"
                  *ngFor="let day of row">
               <div class="dp-btn"
-                   [class.other-month]="!day.isDayInCurrentMonth"
-                   [class.today]="day.isDayOfTodayDate"
+                   [class.disabled]="day.isDayDisabled"
                    [class.selected]="day.isDayOfSelectedDate"
-                   [class.disabled]="day.isDayDisabled">
+                   [class.today]="day.isDayOfTodayDate"
+                   [class.other-month]="!day.isDayInCurrentMonth"
+                   [style.backgroundColor]="
+                     (day.isDayDisabled) ?
+                       uiTheme.disabledBackground :
+                       (day.isDayOfSelectedDate) ?
+                         uiTheme.selectedBackground :
+                         (dayCol.classList.contains('hover')) ?
+                           uiTheme.hoverBackground :
+                           (day.isDayOfTodayDate) ?
+                             uiTheme.todayBackground :
+                             (!day.isDayInCurrentMonth) ?
+                               uiTheme.otherMonthBackground :
+                               null
+                   "
+                   [style.color]="
+                     (day.isDayDisabled) ?
+                       uiTheme.disabledText :
+                       (day.isDayOfSelectedDate) ?
+                         uiTheme.selectedText :
+                         (dayCol.classList.contains('hover')) ?
+                           uiTheme.hoverText :
+                           (day.isDayOfTodayDate) ?
+                             uiTheme.todayText :
+                             (!day.isDayInCurrentMonth) ?
+                               uiTheme.otherMonthText :
+                               null
+                   "
+                   themeHover #dayCol>
                 <span>{{ day.value }}</span>
               </div>
             </div>
@@ -103,106 +180,222 @@
       <!-- End: day view mode -->
 
       <!-- Start: time picker -->
-      <div *ngIf="timeEnable"
-           class="time-container horizontal-padding content-container">
-        <div class="time-col hour-col">
-          <div class="item">
-            <div class="dp-btn disabled">
-              <span>--</span>
+      <ng-container *ngIf="timeEnable">
+        <div class="time-container horizontal-padding content-container"
+             [style.borderTopColor]="uiTheme.timeBorder"
+             [style.borderBottomColor]="uiTheme.timeBorder">
+          <div class="time-col hour-col">
+            <div class="item">
+              <div class="dp-btn disabled"
+                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.color]="uiTheme.disabledText">
+                <span>--</span>
+              </div>
+            </div>
+            <ng-container *ngIf="!timeMeridian">
+              <div class="item"
+                   *ngFor="let _ of [].constructor(24); let i = index">
+                <div class="dp-btn"
+                     (click)="setHour(i)"
+                     [class.selected]="hour === i"
+                     [style.backgroundColor]="
+                       (hour === i) ?
+                         uiTheme.selectedBackground :
+                         (hourCol.classList.contains('hover')) ?
+                           uiTheme.hoverBackground :
+                           null
+                     "
+                     [style.color]="
+                       (hour === i) ?
+                         uiTheme.selectedText :
+                         (hourCol.classList.contains('hover')) ?
+                           uiTheme.hoverText :
+                           null
+                     " themeHover #hourCol>
+                  <span>{{ i | number: '2.0' }}</span>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="timeMeridian">
+              <div class="item"
+                   *ngFor="let _ of [].constructor(12); let i = index">
+                <div class="dp-btn"
+                     (click)="set12Hour(i + 1)"
+                     [class.selected]="
+                       (hour === 0 && (i + 1) === 12) ||
+                       (hour >= 1 && hour <= 12 && hour === (i + 1)) ||
+                       (hour > 12 && hour === ((i + 1) + 12))
+                     "
+                     [style.backgroundColor]="
+                       (
+                         (hour === 0 && (i + 1) === 12) ||
+                         (hour >= 1 && hour <= 12 && hour === (i + 1)) ||
+                         (hour > 12 && hour === ((i + 1) + 12))
+                       ) ?
+                         uiTheme.selectedBackground :
+                         (hour12Col.classList.contains('hover')) ?
+                           uiTheme.hoverBackground :
+                           null
+                     "
+                     [style.color]="
+                       (
+                         (hour === 0 && (i + 1) === 12) ||
+                         (hour >= 1 && hour <= 12 && hour === (i + 1)) ||
+                         (hour > 12 && hour === ((i + 1) + 12))
+                       ) ?
+                         uiTheme.selectedText :
+                         (hour12Col.classList.contains('hover')) ?
+                           uiTheme.hoverText :
+                           null
+                     " themeHover #hour12Col>
+                  <span>{{ (i + 1) | number: '2.0' }}</span>
+                </div>
+              </div>
+            </ng-container>
+            <div class="item">
+              <div class="dp-btn disabled"
+                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.color]="uiTheme.disabledText">
+                <span>--</span>
+              </div>
             </div>
           </div>
-          <ng-container *ngIf="!timeMeridian">
+          <div class="time-col minute-col">
+            <div class="item">
+              <div class="dp-btn disabled"
+                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.color]="uiTheme.disabledText">
+                <span>--</span>
+              </div>
+            </div>
             <div class="item"
-                 *ngFor="let _ of [].constructor(24); let i = index">
+                 *ngFor="let _ of [].constructor(60); let i = index">
               <div class="dp-btn"
-                   (click)="setHour(i)"
-                   [class.selected]="hour === i">
+                   (click)="setMinute(i)"
+                   [class.selected]="minute === i"
+                   [style.backgroundColor]="
+                     (minute === i) ?
+                       uiTheme.selectedBackground :
+                       (minuteCol.classList.contains('hover')) ?
+                         uiTheme.hoverBackground :
+                         null
+                   "
+                   [style.color]="
+                     (minute === i) ?
+                       uiTheme.selectedText :
+                       (minuteCol.classList.contains('hover')) ?
+                         uiTheme.hoverText :
+                         null
+                   " themeHover #minuteCol>
                 <span>{{ i | number: '2.0' }}</span>
               </div>
             </div>
-          </ng-container>
-          <ng-container *ngIf="timeMeridian">
-            <div class="item"
-                 *ngFor="let _ of [].constructor(12); let i = index">
-              <div class="dp-btn"
-                   (click)="set12Hour(i + 1)"
-                   [class.selected]="(hour === 0 && (i + 1) === 12) ||
-                                   (hour >= 1 && hour <= 12 && hour === (i + 1)) ||
-                                   (hour > 12 && hour === ((i + 1) + 12))">
-                <span>{{ (i + 1) | number: '2.0' }}</span>
+            <div class="item">
+              <div class="dp-btn disabled"
+                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.color]="uiTheme.disabledText">
+                <span>--</span>
               </div>
             </div>
-          </ng-container>
-          <div class="item">
-            <div class="dp-btn disabled">
-              <span>--</span>
+          </div>
+          <div *ngIf="timeShowSecond"
+               class="time-col second-col">
+            <div class="item">
+              <div class="dp-btn disabled"
+                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.color]="uiTheme.disabledText">
+                <span>--</span>
+              </div>
+            </div>
+            <div class="item"
+                 *ngFor="let _ of [].constructor(60); let i = index">
+              <div class="dp-btn"
+                   (click)="setSecond(i)"
+                   [class.selected]="second === i"
+                   [style.backgroundColor]="
+                     (second === i) ?
+                       uiTheme.selectedBackground :
+                       (secondCol.classList.contains('hover')) ?
+                         uiTheme.hoverBackground :
+                         null
+                   "
+                   [style.color]="
+                     (second === i) ?
+                       uiTheme.selectedText :
+                       (secondCol.classList.contains('hover')) ?
+                         uiTheme.hoverText :
+                         null
+                   " themeHover #secondCol>
+                <span>{{ i | number: '2.0' }}</span>
+              </div>
+            </div>
+            <div class="item">
+              <div class="dp-btn disabled"
+                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.color]="uiTheme.disabledText">
+                <span>--</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="timeMeridian"
+               class="time-col meridian-col">
+            <div class="item">
+              <div class="dp-btn"
+                   (click)="toggleAmPm('AM')"
+                   [class.selected]="hour < 12"
+                   [style.backgroundColor]="
+                     (hour < 12) ?
+                       uiTheme.selectedBackground :
+                       (amCol.classList.contains('hover')) ?
+                         uiTheme.hoverBackground :
+                         null
+                   "
+                   [style.color]="
+                     (hour < 12) ?
+                       uiTheme.selectedText :
+                       (amCol.classList.contains('hover')) ?
+                         uiTheme.hoverText :
+                         null
+                   " themeHover #amCol>
+                <span>AM</span>
+              </div>
+            </div>
+            <div class="item">
+              <div class="dp-btn"
+                   (click)="toggleAmPm('PM')"
+                   [class.selected]="hour >= 12"
+                   [style.backgroundColor]="
+                     (hour >= 12) ?
+                       uiTheme.selectedBackground :
+                       (pmCol.classList.contains('hover')) ?
+                         uiTheme.hoverBackground :
+                         null
+                   "
+                   [style.color]="
+                     (hour >= 12) ?
+                       uiTheme.selectedText :
+                       (pmCol.classList.contains('hover')) ?
+                         uiTheme.hoverText :
+                         null
+                   " themeHover #pmCol>
+                <span>PM</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="time-col minute-col">
-          <div class="item">
-            <div class="dp-btn disabled">
-              <span>--</span>
-            </div>
-          </div>
-          <div class="item"
-               *ngFor="let _ of [].constructor(60); let i = index">
-            <div class="dp-btn"
-                 (click)="setMinute(i)"
-                 [class.selected]="minute === i">
-              <span>{{ i | number: '2.0' }}</span>
-            </div>
-          </div>
-          <div class="item">
-            <div class="dp-btn disabled">
-              <span>--</span>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="timeShowSecond"
-             class="time-col second-col">
-          <div class="item">
-            <div class="dp-btn disabled">
-              <span>--</span>
-            </div>
-          </div>
-          <div class="item"
-               *ngFor="let _ of [].constructor(60); let i = index">
-            <div class="dp-btn"
-                 (click)="setSecond(i)"
-                 [class.selected]="second === i">
-              <span>{{ i | number: '2.0' }}</span>
-            </div>
-          </div>
-          <div class="item">
-            <div class="dp-btn disabled">
-              <span>--</span>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="timeMeridian"
-             class="time-col meridian-col">
-          <div class="item">
-            <div class="dp-btn" (click)="toggleAmPm('AM')" [class.selected]="hour < 12">
-              <span>AM</span>
-            </div>
-          </div>
-          <div class="item">
-            <div class="dp-btn" (click)="toggleAmPm('PM')" [class.selected]="hour >= 12">
-              <span>PM</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      </ng-container>
       <!-- End: time picker -->
 
       <!-- Start: toolbox -->
       <div class="the-toolbox horizontal-padding">
-        <div *ngIf="uiTodayBtnEnable"
-             class="the-item dp-btn"
-             (click)="selectToday()">
-          <span>امروز</span>
-        </div>
+        <ng-container *ngIf="uiTodayBtnEnable">
+          <div class="the-item dp-btn"
+               [style.backgroundColor]="today.classList.contains('hover') ? uiTheme.hoverBackground : null"
+               [style.color]="today.classList.contains('hover') ? uiTheme.hoverText : null"
+               (click)="selectToday()" themeHover #today>
+            <span>امروز</span>
+          </div>
+        </ng-container>
       </div>
       <!-- End: toolbox -->
 

@@ -4,4 +4,5 @@
 
 export * from './lib/ng-persian-datepicker.component';
 export * from './lib/ng-persian-datepicker.module';
-export * from './lib/interface/_index';
+export * from './lib/theme';
+export * from './lib/interface';

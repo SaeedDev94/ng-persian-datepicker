@@ -1,6 +1,6 @@
 import moment from 'moment-jalaali';
 import { filter, Subscription } from 'rxjs';
-import { datepickerDefaultTheme } from './theme';
+import { defaultTheme } from './theme';
 import {
   IActiveDate,
   IDay,
@@ -133,16 +133,16 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   // ui
-  uiTheme: IDatepickerTheme = datepickerDefaultTheme;
+  uiTheme: IDatepickerTheme = defaultTheme;
 
   @Input('uiTheme')
   set _uiTheme(value: IDatepickerTheme | string) {
     if (typeof value === 'string') {
       console.warn('DEPRECATED => uiTheme: string');
       console.warn('Please migrate to NEW => uiTheme: IDatepickerTheme');
-      console.warn('Using "datepickerDefaultTheme: IDatepickerTheme" for now ...');
+      console.warn('Using "defaultTheme: IDatepickerTheme" for now ...');
 
-      this.uiTheme = datepickerDefaultTheme;
+      this.uiTheme = defaultTheme;
 
       return;
     }

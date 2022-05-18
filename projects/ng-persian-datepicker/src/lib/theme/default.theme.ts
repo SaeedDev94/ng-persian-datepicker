@@ -1,6 +1,6 @@
 import { IDatepickerTheme } from '../interface';
 
-export const datepickerDefaultTheme: IDatepickerTheme = {
+export const defaultTheme: IDatepickerTheme = {
   border: '#CCCCCC',
   timeBorder: '#CCCCCC',
 

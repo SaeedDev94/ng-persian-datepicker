@@ -1,5 +1,5 @@
-import { datepickerDefaultTheme } from './default.theme';
+import { defaultTheme } from './default.theme';
 
 export {
-  datepickerDefaultTheme
+  defaultTheme
 };

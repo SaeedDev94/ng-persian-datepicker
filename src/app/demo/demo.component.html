@@ -15,40 +15,16 @@
                  name="theme"
                  class="with-gap"
                  [value]="'default'"
-                 [(ngModel)]="uiTheme" />
+                 [(ngModel)]="theme" />
           <span>Default</span>
         </label>
         <label>
           <input type="radio"
                  name="theme"
                  class="with-gap"
-                 [value]="'blue'"
-                 [(ngModel)]="uiTheme" />
-          <span>Blue</span>
-        </label>
-        <label>
-          <input type="radio"
-                 name="theme"
-                 class="with-gap"
-                 [value]="'gray'"
-                 [(ngModel)]="uiTheme" />
-          <span>Gray</span>
-        </label>
-        <label>
-          <input type="radio"
-                 name="theme"
-                 class="with-gap"
                  [value]="'dark'"
-                 [(ngModel)]="uiTheme" />
+                 [(ngModel)]="theme" />
           <span>Dark</span>
-        </label>
-        <label>
-          <input type="radio"
-                 name="theme"
-                 class="with-gap"
-                 [value]="'black'"
-                 [(ngModel)]="uiTheme" />
-          <span>Black</span>
         </label>
       </div>
       <div class="check-boxes-container">
@@ -126,6 +102,7 @@
     <div class="col offset-l2 l4 offset-m3 m6 offset-s2 s8">
       <ng-persian-datepicker (dateOnSelect)="onSelect($event)"
                              [(uiIsVisible)]="uiIsVisible"
+                             [uiTheme]="uiTheme"
                              [uiYearView]="uiYearView"
                              [uiMonthView]="uiMonthView"
                              [uiHideAfterSelectDate]="uiHideAfterSelectDate"

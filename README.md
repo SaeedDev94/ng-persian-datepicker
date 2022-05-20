@@ -7,7 +7,7 @@ Persian datepicker for angular 8+
 
 ```
 npm install ng-persian-datepicker --save
-npm install moment-jalaali@^0.9.4 --save
+npm install moment-jalaali@^0.9.6 --save
 npm install @types/moment-jalaali@^0.7.5 --save-dev
 ```
 
@@ -71,7 +71,7 @@ That's it! this was a minimal setup ...
 You can customize datepicker config:
 
 ```html
-<ng-persian-datepicker [uiTheme]="'dark'"
+<ng-persian-datepicker [uiTheme]="darkTheme"
                        [timeMeridian]="true">
   <input type="text" [formControl]="dateValue" />
 </ng-persian-datepicker>
@@ -79,25 +79,25 @@ You can customize datepicker config:
 
 Complete config reference:
 
-| Key                   | Type    | Description                                                                                                          | Example                                         |
-|-----------------------|---------|----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
-| dateInitValue         | boolean | if no dateValue provided use today as init value. default: `true`                                                    | true                                            |
-| dateIsGregorian       | boolean | is dateValue gregorian?. default: `false`                                                                            | false                                           |
-| dateFormat            | string  | shamsi date format, check moment and moment-jalaali docs to see available formats. default: `jYYYY-jMM-jDD HH:mm:ss` | 'jYYYY-jMM-jDD HH:mm:ss'                        |
-| dateGregorianFormat   | string  | gregorian date format, check moment and moment-jalaali docs to see available formats. default: `YYYY-MM-DD HH:mm:ss` | 'YYYY-MM-DD HH:mm:ss'                           |
-| dateMin               | number  | min date that user can select (timestamp) . default: `null`                                                          | moment('1396-11-01', 'jYYYY-jMM-jDD').valueOf() |
-| dateMax               | number  | max date that user can select (timestamp) . default: `null`                                                          | moment('1398-11-01', 'jYYYY-jMM-jDD').valueOf() |
-| timeEnable            | boolean | if set it to true time picker will visible. default: `true`                                                          | true                                            |
-| timeShowSecond        | boolean | time second visibility. default: `true`                                                                              | true                                            |
-| timeMeridian          | boolean | show time in 12 hour format. default: `false`                                                                        | false                                           |
-| uiTheme               | string  | datepicker theme: 'default', 'blue', 'gray', 'dark', 'black'. default: `'default'`                                   | 'dark'                                          |
-| uiIsVisible           | boolean | only when this is true datepicker is visible. default: `false`                                                       | true                                            |
-| uiHideOnOutsideClick  | boolean | if set to true datepicker will hide on outside click. default: `true`                                                | true                                            |
-| uiHideAfterSelectDate | boolean | hide datepicker after date select. default: `true`                                                                   | true                                            |
-| uiYearView            | boolean | if set to true year view will enable. default: `true`                                                                | true                                            |
-| uiMonthView           | boolean | if set to true month view will enable. default: `true`                                                               | true                                            |
-| uiInitViewMode        | string  | Initial view mode ('year', 'month', 'day'). default: `'day'`                                                         | 'year'                                          |
-| uiTodayBtnEnable      | boolean | Show go to today btn or not. default: `true`                                                                         | false                                           |
+| Key                   | Type             | Description                                                                                                          | Example                                         |
+|-----------------------|------------------|----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| dateInitValue         | boolean          | if no dateValue provided use today as init value. default: `true`                                                    | true                                            |
+| dateIsGregorian       | boolean          | is dateValue gregorian?. default: `false`                                                                            | false                                           |
+| dateFormat            | string           | shamsi date format, check moment and moment-jalaali docs to see available formats. default: `jYYYY-jMM-jDD HH:mm:ss` | 'jYYYY-jMM-jDD HH:mm:ss'                        |
+| dateGregorianFormat   | string           | gregorian date format, check moment and moment-jalaali docs to see available formats. default: `YYYY-MM-DD HH:mm:ss` | 'YYYY-MM-DD HH:mm:ss'                           |
+| dateMin               | number           | min date that user can select (timestamp) . default: `null`                                                          | moment('1396-11-01', 'jYYYY-jMM-jDD').valueOf() |
+| dateMax               | number           | max date that user can select (timestamp) . default: `null`                                                          | moment('1398-11-01', 'jYYYY-jMM-jDD').valueOf() |
+| timeEnable            | boolean          | if set it to true time picker will visible. default: `true`                                                          | true                                            |
+| timeShowSecond        | boolean          | time second visibility. default: `true`                                                                              | true                                            |
+| timeMeridian          | boolean          | show time in 12 hour format. default: `false`                                                                        | false                                           |
+| uiTheme               | IDatepickerTheme | datepicker theme: 'default', 'blue', 'gray', 'dark', 'black'. default: `'default'`                                   | 'dark'                                          |
+| uiIsVisible           | boolean          | only when this is true datepicker is visible. default: `false`                                                       | true                                            |
+| uiHideOnOutsideClick  | boolean          | if set to true datepicker will hide on outside click. default: `true`                                                | true                                            |
+| uiHideAfterSelectDate | boolean          | hide datepicker after date select. default: `true`                                                                   | true                                            |
+| uiYearView            | boolean          | if set to true year view will enable. default: `true`                                                                | true                                            |
+| uiMonthView           | boolean          | if set to true month view will enable. default: `true`                                                               | true                                            |
+| uiInitViewMode        | string           | Initial view mode ('year', 'month', 'day'). default: `'day'`                                                         | 'year'                                          |
+| uiTodayBtnEnable      | boolean          | Show go to today btn or not. default: `true`                                                                         | false                                           |
 
 # Event (output)
 
@@ -108,6 +108,27 @@ Complete events reference:
 | dateOnInit        | $event: IActiveDate | Fire event on setting init date value | (dateOnInit)="onInit($event)"                 |
 | dateOnSelect      | $event: IActiveDate | Fire event on date select             | (dateOnSelect)="onSelect($event)"             |
 | uiIsVisibleChange | $event: boolean     | Fire event on visibility change       | (uiIsVisibleChange)="onVisibleChange($event)" |
+
+# Custom theme
+
+Every app has its unique theme, static themes maybe are easy to use but hard to customize!  
+With custom theme feature you can create your custom theme base on your app theme.  
+To create a custom theme you need a set of colors for every part of datepicker component.  
+Example:
+
+```typescript
+import { IDatepickerTheme } from 'ng-persian-datepicker';
+
+darkTheme: IDatepickerTheme = {
+  ...
+  selectedBackground: '#D68E3A',
+  selectedText: '#FFFFFF',
+  ...
+};
+```
+
+Checkout [IDatepickerTheme](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/projects/ng-persian-datepicker/src/lib/interface/IDatepickerTheme.ts) interface to see all available props  
+And [darkTheme](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/src/app/demo/datepicker-theme/dark.theme.ts) for full example
 
 # Offline demo
 

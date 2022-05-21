@@ -90,7 +90,7 @@ Complete config reference:
 | timeEnable            | boolean          | if set it to true time picker will visible. default: `true`                                                          | true                                            |
 | timeShowSecond        | boolean          | time second visibility. default: `true`                                                                              | true                                            |
 | timeMeridian          | boolean          | show time in 12 hour format. default: `false`                                                                        | false                                           |
-| uiTheme               | IDatepickerTheme | datepicker theme: 'default', 'blue', 'gray', 'dark', 'black'. default: `'default'`                                   | 'dark'                                          |
+| uiTheme               | IDatepickerTheme | datepicker theme, default: `defaultTheme: IDatepickerTheme`                                                          | darkTheme: IDatepickerTheme                     |
 | uiIsVisible           | boolean          | only when this is true datepicker is visible. default: `false`                                                       | true                                            |
 | uiHideOnOutsideClick  | boolean          | if set to true datepicker will hide on outside click. default: `true`                                                | true                                            |
 | uiHideAfterSelectDate | boolean          | hide datepicker after date select. default: `true`                                                                   | true                                            |

@@ -1,5 +1,5 @@
 import moment from 'moment-jalaali';
-import { filter, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { defaultTheme } from './theme';
 import {
   IActiveDate,
@@ -134,7 +134,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   // ui
   uiTheme: IDatepickerTheme = defaultTheme;
-
   @Input('uiTheme')
   set _uiTheme(value: IDatepickerTheme | string) {
     if (typeof value === 'string') {
@@ -222,13 +221,15 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.formControlValueChanges?.unsubscribe();
     this.formControlValueChanges = this.formControl
       ?.valueChanges
-      ?.pipe(filter((date: string | number) => !!date && this.valueOfDate(date) !== this.dateValue))
       ?.subscribe({
         next: (value: string | number) => {
+          if (!!value && this.valueOfDate(value) !== this.dateValue) return;
+
           const date: moment.Moment = moment(value, this.dateFormat);
           if (!date.isValid() || !this.isDateInRange(date.valueOf(), false, false)) {
             return;
           }
+
           this.setTime(date);
           this.changeSelectedDate(date, false);
           this.scrollIntoActiveTime();

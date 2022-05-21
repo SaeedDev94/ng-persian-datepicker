@@ -9,7 +9,7 @@
   "peerDependencies": {
     "@angular/common": ">=8.0.0",
     "@angular/core": ">=8.0.0",
-    "moment-jalaali": "^0.9.4",
+    "moment-jalaali": "^0.9.6",
     "@types/moment-jalaali": "^0.7.5"
   }
 }

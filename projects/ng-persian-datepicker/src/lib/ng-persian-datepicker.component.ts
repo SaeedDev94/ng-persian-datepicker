@@ -223,7 +223,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       ?.valueChanges
       ?.subscribe({
         next: (value: string | number) => {
-          if (!!value && this.valueOfDate(value) !== this.dateValue) return;
+          if (!value || this.valueOfDate(value) === this.dateValue) return;
 
           const date: moment.Moment = moment(value, this.dateFormat);
           if (!date.isValid() || !this.isDateInRange(date.valueOf(), false, false)) {

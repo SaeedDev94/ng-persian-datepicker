@@ -81,6 +81,7 @@ Complete config reference:
 
 | Key                   | Type             | Description                                                                                                          | Example                                         |
 |-----------------------|------------------|----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| dateValue             | FormControl      | use this if you don't need a html input                                                                              | dateValue: FormControl                          |           
 | dateInitValue         | boolean          | if no dateValue provided use today as init value. default: `true`                                                    | true                                            |
 | dateIsGregorian       | boolean          | is dateValue gregorian?. default: `false`                                                                            | false                                           |
 | dateFormat            | string           | shamsi date format, check moment and moment-jalaali docs to see available formats. default: `jYYYY-jMM-jDD HH:mm:ss` | 'jYYYY-jMM-jDD HH:mm:ss'                        |

@@ -110,6 +110,40 @@ Complete events reference:
 | dateOnSelect      | $event: IActiveDate | Fire event on date select             | (dateOnSelect)="onSelect($event)"             |
 | uiIsVisibleChange | $event: boolean     | Fire event on visibility change       | (uiIsVisibleChange)="onVisibleChange($event)" |
 
+# IActiveDate
+
+It doesn't matter that you have timestamp or gregorian date as initial value,  
+The value of `dateValue: FormControl` is a shamsi date string!  
+But what if you want timestamp or gregorian date of selected date?  
+First take a look at **[IActiveDate](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/projects/ng-persian-datepicker/src/lib/interface/IActiveDate.ts)**  
+As you saw, `IActiveDate` includes shamsi date, gregorian date and timestamp.  
+The lib has 2 events of type `IActiveDate`:
+
+- dateOnInit
+- dateOnSelect
+
+So, if you need to create `Date` object of selected date:  
+
+```typescript
+import { IActiveDate } from 'ng-persian-datepicker';
+
+@Component(...)
+class DateComponent {
+  
+  onSelect(event: IActiveDate): void {
+    const viaTimestampValue = new Date(event.timestamp);
+    const viaGregorianDate = new Date(event.gregorian);
+  }
+  
+}
+```
+
+```html
+<ng-persian-datepicker (dateOnSelect)="onSelect($event)">
+  <input type="text" [formControl]="dateValue" />
+</ng-persian-datepicker>
+```
+
 # Custom theme
 
 Every app has its unique theme, static themes maybe are easy to use but hard to customize!  

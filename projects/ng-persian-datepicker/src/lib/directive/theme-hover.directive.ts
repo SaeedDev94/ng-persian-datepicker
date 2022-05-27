@@ -1,48 +1,27 @@
-import {
-  Directive,
-  ElementRef,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[themeHover]'
 })
-export class ThemeHoverDirective implements OnInit, OnDestroy {
+export class ThemeHoverDirective {
 
   constructor(
     private elementRef: ElementRef
   ) {
   }
 
-  container?: HTMLElement;
-
-  onMouseOver = () => {
-    this.addHoverClass();
-  };
-
-  onMouseOut = () => {
-    this.removeHoverClass();
-  };
-
-  ngOnInit(): void {
-    this.container = this.elementRef.nativeElement;
-
-    this.container?.addEventListener('mouseover', this.onMouseOver);
-    this.container?.addEventListener('mouseout', this.onMouseOut);
+  @HostListener('mouseover')
+  onMouseOver(): void {
+    this.container()?.classList?.add('hover');
   }
 
-  ngOnDestroy(): void {
-    this.container?.removeEventListener('mouseover', this.onMouseOver);
-    this.container?.removeEventListener('mouseout', this.onMouseOut);
+  @HostListener('mouseout')
+  onMouseOut(): void {
+    this.container()?.classList?.remove('hover');
   }
 
-  addHoverClass(): void {
-    this.container?.classList?.add('hover');
-  }
-
-  removeHoverClass(): void {
-    this.container?.classList?.remove('hover');
+  private container(): HTMLElement | null {
+    return this.elementRef.nativeElement;
   }
 
 }

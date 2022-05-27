@@ -180,16 +180,24 @@ Example:
 ```typescript
 import { IDatepickerTheme } from 'ng-persian-datepicker';
 
-darkTheme: IDatepickerTheme = {
-  ...
+customTheme: Partial<IDatepickerTheme> = {
   selectedBackground: '#D68E3A',
   selectedText: '#FFFFFF',
-  ...
 };
+```
+
+```html
+<ng-persian-datepicker [uiTheme]="customTheme" ...>
+  ...
+</ng-persian-datepicker>
 ```
 
 Checkout **[IDatepickerTheme](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/projects/ng-persian-datepicker/src/lib/interface/IDatepickerTheme.ts)** interface to see all available props  
 And **[darkTheme](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/src/app/demo/datepicker-theme/dark.theme.ts)** for full example
+
+> **Note**  
+> Your theme will merge with defaultTheme,  
+> So if you don't provide all colors, the defaultTheme value will use for the missing parts
 
 # Offline demo
 

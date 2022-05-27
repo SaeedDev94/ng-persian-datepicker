@@ -1,9 +1,11 @@
 # NgPersianDatepicker
 
-Persian datepicker for angular 12+
-[Online demo](https://saeed-pooyanfar.github.io/ng-persian-datepicker/)
+Persian datepicker for angular 12+  
+**[Online demo](https://saeed-pooyanfar.github.io/ng-persian-datepicker/)**
 
 # Install
+
+Stop development server if it's currently running and enter below commands:
 
 ```
 npm install ng-persian-datepicker --save
@@ -11,19 +13,43 @@ npm install moment-jalaali@^0.9.6 --save
 npm install @types/moment-jalaali@^0.7.5 --save-dev
 ```
 
-After install, edit tsconfig.json:
+Edit tsconfig.json: (to using `moment-jalaali` package)
 
 ```javascript
 {
-...
+  ...
   "compilerOptions": {
-  ...
+    ...
     "allowSyntheticDefaultImports": true,
-  ...
+    ...
   },
-...
+  ...
 }
 ```
+
+Edit angular.json: (to prevent CommonJS warning at development server startup)
+
+```javascript
+{
+  ...
+  "build": {
+    ...
+    "options": {
+      ...
+      "allowedCommonJsDependencies": [
+        "moment-jalaali"
+      ],
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
+
+Now you can start development server again.
+
+# Setup
 
 Import modules:
 
@@ -162,8 +188,8 @@ darkTheme: IDatepickerTheme = {
 };
 ```
 
-Checkout [IDatepickerTheme](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/projects/ng-persian-datepicker/src/lib/interface/IDatepickerTheme.ts) interface to see all available props  
-And [darkTheme](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/src/app/demo/datepicker-theme/dark.theme.ts) for full example
+Checkout **[IDatepickerTheme](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/projects/ng-persian-datepicker/src/lib/interface/IDatepickerTheme.ts)** interface to see all available props  
+And **[darkTheme](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/src/app/demo/datepicker-theme/dark.theme.ts)** for full example
 
 # Offline demo
 

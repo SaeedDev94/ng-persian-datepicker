@@ -1,4 +1,8 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener
+} from '@angular/core';
 
 @Directive({
   selector: '[themeHover]'
@@ -6,22 +10,18 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 export class ThemeHoverDirective {
 
   constructor(
-    private elementRef: ElementRef
+    private elementRef: ElementRef<HTMLElement | null>
   ) {
   }
 
   @HostListener('mouseover')
   onMouseOver(): void {
-    this.container()?.classList?.add('hover');
+    this.elementRef.nativeElement?.classList?.add('hover');
   }
 
   @HostListener('mouseout')
   onMouseOut(): void {
-    this.container()?.classList?.remove('hover');
-  }
-
-  private container(): HTMLElement | null {
-    return this.elementRef.nativeElement;
+    this.elementRef.nativeElement?.classList?.remove('hover');
   }
 
 }

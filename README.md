@@ -180,7 +180,7 @@ Example:
 ```typescript
 import { IDatepickerTheme } from 'ng-persian-datepicker';
 
-customTheme: Partial<IDatepickerTheme> = {
+const customTheme: Partial<IDatepickerTheme> = {
   selectedBackground: '#D68E3A',
   selectedText: '#FFFFFF',
 };

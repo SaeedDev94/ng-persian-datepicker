@@ -33,7 +33,7 @@ import {
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   constructor(
-    private elementRef: ElementRef
+    private elementRef: ElementRef<HTMLElement | null>
   ) {
     moment.loadPersian({
       usePersianDigits: false,
@@ -473,7 +473,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   setShowOnInputFocus(): void {
-    const input: HTMLInputElement | null = (this.elementRef.nativeElement as HTMLElement).querySelector('input');
+    const input = this.elementRef.nativeElement?.querySelector('input') as (HTMLInputElement | null);
 
     if (!input) {
       return;
@@ -758,15 +758,14 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
 
     setTimeout(() => {
-      const datePicker: HTMLElement = this.elementRef.nativeElement;
       // Hour
-      const activeHour: HTMLElement | null = datePicker.querySelector('.time-col.hour-col .dp-btn.selected');
+      const activeHour = this.elementRef.nativeElement?.querySelector('.time-col.hour-col .dp-btn.selected');
       if (activeHour) activeHour.scrollIntoView({block: 'center'});
       // Minute
-      const activeMinute: HTMLElement | null = datePicker.querySelector('.time-col.minute-col .dp-btn.selected');
+      const activeMinute = this.elementRef.nativeElement?.querySelector('.time-col.minute-col .dp-btn.selected');
       if (activeMinute) activeMinute.scrollIntoView({block: 'center'});
       // Second
-      const activeSecond: HTMLElement | null = datePicker.querySelector('.time-col.second-col .dp-btn.selected');
+      const activeSecond = this.elementRef.nativeElement?.querySelector('.time-col.second-col .dp-btn.selected');
       if (activeSecond) activeSecond.scrollIntoView({block: 'center'});
     }, 10);
   }

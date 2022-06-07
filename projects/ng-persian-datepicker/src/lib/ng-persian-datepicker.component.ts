@@ -351,7 +351,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     months.startOf('year');
     for (let i = 0 ; i < 12 ; i++) {
       const month: number[] = [months.valueOf(), months.getFullYear(), months.getMonth()];
-      console.log(months.format('YYYY-MM-DD HH:mm:ss'));
       this.months.push({
         timestamp: month[0],
         year: month[1],

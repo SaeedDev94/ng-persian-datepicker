@@ -99,7 +99,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   dateIsGregorian: boolean = false;
 
   @Input()
-  dateFormat: string = 'YYYY-MM-DD';
+  dateFormat: string = 'YYYY/MM/DD';
+
+  @Input()
+  dateGregorianFormat: string = 'YYYY-MM-DD';
 
   @Input()
   dateMin: number | null = null;
@@ -282,7 +285,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.selectedDate = Jalali.timestamp(this.dateValue);
     this.dateOnInit.next({
       shamsi: String(this.selectedDate.format(this.dateFormat)),
-      gregorian: String(this.selectedDate.format(this.dateFormat, true)),
+      gregorian: String(this.selectedDate.format(this.dateGregorianFormat, true)),
       timestamp: Number(this.selectedDate.valueOf())
     });
   }
@@ -680,7 +683,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.setViewDate();
     this.dateOnSelect.next({
       shamsi: String(this.selectedDate.format(this.dateFormat)),
-      gregorian: String(this.selectedDate.format(this.dateFormat, true)),
+      gregorian: String(this.selectedDate.format(this.dateGregorianFormat, true)),
       timestamp: Number(this.selectedDate.valueOf())
     });
   }

@@ -1,6 +1,7 @@
 import { Jalali } from 'jalali-ts';
 import { Subscription } from 'rxjs';
 import { defaultTheme } from './theme';
+import { weekDays, months } from './locale';
 import {
   IActiveDate,
   IDay,
@@ -24,7 +25,6 @@ import {
   FormControlDirective,
   FormControlName
 } from '@angular/forms';
-import { MonthPipe } from './pipe/month.pipe';
 
 @Component({
   selector: 'ng-persian-datepicker',
@@ -37,7 +37,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     private elementRef: ElementRef<HTMLElement | null>
   ) {
     this.setToday();
-    this.setWeekDays();
   }
 
   private input?: HTMLInputElement;
@@ -62,7 +61,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   viewModes: string[] = [];
   viewModeIndex: number = 0;
 
-  weekDays: string[] = [];
+  weekDays: string[] = weekDays;
 
   years: IYear[] = [];
   months: IMonth[] = [];
@@ -243,10 +242,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     const today = new Jalali();
     if (!this.timeEnable) today.startOf('day');
     this.today = today;
-  }
-
-  setWeekDays(): void {
-    this.weekDays = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
   }
 
   setViewModes(): void {
@@ -431,7 +426,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
     switch (this.viewModes[this.viewModeIndex]) {
       case 'day':
-        this.viewDateTitle = MonthPipe.months[this.viewDate.getMonth()] + ' ' + year.toString();
+        this.viewDateTitle = months[this.viewDate.getMonth()] + ' ' + year.toString();
         break;
       case 'month':
         this.viewDateTitle = year.toString();

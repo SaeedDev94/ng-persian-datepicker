@@ -23,9 +23,6 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": [
-              "moment-jalaali"
-            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

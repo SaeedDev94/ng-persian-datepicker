@@ -98,8 +98,11 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input()
   dateIsGregorian: boolean = false;
 
-  @Input()
   dateFormat: string = 'YYYY/MM/DD';
+  @Input('dateFormat')
+  set _dateFormat(value: string) {
+    this.dateFormat = value.replace(new RegExp('j', 'g'), '');
+  }
 
   @Input()
   dateGregorianFormat: string = 'YYYY-MM-DD';

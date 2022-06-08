@@ -231,7 +231,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
           }
           if (!value || valueOf === this.dateValue) return;
 
-          const date = new Jalali(new Date(valueOf));
+          const date = Jalali.timestamp(valueOf);
           if (!this.isDateInRange(date.valueOf(), false, false)) {
             return;
           }
@@ -289,7 +289,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       return;
     }
     this.dateValue = this.today.valueOf();
-    this.selectedDate = new Jalali(new Date(this.dateValue));
+    this.selectedDate = Jalali.timestamp(this.dateValue);
     this.dateOnInit.next({
       shamsi: String(this.selectedDate.format(this.dateFormat)),
       gregorian: String(this.selectedDate.format(this.dateFormat, true)),
@@ -302,7 +302,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const date = new Jalali(new Date(this.valueOfDate(dateValue)));
+    const date = Jalali.timestamp(this.valueOfDate(dateValue));
     if (!this.timeEnable) date.startOf('day');
     this.dateValue = date.valueOf();
     this.selectedDate = date;
@@ -310,10 +310,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   setViewDate(): void {
     if (!this.dateValue) {
-      this.viewDate = this.dateMax ? new Jalali(new Date(this.dateMax)).endOf('year') : this.today.clone();
+      this.viewDate = this.dateMax ? Jalali.timestamp(this.dateMax).endOf('year') : this.today.clone();
     } else {
       this.viewDate = this.dateMax && this.selectedDate.valueOf() > this.dateMax.valueOf() ?
-        new Jalali(new Date(this.dateMax)) : this.selectedDate.clone();
+        Jalali.timestamp(this.dateMax) : this.selectedDate.clone();
     }
     if (!this.timeEnable) this.viewDate.startOf('day');
     this.onChangeViewDate();
@@ -370,9 +370,9 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     const currentMonthDetails: number[][] = [];
     const nextMonthDetails: number[][] = [];
 
-    const prevMonth = new Jalali(new Date(this.viewDate.valueOf()));
-    const currentMonth = new Jalali(new Date(this.viewDate.valueOf()));
-    const nextMonth = new Jalali(new Date(this.viewDate.valueOf()));
+    const prevMonth = Jalali.timestamp(this.viewDate.valueOf());
+    const currentMonth = Jalali.timestamp(this.viewDate.valueOf());
+    const nextMonth = Jalali.timestamp(this.viewDate.valueOf());
 
     prevMonth.add(-1, 'month');
     nextMonth.add(1, 'month');
@@ -468,7 +468,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
 
     if (this.dateValue) {
-      this.formControl?.setValue(new Jalali(new Date(this.dateValue)).format(this.dateFormat));
+      this.formControl?.setValue(Jalali.timestamp(this.dateValue).format(this.dateFormat));
     }
   }
 
@@ -540,7 +540,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (year.isYearDisabled) {
       return;
     }
-    this.viewDate = new Jalali(new Date(year.timestamp));
+    this.viewDate = Jalali.timestamp(year.timestamp);
     let viewModeIndex: number = this.viewModes.indexOf('month');
     if (viewModeIndex === -1) {
       viewModeIndex = this.viewModes.indexOf('day');
@@ -553,7 +553,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (month.isMonthDisabled) {
       return;
     }
-    this.viewDate = new Jalali(new Date(month.timestamp));
+    this.viewDate = Jalali.timestamp(month.timestamp);
     this.viewModeIndex = this.viewModes.indexOf('day');
     this.onChangeViewDate();
   }
@@ -562,7 +562,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (day.isDayDisabled) {
       return;
     }
-    this.changeSelectedDate(new Jalali(new Date(day.timestamp)));
+    this.changeSelectedDate(Jalali.timestamp(day.timestamp));
   }
 
   isYearOfTodayDate(year: number[]): boolean {
@@ -638,7 +638,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   isDateInRange(date: number, isYear: boolean, isMonth: boolean): boolean {
     const result: boolean[] = [];
     if (this.dateMin) {
-      const min = new Jalali(new Date(this.dateMin));
+      const min = Jalali.timestamp(this.dateMin);
       if (isYear) {
         min.startOf('year');
       }
@@ -648,7 +648,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
       result.push(min.valueOf() <= date);
     }
     if (this.dateMax) {
-      const max = new Jalali(new Date(this.dateMax));
+      const max = Jalali.timestamp(this.dateMax);
       if (isYear) {
         max.startOf('year');
       }

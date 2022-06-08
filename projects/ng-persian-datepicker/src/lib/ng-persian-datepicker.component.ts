@@ -99,7 +99,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   dateIsGregorian: boolean = false;
 
   @Input()
-  dateFormat: string = 'YYYY-MM-DD HH:mm:ss';
+  dateFormat: string = 'YYYY-MM-DD';
 
   @Input()
   dateMin: number | null = null;
@@ -108,7 +108,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   dateMax: number | null = null;
 
   // time
-  timeEnable: boolean = true;
+  timeEnable: boolean = false;
   @Input('timeEnable')
   set _timeEnable(value: boolean) {
     this.timeEnable = value;
@@ -116,7 +116,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.scrollIntoActiveTime();
   }
 
-  timeShowSecond: boolean = true;
+  timeShowSecond: boolean = false;
   @Input('timeShowSecond')
   set _timeShowSecond(value: boolean) {
     this.timeShowSecond = value;

@@ -21,7 +21,7 @@ export class MonthPipe implements PipeTransform {
   ];
 
   transform(index: number): string {
-    return MonthPipe.months[index - 1];
+    return MonthPipe.months[index];
   }
 
 }

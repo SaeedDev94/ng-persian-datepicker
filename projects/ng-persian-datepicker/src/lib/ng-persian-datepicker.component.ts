@@ -435,7 +435,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
     switch (this.viewModes[this.viewModeIndex]) {
       case 'day':
-        this.viewDateTitle = MonthPipe.months[this.viewDate.getMonth() - 1] + ' ' + year.toString();
+        this.viewDateTitle = MonthPipe.months[this.viewDate.getMonth()] + ' ' + year.toString();
         break;
       case 'month':
         this.viewDateTitle = year.toString();

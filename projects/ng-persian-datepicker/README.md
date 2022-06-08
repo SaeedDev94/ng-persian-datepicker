@@ -5,49 +5,9 @@ Persian datepicker for angular 12+
 
 # Install
 
-Stop development server if it's currently running and enter below commands:
-
 ```
-npm install ng-persian-datepicker --save
-npm install moment-jalaali@^0.9.6 --save
-npm install @types/moment-jalaali@^0.7.5 --save-dev
+npm install ng-persian-datepicker
 ```
-
-Edit tsconfig.json: (to using `moment-jalaali` package)
-
-```javascript
-{
-  ...
-  "compilerOptions": {
-    ...
-    "allowSyntheticDefaultImports": true,
-    ...
-  },
-  ...
-}
-```
-
-Edit angular.json: (to prevent CommonJS warning at development server startup)
-
-```javascript
-{
-  ...
-  "build": {
-    ...
-    "options": {
-      ...
-      "allowedCommonJsDependencies": [
-        "moment-jalaali"
-      ],
-      ...
-    },
-    ...
-  },
-  ...
-}
-```
-
-Now you can start development server again.
 
 # Setup
 
@@ -97,34 +57,33 @@ That's it! this was a minimal setup ...
 You can customize datepicker config:
 
 ```html
-<ng-persian-datepicker [uiTheme]="darkTheme"
-                       [timeMeridian]="true">
-  <input type="text" [formControl]="dateValue" />
+<ng-persian-datepicker [uiTheme]="darkTheme" ...>
+  ...
 </ng-persian-datepicker>
 ```
 
 Complete config reference:
 
-| Key                   | Type             | Description                                                                                                          | Example                                         |
-|-----------------------|------------------|----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
-| dateValue             | FormControl      | use this if you don't need a html input                                                                              | dateValue: FormControl                          |           
-| dateInitValue         | boolean          | if no dateValue provided use today as init value. default: `true`                                                    | true                                            |
-| dateIsGregorian       | boolean          | is dateValue gregorian?. default: `false`                                                                            | false                                           |
-| dateFormat            | string           | shamsi date format, check moment and moment-jalaali docs to see available formats. default: `jYYYY-jMM-jDD HH:mm:ss` | 'jYYYY-jMM-jDD HH:mm:ss'                        |
-| dateGregorianFormat   | string           | gregorian date format, check moment and moment-jalaali docs to see available formats. default: `YYYY-MM-DD HH:mm:ss` | 'YYYY-MM-DD HH:mm:ss'                           |
-| dateMin               | number           | min date that user can select (timestamp) . default: `null`                                                          | moment('1396-11-01', 'jYYYY-jMM-jDD').valueOf() |
-| dateMax               | number           | max date that user can select (timestamp) . default: `null`                                                          | moment('1398-11-01', 'jYYYY-jMM-jDD').valueOf() |
-| timeEnable            | boolean          | if set it to true time picker will visible. default: `true`                                                          | true                                            |
-| timeShowSecond        | boolean          | time second visibility. default: `true`                                                                              | true                                            |
-| timeMeridian          | boolean          | show time in 12 hour format. default: `false`                                                                        | false                                           |
-| uiTheme               | IDatepickerTheme | datepicker theme, default: `defaultTheme: IDatepickerTheme`                                                          | darkTheme: IDatepickerTheme                     |
-| uiIsVisible           | boolean          | only when this is true datepicker is visible. default: `false`                                                       | true                                            |
-| uiHideOnOutsideClick  | boolean          | if set to true datepicker will hide on outside click. default: `true`                                                | true                                            |
-| uiHideAfterSelectDate | boolean          | hide datepicker after date select. default: `true`                                                                   | true                                            |
-| uiYearView            | boolean          | if set to true year view will enable. default: `true`                                                                | true                                            |
-| uiMonthView           | boolean          | if set to true month view will enable. default: `true`                                                               | true                                            |
-| uiInitViewMode        | string           | Initial view mode ('year', 'month', 'day'). default: `'day'`                                                         | 'year'                                          |
-| uiTodayBtnEnable      | boolean          | Show go to today btn or not. default: `true`                                                                         | false                                           |
+| Key                   | Type             | Description                                                                                 | Example                                |
+|-----------------------|------------------|---------------------------------------------------------------------------------------------|----------------------------------------|
+| dateValue             | FormControl      | use this if you don't need a html input                                                     | dateValue: FormControl                 |           
+| dateInitValue         | boolean          | if no dateValue provided use today as init value. default: `true`                           | true                                   |
+| dateIsGregorian       | boolean          | is dateValue gregorian?. default: `false`                                                   | false                                  |
+| dateFormat            | string           | shamsi date format, check jalali-ts docs to see available formats. default: `YYYY/MM/DD`    | 'YYYY-MM-DD HH:mm:ss'                  |
+| dateGregorianFormat   | string           | gregorian date format, check jalali-ts docs to see available formats. default: `YYYY-MM-DD` | 'YYYY-MM-DD HH:mm:ss'                  |
+| dateMin               | number           | min date that user can select (timestamp) . default: `null`                                 | Jalali.parse('1396-11-01').valueOf()   |
+| dateMax               | number           | max date that user can select (timestamp) . default: `null`                                 | Jalali.parse('1398-11-01').valueOf()   |
+| timeEnable            | boolean          | if set it to true time picker will visible. default: `false`                                | true                                   |
+| timeShowSecond        | boolean          | time second visibility. default: `false`                                                    | true                                   |
+| timeMeridian          | boolean          | show time in 12 hour format. default: `false`                                               | false                                  |
+| uiTheme               | IDatepickerTheme | datepicker theme, default: `defaultTheme: IDatepickerTheme`                                 | darkTheme: IDatepickerTheme            |
+| uiIsVisible           | boolean          | only when this is true datepicker is visible. default: `false`                              | true                                   |
+| uiHideOnOutsideClick  | boolean          | if set to true datepicker will hide on outside click. default: `true`                       | true                                   |
+| uiHideAfterSelectDate | boolean          | hide datepicker after date select. default: `true`                                          | true                                   |
+| uiYearView            | boolean          | if set to true year view will enable. default: `true`                                       | true                                   |
+| uiMonthView           | boolean          | if set to true month view will enable. default: `true`                                      | true                                   |
+| uiInitViewMode        | string           | Initial view mode ('year', 'month', 'day'). default: `'day'`                                | 'year'                                 |
+| uiTodayBtnEnable      | boolean          | Show go to today btn or not. default: `true`                                                | false                                  |
 
 # Event (output)
 
@@ -165,8 +124,8 @@ class DateComponent {
 ```
 
 ```html
-<ng-persian-datepicker (dateOnSelect)="onSelect($event)">
-  <input type="text" [formControl]="dateValue" />
+<ng-persian-datepicker (dateOnSelect)="onSelect($event)" ...>
+  ...
 </ng-persian-datepicker>
 ```
 

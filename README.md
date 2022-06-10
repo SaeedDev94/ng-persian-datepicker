@@ -95,10 +95,15 @@ Complete events reference:
 | dateOnSelect      | $event: IActiveDate | Fire event on date select             | (dateOnSelect)="onSelect($event)"             |
 | uiIsVisibleChange | $event: boolean     | Fire event on visibility change       | (uiIsVisibleChange)="onVisibleChange($event)" |
 
+# jalali-ts
+
+Since `ng-persian-datepicker@^6.x.x` using `jalali-ts` instead of `moment-jalaali`, there are some limitations for parsing input date + output format  
+Please check **[jalali-ts](https://github.com/Saeed-Pooyanfar/jalali-ts)** for more information
+
 # IActiveDate
 
 It doesn't matter that you have timestamp or gregorian date as initial value,  
-The value of `dateValue: FormControl` is a shamsi date string!  
+The value of `dateValue: FormControl` is a shamsi (jalai) date string!  
 But what if you want timestamp or gregorian date of selected date?  
 First take a look at **[IActiveDate](https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/projects/ng-persian-datepicker/src/lib/interface/IActiveDate.ts)**  
 As you saw, `IActiveDate` includes shamsi date, gregorian date and timestamp.  

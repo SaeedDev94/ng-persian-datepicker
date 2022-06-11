@@ -439,17 +439,17 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   setTime(date: Jalali | null = null): void {
     if (date) {
-      this.hour = date.date.getHours();
-      this.minute = date.date.getMinutes();
-      this.second = date.date.getSeconds();
+      this.hour = date.getHours();
+      this.minute = date.getMinutes();
+      this.second = date.getSeconds();
     } else if (this.selectedDate) {
-      this.hour = this.selectedDate.date.getHours();
-      this.minute = this.selectedDate.date.getMinutes();
-      this.second = this.selectedDate.date.getSeconds();
+      this.hour = this.selectedDate.getHours();
+      this.minute = this.selectedDate.getMinutes();
+      this.second = this.selectedDate.getSeconds();
     } else {
-      this.hour = this.today.date.getHours();
-      this.minute = this.today.date.getMinutes();
-      this.second = this.today.date.getSeconds();
+      this.hour = this.today.getHours();
+      this.minute = this.today.getMinutes();
+      this.second = this.today.getSeconds();
     }
   }
 
@@ -658,16 +658,16 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   onChangeSelectedDate(setInputValue: boolean): void {
     if (this.timeEnable) {
-      this.selectedDate.date.setHours(this.hour);
-      this.selectedDate.date.setMinutes(this.minute);
-      this.selectedDate.date.setSeconds(this.second);
-      this.selectedDate.date.setMilliseconds(0);
+      this.selectedDate.setHours(this.hour);
+      this.selectedDate.setMinutes(this.minute);
+      this.selectedDate.setSeconds(this.second);
+      this.selectedDate.setMilliseconds(0);
     } else {
       this.setToday();
-      this.selectedDate.date.setHours(this.today.date.getHours());
-      this.selectedDate.date.setMinutes(this.today.date.getMinutes());
-      this.selectedDate.date.setSeconds(this.today.date.getSeconds());
-      this.selectedDate.date.setMilliseconds(this.today.date.getMilliseconds());
+      this.selectedDate.setHours(this.today.getHours());
+      this.selectedDate.setMinutes(this.today.getMinutes());
+      this.selectedDate.setSeconds(this.today.getSeconds());
+      this.selectedDate.setMilliseconds(this.today.getMilliseconds());
     }
     this.dateValue = this.selectedDate.valueOf();
     if (this.uiHideAfterSelectDate && !this.preventClose) {
@@ -780,9 +780,8 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   private valueOfDate(date: string | number): number {
     if (typeof date === 'string') {
-      return (this.dateIsGregorian && !this.dateValue) ?
-        new Date(date).valueOf() :
-        Jalali.parse(date).valueOf();
+      const gregorian: boolean = (this.dateIsGregorian && !this.dateValue);
+      return Jalali.parse(date, gregorian).valueOf();
     }
 
     return date;

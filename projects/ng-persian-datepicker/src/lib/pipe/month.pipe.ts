@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { months } from '../locale';
+import { months } from './locale';
 
 @Pipe({
   name: 'month'

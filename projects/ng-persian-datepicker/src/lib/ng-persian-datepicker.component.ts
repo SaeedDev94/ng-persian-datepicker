@@ -1,7 +1,7 @@
 import { Jalali } from 'jalali-ts';
 import { Subscription } from 'rxjs';
 import { defaultTheme } from './theme';
-import { weekDays, months } from './locale';
+import { weekDays, months } from './pipe/locale';
 import {
   IActiveDate,
   IDay,

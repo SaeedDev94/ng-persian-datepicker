@@ -83,14 +83,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.setFormControl(value?.control);
   }
 
-  @Input('dateValue')
-  set _dateValue(value: FormControl) {
-    this.setFormControl(value);
-  }
-
   /** @Input */
 
   // date
+  @Input('dateValue')
+  inputDateValue?: FormControl;
+
   @Input()
   dateInitValue: boolean = true;
 
@@ -188,6 +186,8 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.setViewModes();
     this.setInitViewMode();
     this.setShowOnInputFocus();
+
+    if (this.inputDateValue) this.setFormControl(this.inputDateValue);
   }
 
   ngOnDestroy(): void {

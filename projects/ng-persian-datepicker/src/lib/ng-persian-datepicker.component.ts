@@ -104,11 +104,19 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input()
   dateGregorianFormat: string = 'YYYY-MM-DD';
 
-  @Input()
   dateMin: number | null = null;
+  @Input('dateMin')
+  set _dateMin(value: number | null) {
+    this.dateMin = value;
+    if (this.days.length) this.setViewDate();
+  }
 
-  @Input()
   dateMax: number | null = null;
+  @Input('dateMax')
+  set _dateMax(value: number | null) {
+    this.dateMax = value;
+    if (this.days.length) this.setViewDate();
+  }
 
   // time
   timeEnable: boolean = false;

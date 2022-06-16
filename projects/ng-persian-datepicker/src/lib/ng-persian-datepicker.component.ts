@@ -239,7 +239,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   }
 
   setToday(): void {
-    const today = new Jalali();
+    const today = Jalali.now();
     if (!this.timeEnable) today.startOf('day');
     this.today = today;
   }

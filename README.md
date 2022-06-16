@@ -7,7 +7,7 @@ Persian datepicker for angular 12+
 
 ```
 npm install ng-persian-datepicker
-npm install jalali-ts@^1.2.7
+npm install jalali-ts@^1.2.8
 ```
 
 # Setup

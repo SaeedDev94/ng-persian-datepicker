@@ -46,6 +46,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   private formControlValueChanges?: Subscription;
 
   private dateValue?: number;
+  private lastEmittedDateValue?: number;
   private preventClose: boolean = false;
 
   private uiYearView: boolean = true;
@@ -294,6 +295,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
     this.dateValue = this.today.valueOf();
     this.selectedDate = Jalali.timestamp(this.dateValue, false);
+    this.lastEmittedDateValue = +this.selectedDate;
     this.dateOnInit.next({
       shamsi: String(this.selectedDate.format(this.dateFormat)),
       gregorian: String(this.selectedDate.gregorian(this.dateGregorianFormat)),
@@ -685,10 +687,12 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     } else {
       this.preventClose = false;
     }
+    if (this.lastEmittedDateValue === +this.selectedDate) return;
     if (setInputValue) {
       this.setFormControlValue();
     }
     this.setViewDate();
+    this.lastEmittedDateValue = +this.selectedDate;
     this.dateOnSelect.next({
       shamsi: String(this.selectedDate.format(this.dateFormat)),
       gregorian: String(this.selectedDate.gregorian(this.dateGregorianFormat)),

@@ -53,8 +53,8 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   private uiMonthView: boolean = true;
 
   private today!: Jalali;
-  private selectedDate!: Jalali;
   private viewDate!: Jalali;
+  private selectedDate?: Jalali;
 
   private wasInsideClick: boolean = false;
 
@@ -229,16 +229,24 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.formControlValueChanges = this.formControl
       ?.valueChanges
       ?.subscribe({
-        next: (value: string | number) => {
-          let valueOf: number = 0;
-          if (value) {
-            try {
-              valueOf = this.valueOfDate(value);
-            } catch (e) {
-              return;
-            }
+        next: (value: any) => {
+          if (typeof value === 'undefined' || typeof value === (typeof null) || (typeof value === 'number' && Number.isNaN(value)) || (typeof value === 'string' && !value.trim())) {
+            this.dateValue = undefined;
+            this.selectedDate = undefined;
+            this.setViewDate();
+            return;
           }
-          if (!value || valueOf === this.dateValue) return;
+
+          let valueOf: number | undefined = undefined;
+          try {
+            valueOf = this.valueOfDate(value);
+          } catch (e) {
+            return;
+          }
+
+          if (typeof valueOf === 'undefined' || valueOf === this.dateValue) {
+            return;
+          }
 
           const date = Jalali.timestamp(valueOf, false);
           if (!this.isDateInRange(date.valueOf(), false, false)) {
@@ -318,8 +326,8 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     if (!this.dateValueDefined()) {
       this.viewDate = this.dateMax ? Jalali.timestamp(this.dateMax, false).endOf('year') : this.today.clone();
     } else {
-      this.viewDate = this.dateMax && this.selectedDate.valueOf() > this.dateMax.valueOf() ?
-        Jalali.timestamp(this.dateMax, false) : this.selectedDate.clone();
+      this.viewDate = this.dateMax && this.selectedDate!.valueOf() > this.dateMax.valueOf() ?
+        Jalali.timestamp(this.dateMax, false) : this.selectedDate!.clone();
     }
     if (!this.timeEnable) this.viewDate.startOf('day');
     this.onChangeViewDate();
@@ -673,30 +681,30 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   onChangeSelectedDate(setInputValue: boolean): void {
     if (this.timeEnable) {
-      this.selectedDate.setHours(this.hour);
-      this.selectedDate.setMinutes(this.minute);
-      this.selectedDate.setSeconds(this.second);
-      this.selectedDate.setMilliseconds(0);
+      this.selectedDate!.setHours(this.hour);
+      this.selectedDate!.setMinutes(this.minute);
+      this.selectedDate!.setSeconds(this.second);
+      this.selectedDate!.setMilliseconds(0);
     }
     else {
-      this.selectedDate.startOf('day');
+      this.selectedDate!.startOf('day');
     }
-    this.dateValue = this.selectedDate.valueOf();
+    this.dateValue = this.selectedDate!.valueOf();
     if (this.uiHideAfterSelectDate && !this.preventClose) {
       this.setUiIsVisible(false);
     } else {
       this.preventClose = false;
     }
-    if (this.lastEmittedDateValue === +this.selectedDate) return;
+    if (this.lastEmittedDateValue === +this.selectedDate!) return;
     if (setInputValue) {
       this.setFormControlValue();
     }
     this.setViewDate();
-    this.lastEmittedDateValue = +this.selectedDate;
+    this.lastEmittedDateValue = +this.selectedDate!;
     this.dateOnSelect.next({
-      shamsi: String(this.selectedDate.format(this.dateFormat)),
-      gregorian: String(this.selectedDate.gregorian(this.dateGregorianFormat)),
-      timestamp: Number(this.selectedDate.valueOf())
+      shamsi: String(this.selectedDate!.format(this.dateFormat)),
+      gregorian: String(this.selectedDate!.gregorian(this.dateGregorianFormat)),
+      timestamp: Number(this.selectedDate!.valueOf())
     });
   }
 

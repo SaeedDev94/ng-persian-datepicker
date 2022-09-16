@@ -52,6 +52,14 @@
         </label>
       </div>
       <div class="switch">
+        <p>Is visible?</p>
+        <label>
+          <input type="checkbox"
+                 [(ngModel)]="uiIsVisible" />
+          <span class="lever"></span>
+        </label>
+      </div>
+      <div class="switch">
         <p>Hide after select date</p>
         <label>
           <input type="checkbox"
@@ -103,23 +111,27 @@
       </div>
     </div>
     <div class="col offset-l2 l4 offset-m3 m6 offset-s2 s8">
-      <ng-persian-datepicker (dateOnSelect)="onSelect($event)"
-                             [dateFormat]="'YYYY/MM/DD HH:mm:ss'"
-                             [dateGregorianFormat]="'YYYY-MM-DD HH:mm:ss'"
-                             [(uiIsVisible)]="uiIsVisible"
-                             [uiTheme]="uiTheme"
-                             [uiYearView]="uiYearView"
-                             [uiMonthView]="uiMonthView"
-                             [uiHideAfterSelectDate]="uiHideAfterSelectDate"
-                             [uiHideOnOutsideClick]="uiHideOnOutsideClick"
-                             [uiTodayBtnEnable]="uiTodayBtnEnable"
-                             [timeEnable]="timeEnable"
-                             [timeShowSecond]="timeShowSecond"
-                             [timeMeridian]="timeMeridian">
-        <div class="input-field">
-          <input type="text" [formControl]="dateValue" aria-label="Datepicker Input" />
-        </div>
-      </ng-persian-datepicker>
+      <div class="datepicker-wrapper">
+        <ng-persian-datepicker (dateOnSelect)="onSelect($event)"
+                               [dateFormat]="'YYYY/MM/DD HH:mm:ss'"
+                               [dateGregorianFormat]="'YYYY-MM-DD HH:mm:ss'"
+                               [(uiIsVisible)]="uiIsVisible"
+                               [uiTheme]="uiTheme"
+                               [uiYearView]="uiYearView"
+                               [uiMonthView]="uiMonthView"
+                               [uiHideAfterSelectDate]="uiHideAfterSelectDate"
+                               [uiHideOnOutsideClick]="uiHideOnOutsideClick"
+                               [uiTodayBtnEnable]="uiTodayBtnEnable"
+                               [timeEnable]="timeEnable"
+                               [timeShowSecond]="timeShowSecond"
+                               [timeMeridian]="timeMeridian">
+          <div class="input-field">
+            <input type="text" [formControl]="dateValue" aria-label="Datepicker Input" />
+          </div>
+        </ng-persian-datepicker>
+      </div>
+      <h5>How to prevent elements pushing down issue?</h5>
+      <b>Check ".datepicker-wrapper" global css class in <a href="https://github.com/Saeed-Pooyanfar/ng-persian-datepicker/blob/master/src/styles.scss">styles.scss</a></b>
     </div>
   </div>
 </div>

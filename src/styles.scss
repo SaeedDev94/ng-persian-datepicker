@@ -1,6 +1,11 @@
 @import "assets/css/iran-sans-web.font.css";
 @import "assets/css/materialize.min.css";
 
+:root {
+  --input-height: 46px;
+  --input-vertical-margin: 16px;
+}
+
 body {
   font-family: 'IranSansWebRegular', serif;
 }
@@ -8,6 +13,27 @@ body {
 input {
   font-family: inherit;
   &[type="text"] {
-    margin-bottom: 0!important;
+    &:not(.browser-default) {
+      box-sizing: border-box;
+      margin: 0;
+      height: var(--input-height);
+    }
+  }
+}
+
+.input-field {
+  margin-top: var(--input-vertical-margin);
+  margin-bottom: var(--input-vertical-margin);
+}
+
+.datepicker-wrapper {
+  position: relative;
+
+  ng-persian-datepicker .datepicker-outer-container {
+    position: absolute;
+    z-index: 1;
+    top: calc(var(--input-height) + var(--input-margin-bottom));
+    right: 0;
+    left: 0;
   }
 }

@@ -32,7 +32,7 @@ input {
   ng-persian-datepicker .datepicker-outer-container {
     position: absolute;
     z-index: 1;
-    top: calc(var(--input-height) + var(--input-margin-bottom));
+    top: calc(var(--input-height) + var(--input-vertical-margin));
     right: 0;
     left: 0;
   }

@@ -1,13 +1,13 @@
 # NgPersianDatepicker
 
-Persian datepicker for angular 12+  
+Persian datepicker for angular 16+  
 **[Online demo](https://saeed-pooyanfar.github.io/ng-persian-datepicker/)**
 
 # Install
 
 ```
 npm install ng-persian-datepicker
-npm install jalali-ts@^2.0.4
+npm install jalali-ts@^2.0.5
 ```
 
 # Setup

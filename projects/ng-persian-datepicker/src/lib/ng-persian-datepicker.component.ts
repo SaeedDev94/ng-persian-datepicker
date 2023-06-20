@@ -42,7 +42,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   private input?: HTMLInputElement;
   private inputEventFocusListener?: () => void;
 
-  private formControl?: FormControl;
+  private formControl?: FormControl<string | number | null | undefined>;
   private formControlValueChanges?: Subscription;
 
   private dateValue?: number;
@@ -229,9 +229,10 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.formControlValueChanges = this.formControl
       ?.valueChanges
       ?.subscribe({
-        next: (value: any) => {
-          if (typeof value === 'undefined' || typeof value === (typeof null) || (typeof value === 'number' && Number.isNaN(value)) || (typeof value === 'string' && !value.trim())) {
+        next: (value: string | number | null | undefined) => {
+          if ((typeof value === 'string' && !value.trim() || (typeof value === 'number' && Number.isNaN(value)) || value === null || value === undefined)) {
             this.dateValue = undefined;
+            this.lastEmittedDateValue = undefined;
             this.selectedDate = undefined;
             this.setViewDate();
             return;
@@ -297,7 +298,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  setDateInitValue(dateValue: string | number): void {
+  setDateInitValue(dateValue: string | number | null | undefined): void {
     if (dateValue || !this.dateInitValue) {
       return;
     }
@@ -311,7 +312,7 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     });
   }
 
-  setSelectedDate(dateValue: string | number): void {
+  setSelectedDate(dateValue: string | number | null | undefined): void {
     if (!dateValue) {
       return;
     }

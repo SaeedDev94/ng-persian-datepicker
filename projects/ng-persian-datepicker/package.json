@@ -1,14 +1,14 @@
 {
   "name": "ng-persian-datepicker",
-  "version": "6.1.2",
+  "version": "7.0.0",
   "author": {
     "name": "SaeedPooyanfar",
     "email": "saeedp47@gmail.com"
   },
   "repository": "Saeed-Pooyanfar/ng-persian-datepicker",
   "peerDependencies": {
-    "@angular/common": ">=12.0.0",
-    "@angular/core": ">=12.0.0",
-    "jalali-ts": "^2.0.4"
+    "@angular/common": ">=16.0.0",
+    "@angular/core": ">=16.0.0",
+    "jalali-ts": "^2.0.5"
   }
 }

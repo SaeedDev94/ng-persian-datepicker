@@ -30,7 +30,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "allowedCommonJsDependencies": [
+              "jalali-ts"
+            ]
           },
           "configurations": {
             "production": {
@@ -133,6 +135,5 @@
         }
       }
     }
-  },
-  "defaultProject": "angular-persian-datepicker"
+  }
 }

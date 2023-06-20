@@ -1,16 +1,16 @@
 <div class="datepicker-content">
   <ng-content></ng-content>
   <div class="datepicker-outer-container"
-       [style.backgroundColor]="uiTheme.background"
+       [style.background-color]="uiTheme.background"
        [style.color]="uiTheme.text"
-       [style.borderColor]="uiTheme.border"
+       [style.border-color]="uiTheme.border"
        [class.hide]="!uiIsVisible">
     <div class="datepicker-inner-container">
 
       <!-- Start: navigation -->
       <div class="content-container navigation-container horizontal-padding">
         <div class="go-back dp-btn"
-             [style.backgroundColor]="goBack.classList.contains('hover') ? uiTheme.hoverBackground : null"
+             [style.background-color]="goBack.classList.contains('hover') ? uiTheme.hoverBackground : null"
              (click)="navigate(false)" themeHover #goBack>
           <svg xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 240.823 240.823"
@@ -21,13 +21,13 @@
           </svg>
         </div>
         <div class="switch-view dp-btn"
-             [style.backgroundColor]="switchView.classList.contains('hover') ? uiTheme.hoverBackground : null"
+             [style.background-color]="switchView.classList.contains('hover') ? uiTheme.hoverBackground : null"
              [style.color]="switchView.classList.contains('hover') ? uiTheme.hoverText : null"
              (click)="nextViewMode()" themeHover #switchView>
           <span>{{ viewDateTitle }}</span>
         </div>
         <div class="go-forward dp-btn"
-             [style.backgroundColor]="goForward.classList.contains('hover') ? uiTheme.hoverBackground : null"
+             [style.background-color]="goForward.classList.contains('hover') ? uiTheme.hoverBackground : null"
              (click)="navigate(true)" themeHover #goForward>
           <svg xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 240.823 240.823"
@@ -52,7 +52,7 @@
                  [class.disabled]="year.isYearDisabled"
                  [class.selected]="year.isYearOfSelectedDate"
                  [class.today]="year.isYearOfTodayDate"
-                 [style.backgroundColor]="
+                 [style.background-color]="
                    (year.isYearDisabled) ?
                      uiTheme.disabledBackground :
                      (year.isYearOfSelectedDate) ?
@@ -94,7 +94,7 @@
                  [class.disabled]="month.isMonthDisabled"
                  [class.selected]="month.isMonthOfSelectedDate"
                  [class.today]="month.isMonthOfTodayDate"
-                 [style.backgroundColor]="
+                 [style.background-color]="
                    (month.isMonthDisabled) ?
                      uiTheme.disabledBackground :
                      (month.isMonthOfSelectedDate) ?
@@ -144,7 +144,7 @@
                    [class.selected]="day.isDayOfSelectedDate"
                    [class.today]="day.isDayOfTodayDate"
                    [class.other-month]="!day.isDayInCurrentMonth"
-                   [style.backgroundColor]="
+                   [style.background-color]="
                      (day.isDayDisabled) ?
                        uiTheme.disabledBackground :
                        (day.isDayOfSelectedDate) ?
@@ -182,12 +182,12 @@
       <!-- Start: time picker -->
       <ng-container *ngIf="timeEnable">
         <div class="time-container horizontal-padding content-container"
-             [style.borderTopColor]="uiTheme.timeBorder"
-             [style.borderBottomColor]="uiTheme.timeBorder">
+             [style.border-top-color]="uiTheme.timeBorder"
+             [style.border-bottom-color]="uiTheme.timeBorder">
           <div class="time-col hour-col">
             <div class="item">
               <div class="dp-btn disabled"
-                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.background-color]="uiTheme.disabledBackground"
                    [style.color]="uiTheme.disabledText">
                 <span>--</span>
               </div>
@@ -198,7 +198,7 @@
                 <div class="dp-btn"
                      (click)="setHour(i)"
                      [class.selected]="hour === i"
-                     [style.backgroundColor]="
+                     [style.background-color]="
                        (hour === i) ?
                          uiTheme.selectedBackground :
                          (hourCol.classList.contains('hover')) ?
@@ -226,7 +226,7 @@
                        (hour >= 1 && hour <= 12 && hour === (i + 1)) ||
                        (hour > 12 && hour === ((i + 1) + 12))
                      "
-                     [style.backgroundColor]="
+                     [style.background-color]="
                        (
                          (hour === 0 && (i + 1) === 12) ||
                          (hour >= 1 && hour <= 12 && hour === (i + 1)) ||
@@ -254,7 +254,7 @@
             </ng-container>
             <div class="item">
               <div class="dp-btn disabled"
-                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.background-color]="uiTheme.disabledBackground"
                    [style.color]="uiTheme.disabledText">
                 <span>--</span>
               </div>
@@ -263,7 +263,7 @@
           <div class="time-col minute-col">
             <div class="item">
               <div class="dp-btn disabled"
-                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.background-color]="uiTheme.disabledBackground"
                    [style.color]="uiTheme.disabledText">
                 <span>--</span>
               </div>
@@ -273,7 +273,7 @@
               <div class="dp-btn"
                    (click)="setMinute(i)"
                    [class.selected]="minute === i"
-                   [style.backgroundColor]="
+                   [style.background-color]="
                      (minute === i) ?
                        uiTheme.selectedBackground :
                        (minuteCol.classList.contains('hover')) ?
@@ -292,7 +292,7 @@
             </div>
             <div class="item">
               <div class="dp-btn disabled"
-                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.background-color]="uiTheme.disabledBackground"
                    [style.color]="uiTheme.disabledText">
                 <span>--</span>
               </div>
@@ -302,7 +302,7 @@
                class="time-col second-col">
             <div class="item">
               <div class="dp-btn disabled"
-                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.background-color]="uiTheme.disabledBackground"
                    [style.color]="uiTheme.disabledText">
                 <span>--</span>
               </div>
@@ -312,7 +312,7 @@
               <div class="dp-btn"
                    (click)="setSecond(i)"
                    [class.selected]="second === i"
-                   [style.backgroundColor]="
+                   [style.background-color]="
                      (second === i) ?
                        uiTheme.selectedBackground :
                        (secondCol.classList.contains('hover')) ?
@@ -331,7 +331,7 @@
             </div>
             <div class="item">
               <div class="dp-btn disabled"
-                   [style.backgroundColor]="uiTheme.disabledBackground"
+                   [style.background-color]="uiTheme.disabledBackground"
                    [style.color]="uiTheme.disabledText">
                 <span>--</span>
               </div>
@@ -343,7 +343,7 @@
               <div class="dp-btn"
                    (click)="toggleAmPm('AM')"
                    [class.selected]="hour < 12"
-                   [style.backgroundColor]="
+                   [style.background-color]="
                      (hour < 12) ?
                        uiTheme.selectedBackground :
                        (amCol.classList.contains('hover')) ?
@@ -364,7 +364,7 @@
               <div class="dp-btn"
                    (click)="toggleAmPm('PM')"
                    [class.selected]="hour >= 12"
-                   [style.backgroundColor]="
+                   [style.background-color]="
                      (hour >= 12) ?
                        uiTheme.selectedBackground :
                        (pmCol.classList.contains('hover')) ?
@@ -390,7 +390,7 @@
       <div class="the-toolbox horizontal-padding">
         <ng-container *ngIf="uiTodayBtnEnable">
           <div class="the-item dp-btn"
-               [style.backgroundColor]="today.classList.contains('hover') ? uiTheme.hoverBackground : null"
+               [style.background-color]="today.classList.contains('hover') ? uiTheme.hoverBackground : null"
                [style.color]="today.classList.contains('hover') ? uiTheme.hoverText : null"
                (click)="selectToday()" themeHover #today>
             <span>امروز</span>

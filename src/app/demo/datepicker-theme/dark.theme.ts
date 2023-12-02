@@ -20,5 +20,8 @@ export const darkTheme: IDatepickerTheme = {
   todayText: '#2D2D2D',
 
   otherMonthBackground: 'rgba(0, 0, 0, 0)',
-  otherMonthText: '#CCCCCC'
+  otherMonthText: '#CCCCCC',
+
+  holidayBackground: '#222222',
+  holidayText: '#ff5858'
 };

@@ -179,6 +179,9 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   @Input()
   uiTodayBtnEnable: boolean = true;
 
+  @Input()
+  holidays: Date[] = [];
+
   /** @Output */
 
   // date
@@ -435,7 +438,8 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
           isDayInCurrentMonth: this.isDayInCurrentMonth(day),
           isDayOfTodayDate: this.isDayOfTodayDate(day),
           isDayOfSelectedDate: this.isDayOfSelectedDate(day),
-          isDayDisabled: this.isDayDisabled(day)
+          isDayDisabled: this.isDayDisabled(day),
+          isHoliday: this.isHoliday(day[0])
         });
       }
 
@@ -648,6 +652,14 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
   isDayDisabled(day: number[]): boolean {
     return !this.isDateInRange(day[0], false, false);
+  }
+
+  isHoliday(day: number): boolean {
+    const date = new Date(day);
+
+    const isInCustomeHolidays = this.holidays.some(holiday => holiday.toLocaleDateString() ==  date.toLocaleDateString())
+
+    return date.getDay() == 4 || date.getDay() == 5 || isInCustomeHolidays;
   }
 
   isDateInRange(date: number, isYear: boolean, isMonth: boolean): boolean {

@@ -20,5 +20,8 @@ export const defaultTheme: IDatepickerTheme = {
   todayText: '#FFFFFF',
 
   otherMonthBackground: 'rgba(0, 0, 0, 0)',
-  otherMonthText: '#CCCCCC'
+  otherMonthText: '#CCCCCC',
+
+  holidayBackground: '#FFFFFF',
+  holidayText: '#ff5858',
 };

@@ -19,4 +19,7 @@ export interface IDatepickerTheme {
 
   otherMonthBackground: string;
   otherMonthText: string;
+
+  holidayBackground: string;
+  holidayText: string;
 }

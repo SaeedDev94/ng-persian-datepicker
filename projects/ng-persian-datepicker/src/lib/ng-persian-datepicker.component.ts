@@ -134,21 +134,18 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.timeEnable = value;
     if (!this.timeEnable && this.dateValueDefined()) this.onChangeSelectedDate(true);
     this.setTime();
-    this.scrollIntoActiveTime();
   }
 
   timeShowSecond: boolean = false;
   @Input('timeShowSecond')
   set _timeShowSecond(value: boolean) {
     this.timeShowSecond = value;
-    this.scrollIntoActiveTime();
   }
 
   timeMeridian: boolean = false;
   @Input('timeMeridian')
   set _timeMeridian(value: boolean) {
     this.timeMeridian = value;
-    this.scrollIntoActiveTime();
   }
 
   // ui
@@ -264,7 +261,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 
           this.setTime(date);
           this.changeSelectedDate(date, false);
-          this.scrollIntoActiveTime();
         }
       });
   }
@@ -849,24 +845,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
     this.changeSelectedDate(this.selectedDate);
   }
 
-  scrollIntoActiveTime(): void {
-    if (!this.uiIsVisible || !this.timeEnable) {
-      return;
-    }
-
-    setTimeout(() => {
-      // Hour
-      const activeHour = this.elementRef.nativeElement?.querySelector('.time-col.hour-col .dp-btn.selected');
-      if (activeHour) activeHour.scrollIntoView({block: 'center'});
-      // Minute
-      const activeMinute = this.elementRef.nativeElement?.querySelector('.time-col.minute-col .dp-btn.selected');
-      if (activeMinute) activeMinute.scrollIntoView({block: 'center'});
-      // Second
-      const activeSecond = this.elementRef.nativeElement?.querySelector('.time-col.second-col .dp-btn.selected');
-      if (activeSecond) activeSecond.scrollIntoView({block: 'center'});
-    }, 10);
-  }
-
   @HostListener('click')
   onInsideClick(): void {
     this.wasInsideClick = true;
@@ -896,7 +874,6 @@ export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
   private setUiIsVisible(value: boolean): void {
     this.uiIsVisible = value;
     this.uiIsVisibleChange.next(value);
-    this.scrollIntoActiveTime();
   }
 
 }

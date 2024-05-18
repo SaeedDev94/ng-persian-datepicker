@@ -152,13 +152,20 @@
 
         .item {
           padding: 1px;
+          cursor: pointer;
 
           &:first-of-type {
             padding-top: 3px;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            cursor: auto;
           }
 
           &:last-of-type {
             padding-bottom: 3px;
+            border-top-width: 1px;
+            border-top-style: solid;
+            cursor: auto;
           }
 
           .dp-btn {

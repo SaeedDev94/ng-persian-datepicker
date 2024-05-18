@@ -186,11 +186,10 @@
              [style.border-top-color]="uiTheme.timeBorder"
              [style.border-bottom-color]="uiTheme.timeBorder">
           <div class="time-col hour-col">
-            <div class="item">
-              <div class="dp-btn disabled"
-                   [style.background-color]="uiTheme.disabledBackground"
-                   [style.color]="uiTheme.disabledText">
-                <span>--</span>
+            <div class="item"
+                 [style.border-bottom-color]="uiTheme.border">
+              <div class="dp-btn">
+                <span>{{ hour }}</span>
               </div>
             </div>
             <ng-container *ngIf="!timeMeridian">
@@ -253,20 +252,18 @@
                 </div>
               </div>
             </ng-container>
-            <div class="item">
-              <div class="dp-btn disabled"
-                   [style.background-color]="uiTheme.disabledBackground"
-                   [style.color]="uiTheme.disabledText">
-                <span>--</span>
+            <div class="item"
+                 [style.border-top-color]="uiTheme.border">
+              <div class="dp-btn">
+                <span>{{ hour }}</span>
               </div>
             </div>
           </div>
           <div class="time-col minute-col">
-            <div class="item">
-              <div class="dp-btn disabled"
-                   [style.background-color]="uiTheme.disabledBackground"
-                   [style.color]="uiTheme.disabledText">
-                <span>--</span>
+            <div class="item"
+                 [style.border-bottom-color]="uiTheme.border">
+              <div class="dp-btn">
+                <span>{{ minute }}</span>
               </div>
             </div>
             <div class="item"
@@ -291,21 +288,19 @@
                 <span>{{ i | number: '2.0' }}</span>
               </div>
             </div>
-            <div class="item">
-              <div class="dp-btn disabled"
-                   [style.background-color]="uiTheme.disabledBackground"
-                   [style.color]="uiTheme.disabledText">
-                <span>--</span>
+            <div class="item"
+                 [style.border-top-color]="uiTheme.border">
+              <div class="dp-btn">
+                <span>{{ minute }}</span>
               </div>
             </div>
           </div>
           <div *ngIf="timeShowSecond"
                class="time-col second-col">
-            <div class="item">
-              <div class="dp-btn disabled"
-                   [style.background-color]="uiTheme.disabledBackground"
-                   [style.color]="uiTheme.disabledText">
-                <span>--</span>
+            <div class="item"
+                 [style.border-bottom-color]="uiTheme.border">
+              <div class="dp-btn">
+                <span>{{ second }}</span>
               </div>
             </div>
             <div class="item"
@@ -330,11 +325,10 @@
                 <span>{{ i | number: '2.0' }}</span>
               </div>
             </div>
-            <div class="item">
-              <div class="dp-btn disabled"
-                   [style.background-color]="uiTheme.disabledBackground"
-                   [style.color]="uiTheme.disabledText">
-                <span>--</span>
+            <div class="item"
+                 [style.border-top-color]="uiTheme.border">
+              <div class="dp-btn">
+                <span>{{ second }}</span>
               </div>
             </div>
           </div>

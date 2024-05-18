@@ -1,7 +1,6 @@
 @use "sass:math";
 
 .datepicker-outer-container {
-  direction: rtl;
   vertical-align: top;
   min-width: 200px;
   font-size: 12px;
@@ -12,6 +11,22 @@
   border-radius: 5px;
   border-width: 1px;
   border-style: solid;
+
+  &[dir="rtl"] {
+    .datepicker-inner-container {
+      .navigation-container {
+        flex-direction: row;
+      }
+    }
+  }
+
+  &[dir="ltr"] {
+    .datepicker-inner-container {
+      .navigation-container {
+        flex-direction: row-reverse;
+      }
+    }
+  }
 
   &.hide {
     display: none;
@@ -41,6 +56,8 @@
     }
 
     .navigation-container {
+      display: flex;
+
       .go-forward, .switch-view, .go-back {
         display: inline-block;
         vertical-align: top;
@@ -162,7 +179,7 @@
     }
 
     .the-toolbox {
-      text-align: right;
+      display: flex;
       .the-item {
         display: inline-block;
         vertical-align: top;

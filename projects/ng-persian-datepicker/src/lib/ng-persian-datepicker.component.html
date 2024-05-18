@@ -1,6 +1,7 @@
 <div class="datepicker-content">
-  <ng-content></ng-content>
+  <ng-content />
   <div class="datepicker-outer-container"
+       [dir]="calendarIsGregorian ? 'ltr' : 'rtl'"
        [style.background-color]="uiTheme.background"
        [style.color]="uiTheme.text"
        [style.border-color]="uiTheme.border"
@@ -117,7 +118,7 @@
                            null
                  "
                  themeHover #monthCol>
-              <span>{{ month.indexValue | month }}</span>
+              <span>{{ month.indexValue | month: calendarIsGregorian }}</span>
             </div>
           </div>
         </div>
@@ -393,7 +394,7 @@
                [style.background-color]="today.classList.contains('hover') ? uiTheme.hoverBackground : null"
                [style.color]="today.classList.contains('hover') ? uiTheme.hoverText : null"
                (click)="selectToday()" themeHover #today>
-            <span>امروز</span>
+            <span>{{ calendarIsGregorian ? 'Today' : 'امروز' }}</span>
           </div>
         </ng-container>
       </div>

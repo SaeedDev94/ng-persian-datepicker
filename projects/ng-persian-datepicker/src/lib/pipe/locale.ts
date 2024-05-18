@@ -1,5 +1,7 @@
-const weekDays: string[] = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
-const months: string[] = [
+const faWeekDays: string[] = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+const enWeekDays: string[] = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+const faMonths: string[] = [
   'فروردین',
   'اردیبهشت',
   'خرداد',
@@ -13,8 +15,24 @@ const months: string[] = [
   'بهمن',
   'اسفند',
 ];
+const enMonths: string[] = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 export {
-  weekDays,
-  months
+  faWeekDays,
+  enWeekDays,
+  faMonths,
+  enMonths,
 }

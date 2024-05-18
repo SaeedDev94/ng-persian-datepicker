@@ -67,6 +67,7 @@ Complete config reference:
 
 | Key                   | Type             | Description                                                                                 | Example                                |
 |-----------------------|------------------|---------------------------------------------------------------------------------------------|----------------------------------------|
+| calendarIsGregorian   | boolean          | set this to `true` if you want gregorian calendar. default: `false`                         | true                                   |
 | dateValue             | FormControl      | use this if you don't need a html input                                                     | dateValue: FormControl                 |           
 | dateInitValue         | boolean          | if no dateValue provided use today as init value. default: `true`                           | true                                   |
 | dateIsGregorian       | boolean          | is dateValue gregorian?. default: `false`                                                   | false                                  |

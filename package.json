@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build ng-persian-datepicker && cp projects/ng-persian-datepicker/README.md .",
-    "build-demo": "ng build --output-path docs --base-href /ng-persian-datepicker/",
+    "build-demo": "ng build --base-href /ng-persian-datepicker/ && rm -rf docs/* && cp -r dist/angular-persian-datepicker/browser/* docs",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

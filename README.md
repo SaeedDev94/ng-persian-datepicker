@@ -1,6 +1,6 @@
 # NgPersianDatepicker
 
-Persian datepicker for angular 16+  
+Persian datepicker for angular 17+  
 **[Online demo](https://saeeddev94.github.io/ng-persian-datepicker/)**
 
 # Install

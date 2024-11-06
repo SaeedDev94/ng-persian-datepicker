@@ -29,7 +29,8 @@ import {
 @Component({
   selector: 'ng-persian-datepicker',
   templateUrl: './ng-persian-datepicker.component.html',
-  styleUrls: ['./ng-persian-datepicker.component.scss']
+  styleUrls: ['./ng-persian-datepicker.component.scss'],
+  standalone: false,
 })
 export class NgPersianDatepickerComponent implements OnInit, OnDestroy {
 

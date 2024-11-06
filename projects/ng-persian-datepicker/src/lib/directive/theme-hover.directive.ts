@@ -5,7 +5,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[themeHover]'
+  selector: '[themeHover]',
+  standalone: false,
 })
 export class ThemeHoverDirective {
 

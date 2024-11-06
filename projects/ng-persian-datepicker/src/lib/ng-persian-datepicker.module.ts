@@ -11,10 +11,10 @@ import { MonthPipe } from './pipe/month.pipe';
     MonthPipe,
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ],
   exports: [
-    NgPersianDatepickerComponent
+    NgPersianDatepickerComponent,
   ]
 })
 export class NgPersianDatepickerModule {

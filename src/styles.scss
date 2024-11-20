@@ -1,5 +1,5 @@
-@import "assets/css/iran-sans-web.font.css";
-@import "assets/css/materialize.min.css";
+@use "assets/css/iran-sans-web.font.css" as *;
+@use "assets/css/materialize.min.css" as *;
 
 :root {
   --input-height: 46px;

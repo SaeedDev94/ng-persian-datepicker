@@ -1,11 +1,11 @@
 {
   "name": "ng-persian-datepicker",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "author": "SaeedDev94",
   "repository": "SaeedDev94/ng-persian-datepicker",
   "peerDependencies": {
-    "@angular/common": ">=18.0.0",
-    "@angular/core": ">=18.0.0",
+    "@angular/common": ">=19.0.0",
+    "@angular/core": ">=19.0.0",
     "jalali-ts": "^8.0.0"
   }
 }

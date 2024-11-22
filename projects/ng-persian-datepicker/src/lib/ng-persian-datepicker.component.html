@@ -145,6 +145,7 @@
                    [class.selected]="day.isDayOfSelectedDate"
                    [class.today]="day.isDayOfTodayDate"
                    [class.other-month]="!day.isDayInCurrentMonth"
+                   [class.holiday]="day.isHoliday"
                    [style.background-color]="
                      (day.isDayDisabled) ?
                        uiTheme.disabledBackground :
@@ -156,6 +157,8 @@
                              uiTheme.todayBackground :
                              (!day.isDayInCurrentMonth) ?
                                uiTheme.otherMonthBackground :
+                               (day.isHoliday) ?
+                               uiTheme.holidayBackground :
                                null
                    "
                    [style.color]="
@@ -169,6 +172,8 @@
                              uiTheme.todayText :
                              (!day.isDayInCurrentMonth) ?
                                uiTheme.otherMonthText :
+                               (day.isHoliday) ?
+                               uiTheme.holidayText :
                                null
                    "
                    themeHover #dayCol>

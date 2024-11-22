@@ -29,6 +29,21 @@ export class DemoComponent {
   timeShowSecond: boolean = true;
   timeMeridian: boolean = false;
 
+  holidays: Date[];
+
+  constructor() {
+    const currDate = new Date();
+
+    const tomorrow = new Date(currDate);
+  
+    const nextWeek = new Date(currDate);
+
+    tomorrow.setDate(currDate.getDate() + 1);
+    nextWeek.setDate(currDate.getDate() + 9);
+
+    this.holidays = [tomorrow, nextWeek];
+  }
+
   private _theme: string = 'default';
 
   get theme(): string {
